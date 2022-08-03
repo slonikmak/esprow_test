@@ -1,0 +1,97 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ExchangeDictionary="com.esprow.nozomi.dictionary.exchange" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test dataSetId="" loggingLevel="TRACE" performanceMode="true" dictionary="SGX_OMnet">
+    <testCommand xsi:type="TestUnit:NewMessageSender" messageHandlerId="sender" targetSystemId="Cert" targetHandlerId="SGX OMnet Relay 100 Target" autoConnect="true" collectStatistics="false" sendSync="true" override="true" validateMessages="true" cleanQueue="true" disableDictionaryMismatchCheck="false"/>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Concurrent BDX Init" messageSenderProducer="//@test/@testCommand.0">
+      <message xsi:type="ExchangeDictionary:ExchangeMessage" name="CONCURRENT_BDX_INIT" dictionaryName="SGX_OMnet">
+        <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_common_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="length_u" required="true" stringValue="20" length="4" padding="LEFT"/>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_request_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_request_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="facility_type_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_u" required="true" stringValue="64" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="function_code_u" required="true" stringValue="6145" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_2_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+            </content>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_response_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_response_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="txstat_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="return_value_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_2_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_3_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_4_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_5_q" required="true" length="8" padding="LEFT"/>
+            </content>
+          </content>
+        </content>
+        <content xsi:type="ExchangeDictionary:ExchangeGroup" name="generic_omnet_message_t" required="true">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="generic_omnet_message_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="msg_content_c" required="true" stringValue="16,0,0,0,190,239,23,0,52,0,0,1,0,0,0,0,0,0,0,0" length="1" padding="LEFT"/>
+          </content>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.txstat_i" value="0" fieldType="Integer"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="0" fieldType="Integer"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_2_q" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_3_q" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_4_q" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_5_q" value="0" fieldType="BigDecimal"/>
+      <messageType>CONCURRENT_BDX_INIT_ANSWER</messageType>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WhileLoopCommand" logicStatement="1" maxIterationSafety="">
+      <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Read Event Block" messageSenderProducer="//@test/@testCommand.0">
+        <message xsi:type="ExchangeDictionary:ExchangeMessage" name="READ_EVENT_BLOCK" dictionaryName="SGX_OMnet">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_common_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="length_u" required="true" stringValue="20" length="4" padding="LEFT"/>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_request_t">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_request_t" required="true">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="facility_type_u" required="true" stringValue="999" length="4" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_u" required="true" stringValue="64000" length="4" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="function_code_u" required="true" stringValue="71425" length="4" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_2_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_response_t">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_response_t" required="true">
+                <content xsi:type="ExchangeDictionary:ExchangeIntField" name="txstat_i" required="true" length="4" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeIntField" name="return_value_i" required="true" length="4" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_2_q" required="true" length="8" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_3_q" required="true" length="8" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_4_q" required="true" length="8" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_5_q" required="true" length="8" padding="LEFT"/>
+              </content>
+            </content>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="read_event_block_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="read_event_block_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="length_u" required="true" stringValue="16" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="timeout_u" required="true" stringValue="2" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="waittype_u" required="true" stringValue="1" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="filler_8_s" required="true" stringValue="0,0,0,0,0,0,0,0" length="8" padding="LEFT"/>
+            </content>
+          </content>
+        </message>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" removeMatched="true">
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.txstat_i" value="0" fieldType="Integer"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="4" fieldType="Integer"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_2_q" value="0" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_3_q" value="0" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_4_q" value="0" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_5_q" value="0" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="broadcast_hdr_t[].broadcast_hdr_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="broadcast_hdr_t[].broadcast_hdr_t.broadcast_type[].broadcast_type_t.server_type_c" value="O" fieldType="Char"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="broadcast_hdr_t[].broadcast_hdr_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="5" fieldType="BigDecimal"/>
+        <messageType>BO5</messageType>
+      </testCommand>
+    </testCommand>
+    <dataSetProvider xsi:type="TestUnit:RangeDataSetProvider" skipColumnName="SKIP_TEST" executingTagColumnName="EXEC_TAG" loopCounterStart="1" loopCounterEnd="3" loopStep="1"/>
+  </test>
+</TestUnit:TestContainerType>

@@ -1,0 +1,1288 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:EXmlDictionary="com.esprow.nozomi.dictionary.xml" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test comment="Simulator running on TIBCO. &#xD;&#xA;Response message is derived from values of inbound messages. " loggingLevel="TRACE">
+    <testCommand xsi:type="TestUnit:CreateMessageReceiverCommand" comment="This command creates a new message receiver (Simulator). &#xD;&#xA;It allows you to create a process that simulates a destination. &#xD;&#xA;This means that at run-time the test unit will create a process that will sit and wait for incoming connections via the Destination protocol. &#xD;&#xA;The simulator configuration consists of event scenarios, which on the receipt of an incoming message is matched against the scenario filter. If they match, the pre-canned responses for that scenario are sent back to the counterparty. &#xD;&#xA;This simulates the behavior of a system that responds in a precise way to a precise input message. &#xD;&#xA;" runMode="BLOCKING" targetSystemId="Cert" targetHandlerId="FIXML 4.4 Simulator" autoStart="true" collectStatistics="false" sendSync="true" override="true" validateMessages="true" disableDictionaryMismatchCheck="false">
+      <testCommand xsi:type="TestUnit:CreateEventScenarioCommand" name="NewOrderSingle">
+        <testCommand xsi:type="TestUnit:CreatePatternMatcherCommand" messageId="Inbound: NewOrderSingle">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="NewOrderSingle[].ID" value="" checkType="EXISTS"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" messageId="Res: ExecutionReport NOS">
+          <message xsi:type="EXmlDictionary:XmlMessage" name="ExecutionReport" dictionaryName="FIXML 4.4">
+            <content xsi:type="EXmlDictionary:XmlElement" name="ExecutionReport" required="true">
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="OrdID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="OrdID2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ID2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecID2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ID" stringValue="%CONFIGURATIONS.UNIQUE_ID%"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="OrigID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LnkID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="RspID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="StatReqID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ReqID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TotNumRpts"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastRptReqed"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="OrignDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ListID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CrssID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="OrigCrssID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CrssTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecRefID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecTyp" required="true" stringValue="0"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Stat" required="true" stringValue="0"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="WorkingInd"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="RejRsn"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecRstmtRsn"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Acct"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="AcctIDSrc"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="AcctTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="DayBkngInst"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="BkngUnit"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PreallocMeth"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CshMgn"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ClrFeeInd"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Side" required="true" stringValue="1"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="QtyTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ" stringValue="2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PxTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Px" stringValue="101.5"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="StopPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PeggedPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="DsctnPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TgtStrategy"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TgtStrategyParameters"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ParticipationRt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TgtStrategyPerformance"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Ccy" stringValue="EUR"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ComplianceID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SolFlag"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TmInForce"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="EfctvTm"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExpireDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExpireTm"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecInst"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Cpcty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Rstctions"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CustCpcty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastQty" stringValue="30000"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="UndLastQty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastPx" stringValue="101.5"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="UndLastPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastParPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastSpotRt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastFwdPnts"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastMkt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SesID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SesSub"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TmBkt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastCpcty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LeavesQty" required="true" stringValue="30000"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CumQty" required="true" stringValue="0"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="AvgPx" required="true" stringValue="101.5"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="DayOrdQty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="DayCumQty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="DayAvgPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="GTBkngInst"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TrdDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TxnTm" stringValue="%CONFIGURATIONS.TIMESTAMP%"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="RptToExch"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="GrossTrdAmt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="NumDaysInt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="AcrdIntRt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="AcrdIntAmt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="IntAtMat"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="EndAcrdIntAmt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="StartCsh"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="EndCsh"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TrddFlatSwitch"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="BasisFeatureDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="BasisFeaturePx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Concession"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TotTakedown"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="NetMny"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlCurrAmt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlCcy"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlCurrFxRt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlCurrFxRtCalc"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="HandlInst"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="MinQty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="MaxFloor"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PosEfct"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="MaxShow"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="BkngTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Txt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="EncTxtLen"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="EncTxt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlDt2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Qty2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastFwdPnts2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="MLEGRptTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CxllationRights"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="MnyLaunderingStat"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="RegistID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Designation"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TransBkdTm"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecValuationPoint"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecPxTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecPxAdjment"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PriInd"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PxImprvmnt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastLqdtyInd"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CopyMsgInd"/>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Hdr">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SeqNum" stringValue="1"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SID" stringValue="%CONFIGURATIONS.TID%"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="TID" stringValue="%CONFIGURATIONS.SID%"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OBID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="D2ID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SSub"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SLoc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="TSub"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="TLoc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OBSub"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OBLoc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="D2Sub"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="D2Loc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="PosDup"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="PosRsnd"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Snt" stringValue="%CONFIGURATIONS.TIMESTAMP%"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OrigSnt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MsgEncd"/>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Hop" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="ID" required="true" stringValue="0"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Ref"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Snt"/>
+                </content>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Pty" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Src"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="R"/>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Sub" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                </content>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Contra" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CntraBrkr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CntraTrdr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CntraTrdQty"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CntraTrdTm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CntraLegRefID"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Instrmt" required="true">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Sym" stringValue="%CONFIGURATIONS.Sym%"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Sfx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Src"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Prod"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CFI"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SecTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SubTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MMY"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MatDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnPmt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Issued"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoCollSecTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoTrm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoRt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Fctr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CrdRtg"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Rgstry"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="IssuCtry"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StPrv"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Lcl"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Redeem"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Strk"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StrkCcy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OptAt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Mult"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnRt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Exch"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Issr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncIssrLen"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncIssr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Desc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncSecDescLen"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncSecDesc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Pool"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CSetMo"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CPPgm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CPRegT"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Dated"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="IntAcrl"/>
+                <content xsi:type="EXmlDictionary:XmlElement" name="AID" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="AltID"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="AltIDSrc"/>
+                </content>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Evnt" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="EventTyp"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Dt"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Px"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Txt"/>
+                </content>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="FinDetls">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="AgmtDesc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="AgmtID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="AgmtDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="AgmtCcy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="TrmTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StartDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EndDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="DlvryTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MgnRatio"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Undly" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Sym"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Sfx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Src"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Prod"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CFI"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SubTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MMY"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Mat"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnPmt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Issued"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoCollSecTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoTrm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoRt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Fctr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CrdRtg"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Rgstry"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Ctry"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StOrProvnc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Lcl"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Redeem"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StrkPx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StrkCcy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OptA"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Mult"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnRt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Exch"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Issr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncUndIssrLen"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncUndIssr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Desc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncUndSecDescLen"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncUndSecDesc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CPPgm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CPRegTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Ccy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Qty"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Px"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="DirtPx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EndPx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StartVal"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CurVal"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EndVal"/>
+                <content xsi:type="EXmlDictionary:XmlElement" name="UndAID" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="AltID"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="AltIDSrc"/>
+                </content>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Stip" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Val"/>
+                </content>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Stip" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Val"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="OrdQty">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Qty" stringValue="30000"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Cash"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Pct"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RndDir"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RndMod"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="PegInstr">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OfstVal"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MoveTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OfstTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="LmtTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RndDir"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Scope"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="DiscInstr">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="DsctnInst"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OfstValu"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MoveTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OfstTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="LimitTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RndDir"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Scope"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Comm">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Comm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CommTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Ccy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="FundRenewWaiv"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="SprdBnchmkCurve">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Spread"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Ccy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Name"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Point"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Px"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="PxTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SecID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SecIDSrc"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Yield">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Yld"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CalcDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RedDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RedPx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RedPxTyp"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="ContAmt" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ContAmtTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ContAmtValu"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ContAmtCurr"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Exec" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Qty"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SwapTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="PosEfct"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Cover"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RefID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Px"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="LastPx"/>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Leg">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Sym"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Sfx"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Src"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Prod"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="CFI"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="SecTyp"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="SecSubTyp"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="MMY"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Mat"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnPmt"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Issued"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoCollSecTyp"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoTrm"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoRt"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Fctr"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="CrdRtg"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Rgstry"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Ctry"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="StOrProvnc"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Lcl"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Redeem"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Strk"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="StrkCcy"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="OptA"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Cmult"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnRt"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Exch"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Issr"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="EncLegIssrLen"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="EncLegIssr"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Desc"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="EncLegSecDescLen"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="EncLegSecDesc"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="RatioQty"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Side"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Ccy"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Pool"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Dated"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="CSetMo"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="IntAcrl"/>
+                  <content xsi:type="EXmlDictionary:XmlElement" name="LegAID" repeating="true" repeatingIndex="1">
+                    <content xsi:type="EXmlDictionary:XmlAttribute" name="SecAltID"/>
+                    <content xsi:type="EXmlDictionary:XmlAttribute" name="SecAltIDSrc"/>
+                  </content>
+                </content>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Stip" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="StipTyp"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="StipVal"/>
+                </content>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Pty" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Src"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="R"/>
+                  <content xsi:type="EXmlDictionary:XmlElement" name="Sub" repeating="true" repeatingIndex="1">
+                    <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                    <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                  </content>
+                </content>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="MiscFees" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Amt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Curr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Basis"/>
+              </content>
+            </content>
+          </message>
+        </testCommand>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:CreateEventScenarioCommand" name="OrderCancelReplaceRequest">
+        <testCommand xsi:type="TestUnit:CreatePatternMatcherCommand" messageId="Inbound: OrderCancelReplaceRequest">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="OrderCancelReplaceRequest[].ID" value="" checkType="EXISTS"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" messageId="Res: ExecutionReport Amend">
+          <message xsi:type="EXmlDictionary:XmlMessage" name="ExecutionReport" dictionaryName="FIXML 4.4">
+            <content xsi:type="EXmlDictionary:XmlElement" name="ExecutionReport" required="true">
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="OrdID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="OrdID2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ID2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecID2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ID" stringValue="%CONFIGURATIONS.UNIQUE_ID%"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="OrigID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LnkID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="RspID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="StatReqID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ReqID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TotNumRpts"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastRptReqed"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="OrignDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ListID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CrssID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="OrigCrssID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CrssTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecRefID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecTyp" required="true" stringValue="5"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Stat" required="true" stringValue="5"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="WorkingInd"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="RejRsn"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecRstmtRsn"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Acct"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="AcctIDSrc"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="AcctTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="DayBkngInst"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="BkngUnit"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PreallocMeth"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CshMgn"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ClrFeeInd"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Side" required="true" stringValue="1"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="QtyTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ" stringValue="2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PxTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Px" stringValue="101.5"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="StopPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PeggedPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="DsctnPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TgtStrategy"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TgtStrategyParameters"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ParticipationRt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TgtStrategyPerformance"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Ccy" stringValue="EUR"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ComplianceID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SolFlag"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TmInForce"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="EfctvTm"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExpireDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExpireTm"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecInst"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Cpcty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Rstctions"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CustCpcty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastQty" stringValue="20000"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="UndLastQty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastPx" stringValue="101.5"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="UndLastPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastParPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastSpotRt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastFwdPnts"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastMkt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SesID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SesSub"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TmBkt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastCpcty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LeavesQty" required="true" stringValue="20000"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CumQty" required="true" stringValue="0"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="AvgPx" required="true" stringValue="101.5"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="DayOrdQty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="DayCumQty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="DayAvgPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="GTBkngInst"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TrdDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TxnTm" stringValue="%CONFIGURATIONS.TIMESTAMP%"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="RptToExch"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="GrossTrdAmt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="NumDaysInt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="AcrdIntRt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="AcrdIntAmt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="IntAtMat"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="EndAcrdIntAmt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="StartCsh"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="EndCsh"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TrddFlatSwitch"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="BasisFeatureDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="BasisFeaturePx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Concession"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TotTakedown"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="NetMny"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlCurrAmt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlCcy"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlCurrFxRt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlCurrFxRtCalc"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="HandlInst"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="MinQty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="MaxFloor"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PosEfct"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="MaxShow"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="BkngTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Txt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="EncTxtLen"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="EncTxt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlDt2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Qty2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastFwdPnts2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="MLEGRptTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CxllationRights"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="MnyLaunderingStat"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="RegistID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Designation"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TransBkdTm"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecValuationPoint"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecPxTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecPxAdjment"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PriInd"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PxImprvmnt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastLqdtyInd"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CopyMsgInd"/>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Hdr">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SeqNum" stringValue="2"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SID" stringValue="%CONFIGURATIONS.TID%"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="TID" stringValue="%CONFIGURATIONS.SID%"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OBID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="D2ID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SSub"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SLoc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="TSub"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="TLoc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OBSub"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OBLoc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="D2Sub"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="D2Loc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="PosDup"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="PosRsnd"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Snt" stringValue="%CONFIGURATIONS.TIMESTAMP%"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OrigSnt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MsgEncd"/>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Hop" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="ID" required="true" stringValue="0"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Ref"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Snt"/>
+                </content>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Pty" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Src"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="R"/>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Sub" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                </content>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Contra" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CntraBrkr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CntraTrdr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CntraTrdQty"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CntraTrdTm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CntraLegRefID"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Instrmt" required="true">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Sym" stringValue="%CONFIGURATIONS.Sym%"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Sfx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Src"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Prod"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CFI"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SecTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SubTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MMY"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MatDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnPmt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Issued"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoCollSecTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoTrm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoRt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Fctr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CrdRtg"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Rgstry"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="IssuCtry"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StPrv"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Lcl"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Redeem"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Strk"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StrkCcy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OptAt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Mult"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnRt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Exch"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Issr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncIssrLen"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncIssr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Desc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncSecDescLen"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncSecDesc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Pool"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CSetMo"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CPPgm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CPRegT"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Dated"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="IntAcrl"/>
+                <content xsi:type="EXmlDictionary:XmlElement" name="AID" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="AltID"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="AltIDSrc"/>
+                </content>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Evnt" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="EventTyp"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Dt"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Px"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Txt"/>
+                </content>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="FinDetls">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="AgmtDesc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="AgmtID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="AgmtDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="AgmtCcy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="TrmTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StartDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EndDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="DlvryTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MgnRatio"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Undly" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Sym"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Sfx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Src"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Prod"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CFI"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SubTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MMY"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Mat"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnPmt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Issued"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoCollSecTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoTrm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoRt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Fctr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CrdRtg"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Rgstry"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Ctry"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StOrProvnc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Lcl"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Redeem"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StrkPx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StrkCcy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OptA"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Mult"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnRt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Exch"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Issr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncUndIssrLen"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncUndIssr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Desc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncUndSecDescLen"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncUndSecDesc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CPPgm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CPRegTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Ccy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Qty"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Px"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="DirtPx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EndPx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StartVal"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CurVal"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EndVal"/>
+                <content xsi:type="EXmlDictionary:XmlElement" name="UndAID" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="AltID"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="AltIDSrc"/>
+                </content>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Stip" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Val"/>
+                </content>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Stip" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Val"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="OrdQty">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Qty" stringValue="20000"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Cash"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Pct"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RndDir"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RndMod"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="PegInstr">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OfstVal"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MoveTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OfstTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="LmtTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RndDir"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Scope"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="DiscInstr">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="DsctnInst"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OfstValu"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MoveTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OfstTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="LimitTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RndDir"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Scope"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Comm">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Comm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CommTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Ccy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="FundRenewWaiv"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="SprdBnchmkCurve">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Spread"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Ccy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Name"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Point"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Px"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="PxTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SecID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SecIDSrc"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Yield">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Yld"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CalcDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RedDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RedPx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RedPxTyp"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="ContAmt" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ContAmtTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ContAmtValu"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ContAmtCurr"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Exec" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Qty"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SwapTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="PosEfct"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Cover"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RefID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Px"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="LastPx"/>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Leg">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Sym"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Sfx"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Src"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Prod"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="CFI"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="SecTyp"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="SecSubTyp"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="MMY"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Mat"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnPmt"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Issued"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoCollSecTyp"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoTrm"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoRt"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Fctr"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="CrdRtg"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Rgstry"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Ctry"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="StOrProvnc"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Lcl"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Redeem"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Strk"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="StrkCcy"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="OptA"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Cmult"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnRt"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Exch"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Issr"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="EncLegIssrLen"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="EncLegIssr"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Desc"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="EncLegSecDescLen"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="EncLegSecDesc"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="RatioQty"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Side"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Ccy"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Pool"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Dated"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="CSetMo"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="IntAcrl"/>
+                  <content xsi:type="EXmlDictionary:XmlElement" name="LegAID" repeating="true" repeatingIndex="1">
+                    <content xsi:type="EXmlDictionary:XmlAttribute" name="SecAltID"/>
+                    <content xsi:type="EXmlDictionary:XmlAttribute" name="SecAltIDSrc"/>
+                  </content>
+                </content>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Stip" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="StipTyp"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="StipVal"/>
+                </content>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Pty" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Src"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="R"/>
+                  <content xsi:type="EXmlDictionary:XmlElement" name="Sub" repeating="true" repeatingIndex="1">
+                    <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                    <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                  </content>
+                </content>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="MiscFees" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Amt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Curr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Basis"/>
+              </content>
+            </content>
+          </message>
+        </testCommand>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:CreateEventScenarioCommand" name="OrderCancelRequest">
+        <testCommand xsi:type="TestUnit:CreatePatternMatcherCommand" messageId="Inbound: OrderCancelRequest">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="OrderCancelRequest[].ID" value="" checkType="EXISTS"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" messageId="Res: ExecutionReport Cancel">
+          <message xsi:type="EXmlDictionary:XmlMessage" name="ExecutionReport" dictionaryName="FIXML 4.4">
+            <content xsi:type="EXmlDictionary:XmlElement" name="ExecutionReport" required="true">
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="OrdID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="OrdID2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ID2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecID2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ID" stringValue="%CONFIGURATIONS.UNIQUE_ID%"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="OrigID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LnkID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="RspID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="StatReqID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ReqID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TotNumRpts"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastRptReqed"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="OrignDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ListID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CrssID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="OrigCrssID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CrssTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecRefID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecTyp" required="true" stringValue="4"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Stat" required="true" stringValue="4"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="WorkingInd"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="RejRsn"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecRstmtRsn"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Acct"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="AcctIDSrc"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="AcctTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="DayBkngInst"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="BkngUnit"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PreallocMeth"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CshMgn"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ClrFeeInd"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Side" required="true" stringValue="1"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="QtyTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ" stringValue="2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PxTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Px" stringValue="101.5"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="StopPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PeggedPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="DsctnPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TgtStrategy"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TgtStrategyParameters"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ParticipationRt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TgtStrategyPerformance"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Ccy" stringValue="EUR"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ComplianceID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SolFlag"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TmInForce"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="EfctvTm"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExpireDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExpireTm"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecInst"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Cpcty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Rstctions"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CustCpcty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastQty" stringValue="20000"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="UndLastQty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastPx" stringValue="101.5"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="UndLastPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastParPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastSpotRt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastFwdPnts"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastMkt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SesID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SesSub"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TmBkt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastCpcty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LeavesQty" required="true" stringValue="0"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CumQty" required="true" stringValue="0"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="AvgPx" required="true" stringValue="101.5"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="DayOrdQty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="DayCumQty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="DayAvgPx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="GTBkngInst"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TrdDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TxnTm" stringValue="%CONFIGURATIONS.TIMESTAMP%"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="RptToExch"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="GrossTrdAmt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="NumDaysInt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="AcrdIntRt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="AcrdIntAmt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="IntAtMat"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="EndAcrdIntAmt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="StartCsh"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="EndCsh"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TrddFlatSwitch"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="BasisFeatureDt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="BasisFeaturePx"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Concession"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TotTakedown"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="NetMny"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlCurrAmt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlCcy"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlCurrFxRt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlCurrFxRtCalc"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="HandlInst"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="MinQty"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="MaxFloor"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PosEfct"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="MaxShow"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="BkngTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Txt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="EncTxtLen"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="EncTxt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlDt2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Qty2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastFwdPnts2"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="MLEGRptTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CxllationRights"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="MnyLaunderingStat"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="RegistID"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="Designation"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="TransBkdTm"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecValuationPoint"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecPxTyp"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="ExecPxAdjment"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PriInd"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="PxImprvmnt"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="LastLqdtyInd"/>
+              <content xsi:type="EXmlDictionary:XmlAttribute" name="CopyMsgInd"/>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Hdr">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SeqNum" stringValue="3"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SID" stringValue="%CONFIGURATIONS.TID%"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="TID" stringValue="%CONFIGURATIONS.SID%"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OBID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="D2ID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SSub"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SLoc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="TSub"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="TLoc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OBSub"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OBLoc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="D2Sub"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="D2Loc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="PosDup"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="PosRsnd"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Snt" stringValue="%CONFIGURATIONS.TIMESTAMP%"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OrigSnt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MsgEncd"/>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Hop" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="ID" required="true" stringValue="0"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Ref"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Snt"/>
+                </content>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Pty" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Src"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="R"/>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Sub" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                </content>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Contra" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CntraBrkr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CntraTrdr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CntraTrdQty"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CntraTrdTm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CntraLegRefID"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Instrmt" required="true">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Sym" stringValue="%CONFIGURATIONS.Sym%"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Sfx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Src"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Prod"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CFI"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SecTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SubTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MMY"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MatDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnPmt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Issued"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoCollSecTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoTrm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoRt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Fctr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CrdRtg"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Rgstry"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="IssuCtry"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StPrv"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Lcl"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Redeem"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Strk"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StrkCcy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OptAt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Mult"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnRt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Exch"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Issr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncIssrLen"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncIssr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Desc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncSecDescLen"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncSecDesc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Pool"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CSetMo"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CPPgm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CPRegT"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Dated"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="IntAcrl"/>
+                <content xsi:type="EXmlDictionary:XmlElement" name="AID" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="AltID"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="AltIDSrc"/>
+                </content>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Evnt" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="EventTyp"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Dt"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Px"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Txt"/>
+                </content>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="FinDetls">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="AgmtDesc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="AgmtID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="AgmtDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="AgmtCcy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="TrmTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StartDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EndDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="DlvryTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MgnRatio"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Undly" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Sym"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Sfx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Src"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Prod"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CFI"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SubTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MMY"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Mat"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnPmt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Issued"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoCollSecTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoTrm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoRt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Fctr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CrdRtg"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Rgstry"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Ctry"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StOrProvnc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Lcl"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Redeem"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StrkPx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StrkCcy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OptA"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Mult"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnRt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Exch"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Issr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncUndIssrLen"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncUndIssr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Desc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncUndSecDescLen"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EncUndSecDesc"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CPPgm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CPRegTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Ccy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Qty"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Px"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="DirtPx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EndPx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="StartVal"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CurVal"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="EndVal"/>
+                <content xsi:type="EXmlDictionary:XmlElement" name="UndAID" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="AltID"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="AltIDSrc"/>
+                </content>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Stip" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Val"/>
+                </content>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Stip" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Val"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="OrdQty">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Qty" stringValue="20000"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Cash"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Pct"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RndDir"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RndMod"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="PegInstr">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OfstVal"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MoveTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OfstTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="LmtTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RndDir"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Scope"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="DiscInstr">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="DsctnInst"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OfstValu"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="MoveTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="OfstTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="LimitTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RndDir"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Scope"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Comm">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Comm"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CommTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Ccy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="FundRenewWaiv"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="SprdBnchmkCurve">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Spread"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Ccy"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Name"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Point"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Px"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="PxTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SecID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SecIDSrc"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Yield">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Yld"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="CalcDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RedDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RedPx"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RedPxTyp"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="ContAmt" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ContAmtTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ContAmtValu"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="ContAmtCurr"/>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="Exec" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Qty"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SwapTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="PosEfct"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Cover"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="RefID"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Px"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlTyp"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="SettlDt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="LastPx"/>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Leg">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Sym"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Sfx"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Src"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Prod"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="CFI"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="SecTyp"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="SecSubTyp"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="MMY"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Mat"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnPmt"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Issued"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoCollSecTyp"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoTrm"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="RepoRt"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Fctr"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="CrdRtg"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Rgstry"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Ctry"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="StOrProvnc"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Lcl"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Redeem"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Strk"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="StrkCcy"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="OptA"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Cmult"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="CpnRt"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Exch"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Issr"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="EncLegIssrLen"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="EncLegIssr"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Desc"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="EncLegSecDescLen"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="EncLegSecDesc"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="RatioQty"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Side"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Ccy"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Pool"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Dated"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="CSetMo"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="IntAcrl"/>
+                  <content xsi:type="EXmlDictionary:XmlElement" name="LegAID" repeating="true" repeatingIndex="1">
+                    <content xsi:type="EXmlDictionary:XmlAttribute" name="SecAltID"/>
+                    <content xsi:type="EXmlDictionary:XmlAttribute" name="SecAltIDSrc"/>
+                  </content>
+                </content>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Stip" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="StipTyp"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="StipVal"/>
+                </content>
+                <content xsi:type="EXmlDictionary:XmlElement" name="Pty" repeating="true" repeatingIndex="1">
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="Src"/>
+                  <content xsi:type="EXmlDictionary:XmlAttribute" name="R"/>
+                  <content xsi:type="EXmlDictionary:XmlElement" name="Sub" repeating="true" repeatingIndex="1">
+                    <content xsi:type="EXmlDictionary:XmlAttribute" name="ID"/>
+                    <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                  </content>
+                </content>
+              </content>
+              <content xsi:type="EXmlDictionary:XmlElement" name="MiscFees" repeating="true" repeatingIndex="1">
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Amt"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Curr"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Typ"/>
+                <content xsi:type="EXmlDictionary:XmlAttribute" name="Basis"/>
+              </content>
+            </content>
+          </message>
+        </testCommand>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:CreateEventScenarioCommand" name="DefaultScenario">
+        <testCommand xsi:type="TestUnit:CreatePatternMatcherCommand" messageId=""/>
+      </testCommand>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

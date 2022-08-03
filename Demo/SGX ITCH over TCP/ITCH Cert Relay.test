@@ -1,0 +1,18 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CertificationCommands="com.esprow.nozomi.testunit.commands.certification" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test loggingLevel="DEBUG" certificationUnit="true" dictionary="SGX_Glimpse+ITCH" implementsBridgeMode="true">
+    <testCommand xsi:type="CertificationCommands:CreateMessageRelayCommand" targetSystemId="%CONFIGURATIONS.CERTIFICATION.SYSTEM%" targetHandlerId="%CONFIGURATIONS.CERTIFICATION.DESTINATION%" forwardSystemId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.SYSTEM%" forwardHandlerId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.DESTINATION%" messageTypeFilters="" filterShowOnly="true" validateMessages="true"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please login."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.SoupBinTCP_Header[].SoupBinTCP_Packet_Type" value="L" fieldType="Char"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" timeout="" searchFromLastMatch="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.SoupBinTCP_Header[].SoupBinTCP_Packet_Type" value="A" fieldType="Char"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" messageCount="3" searchFromLastMatch="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.Header[].Message_Type" value="A" fieldType="Char"/>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

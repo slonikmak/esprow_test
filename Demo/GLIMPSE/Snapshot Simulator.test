@@ -1,0 +1,285 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ExchangeDictionary="com.esprow.nozomi.dictionary.exchange" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test loggingLevel="DEBUG">
+    <testCommand xsi:type="TestUnit:CreateMessageReceiverCommand" messageHandlerId="GLIMPSE_Gateway_Sim" runMode="NONBLOCKING" targetSystemId="Cert" targetHandlerId="GLIMPSE Gateway" autoStart="true" ignoreAdminMessages="false" collectStatistics="false" sendSync="true" override="true" validateMessages="true" disableDictionaryMismatchCheck="false">
+      <testCommand xsi:type="TestUnit:CreateEventScenarioCommand" name="Snapshot">
+        <testCommand xsi:type="TestUnit:CreatePatternMatcherCommand" messageId="Login">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.SoupBinTCP_Header[].SoupBinTCP_Packet_Type" value="L" fieldType="Char"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" messageId="obk_directory">
+          <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Book_Directory" dictionaryName="SGX_Glimpse" msgType="R">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="R" length="1" padding="LEFT"/>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="51311844" length="4" offset="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="14484623" length="4" offset="5" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Symbol" required="true" stringValue="CVN16_P6000" length="32" offset="9" padding="RIGHT" paddingChar="32"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Long_Name" required="true" stringValue="" length="32" offset="41" padding="RIGHT" paddingChar="32"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Reserved_12" required="true" stringValue="&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;" length="12" offset="73" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Financial_Product" required="true" stringValue="1" length="1" offset="85" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Trading_Currency" required="true" stringValue="USD" length="3" offset="86" padding="RIGHT" paddingChar="32"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Number_of_Decimals_in_Price" required="true" stringValue="2" length="2" offset="89" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Number_of_Decimals_in_Nominal_Value" required="true" stringValue="0" length="2" offset="91" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Reserved_4" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;" length="4" offset="93" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Reserved_4" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;1&quot;" length="4" offset="97" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Reserved_4" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;" length="4" offset="101" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Nominal_Value" required="true" stringValue="0" length="8" offset="105" padding="LEFT"/>
+          </message>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" messageId="combination_obk_directory">
+          <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Combination_Order_Book_Directory" dictionaryName="SGX_Glimpse" msgType="M">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="M" length="1" padding="LEFT"/>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="51311844" length="4" offset="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="18221008" length="4" offset="5" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Symbol" required="true" stringValue="FEFH17-FEFN19" length="32" offset="9" padding="RIGHT" paddingChar="32"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Long_Name" required="true" stringValue="" length="32" offset="41" padding="RIGHT" paddingChar="32"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Reserved_12" required="true" stringValue="&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;" length="12" offset="73" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Financial_Product" required="true" stringValue="11" length="1" offset="85" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Trading_Currency" required="true" stringValue="USD" length="3" offset="86" padding="RIGHT" paddingChar="32"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Number_of_Decimals_in_Price" required="true" stringValue="2" length="2" offset="89" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Number_of_Decimals_in_Nominal_Value" required="true" stringValue="0" length="2" offset="91" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Reserved_4" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;" length="4" offset="93" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Reserved_4" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;1&quot;" length="4" offset="97" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Reserved_4" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;" length="4" offset="101" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Nominal_Value" required="true" stringValue="0" length="8" offset="105" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Leg_1_Symbol" required="true" stringValue="FEFH17" length="32" offset="113" padding="RIGHT" paddingChar="32"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Leg_1_Side" required="true" stringValue="B" length="1" offset="145" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Leg_1_Ratio" required="true" stringValue="1" length="4" offset="146" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Leg_2_Symbol" required="true" stringValue="FEFN19" length="32" offset="150" padding="RIGHT" paddingChar="32"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Leg_2_Side" required="true" stringValue="C" length="1" offset="182" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Leg_2_Ratio" required="true" stringValue="1" length="4" offset="183" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Leg_3_Symbol" required="true" stringValue="" length="32" offset="187" padding="RIGHT" paddingChar="32"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Leg_3_Side" required="true" stringValue="?" length="1" offset="219" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Leg_3_Ratio" required="true" stringValue="0" length="4" offset="220" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Leg_4_Symbol" required="true" stringValue="" length="32" offset="224" padding="RIGHT" paddingChar="32"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Leg_4_Side" required="true" stringValue="?" length="1" offset="256" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Leg_4_Ratio" required="true" stringValue="0" length="4" offset="257" padding="LEFT"/>
+          </message>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" messageId="tick_size">
+          <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Tick_Size" dictionaryName="SGX_Glimpse" msgType="L">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="L" length="1" padding="LEFT"/>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="51311844" length="4" offset="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="133077" length="4" offset="5" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Tick_Size" required="true" stringValue="1" length="8" offset="9" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Price_From" required="true" stringValue="1" length="4" offset="17" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Price_To" required="true" stringValue="99999900" length="4" offset="21" padding="LEFT"/>
+          </message>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" messageId="obk_state">
+          <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Book_State" dictionaryName="SGX_Glimpse" msgType="O">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="O" length="1" padding="LEFT"/>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="51311844" length="4" offset="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="657360" length="4" offset="5" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="State_Name" required="true" stringValue="CLOSE" length="20" offset="9" padding="RIGHT" paddingChar="32"/>
+          </message>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" messageId="add_order">
+          <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Add_Order" dictionaryName="SGX_Glimpse" msgType="A">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="A" length="1" padding="LEFT"/>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="39601227" length="4" offset="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_ID" required="true" stringValue="6676164789162560019" length="8" offset="5" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="71041228" length="4" offset="13" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Side" required="true" stringValue="B" length="1" offset="17" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_Position" required="true" stringValue="1" length="4" offset="18" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Quantity" required="true" stringValue="1" length="8" offset="22" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Price" required="true" stringValue="1000" length="4" offset="30" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Attributes" required="true" stringValue="0" length="2" offset="34" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Lot_Type" required="true" stringValue="2" length="1" offset="36" padding="LEFT"/>
+          </message>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" disabled="true" messageId="order_executed">
+          <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Executed" dictionaryName="SGX_Glimpse" msgType="E">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="E" length="1" padding="LEFT"/>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="274213789" length="4" offset="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_ID" required="true" stringValue="6676164789162538273" length="8" offset="5" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="49807567" length="4" offset="13" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Side" required="true" stringValue="B" length="1" offset="17" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Executed_Quantity" required="true" stringValue="50" length="8" offset="18" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Match_ID" required="true" stringValue="667616317854973955" length="8" offset="26" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Combo_Group_ID" required="true" stringValue="0" length="4" offset="34" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Reserved_7" required="true" stringValue="&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;" length="7" offset="38" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Reserved_7" required="true" stringValue="&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;" length="7" offset="45" padding="LEFT"/>
+          </message>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" disabled="true" messageId="order_executed_with_price">
+          <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Executed_with_Price" dictionaryName="SGX_Glimpse" msgType="C">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="C" length="1" padding="LEFT"/>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="16722315" length="4" offset="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_ID" required="true" stringValue="6676164789162577950" length="8" offset="5" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="1638607" length="4" offset="13" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Side" required="true" stringValue="B" length="1" offset="17" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Executed_Quantity" required="true" stringValue="10" length="8" offset="18" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Match_ID" required="true" stringValue="667616317854974101" length="8" offset="26" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Combo_Group_ID" required="true" stringValue="145" length="4" offset="34" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Reserved_7" required="true" stringValue="&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;" length="7" offset="38" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Reserved_7" required="true" stringValue="&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;" length="7" offset="45" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Trade_Price" required="true" stringValue="2500" length="4" offset="52" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Occurred_at_Cross" required="true" stringValue="N" length="1" offset="56" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Printable" required="true" stringValue="N" length="1" offset="57" padding="LEFT"/>
+          </message>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" disabled="true" messageId="trade_message_id">
+          <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Trade_Message_Identifier" dictionaryName="SGX_Glimpse" msgType="P">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="P" length="1" padding="LEFT"/>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="423415688" length="4" offset="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Match_ID" required="true" stringValue="667616317854973966" length="8" offset="5" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Combo_Group_ID" required="true" stringValue="6" length="4" offset="13" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Side" required="true" stringValue=" " length="1" offset="17" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Quantity" required="true" stringValue="20" length="8" offset="18" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="1310926" length="4" offset="26" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Trade_Price" required="true" stringValue="345" length="4" offset="30" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Reserved_7" required="true" stringValue="&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;" length="7" offset="34" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Reserved_7" required="true" stringValue="&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;,&quot;32&quot;" length="7" offset="41" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Printable" required="true" stringValue="N" length="1" offset="48" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Occurred_at_Cross" required="true" stringValue="N" length="1" offset="49" padding="LEFT"/>
+          </message>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" messageId="seconds">
+          <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Seconds" dictionaryName="SGX_Glimpse" msgType="T">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="T" length="1" padding="LEFT"/>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="1457265833" length="4" offset="1" padding="LEFT"/>
+          </message>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" disabled="true" messageId="equilibrium_price_update">
+          <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Equilibrium_Price_Update" dictionaryName="SGX_Glimpse" msgType="Z">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="Z" length="1" padding="LEFT"/>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="35404878" length="4" offset="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="1114214" length="4" offset="5" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Available_Bid_Quantity_at_Equilibrium_Price" required="true" stringValue="0" length="8" offset="9" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Available_Ask_Quantity_at_Equilibrium_Price" required="true" stringValue="0" length="8" offset="17" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Equilibrium_Price" required="true" stringValue="-2147483648" length="4" offset="25" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Best_Bid_Price" required="true" stringValue="-2147483648" length="4" offset="29" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Best_Ask_Price" required="true" stringValue="-2147483648" length="4" offset="33" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Best_Bid_Quantity" required="true" stringValue="0" length="8" offset="37" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Best_Ask_Quantity" required="true" stringValue="0" length="8" offset="45" padding="LEFT"/>
+          </message>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" disabled="true" messageId="order_delete">
+          <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Delete" dictionaryName="SGX_Glimpse" msgType="D">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="D" length="1" padding="LEFT"/>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="796732056" length="4" offset="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_ID" required="true" stringValue="6675001505860345407" length="8" offset="5" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="22151368" length="4" offset="13" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Side" required="true" stringValue="S" length="1" offset="17" padding="LEFT"/>
+          </message>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" messageId="system_event">
+          <message xsi:type="ExchangeDictionary:ExchangeMessage" name="System_Event" dictionaryName="SGX_Glimpse" msgType="S">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="S" length="1" padding="LEFT"/>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="51311844" length="4" offset="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Event_Code" required="true" stringValue="O" length="1" offset="5" padding="LEFT"/>
+          </message>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" messageId="end_of_snapshot">
+          <message xsi:type="ExchangeDictionary:ExchangeMessage" name="End_of_Snapshot" dictionaryName="SGX_Glimpse" msgType="G">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="G" length="1" padding="LEFT"/>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Sequence_Number" required="true" stringValue="4" length="20" offset="1" padding="RIGHT" paddingChar="32"/>
+          </message>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

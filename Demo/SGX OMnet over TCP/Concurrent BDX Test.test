@@ -1,0 +1,69 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CertificationCommands="com.esprow.nozomi.testunit.commands.certification" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test comment="This certification test checks the submission (MO1), amendment (MO3), deletion (MO4) of various types of orders, handling of related heartbeats (BO5, BD6), and querying of trade information (CQ10).&#xD;&#xA;&#xD;&#xA;When you start the test, the market's session state will be &quot;T Session Pre-Open&quot;." loggingLevel="DEBUG" certificationUnit="true" dictionary="SGX_OMnet" implementsBridgeMode="true">
+    <testCommand xsi:type="CertificationCommands:CreateMessageRelayCommand" targetSystemId="%CONFIGURATIONS.CERTIFICATION.SYSTEM%" targetHandlerId="%CONFIGURATIONS.CERTIFICATION.DESTINATION%" forwardSystemId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.SYSTEM%" forwardHandlerId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.DESTINATION%" filterShowOnly="true" validateMessages="true">
+      <messageTypeFilters>MO1</messageTypeFilters>
+      <messageTypeFilters>TRANSACTION_ANSWER</messageTypeFilters>
+      <messageTypeFilters>BO5</messageTypeFilters>
+      <messageTypeFilters>CONCURRENT_BDX_INIT</messageTypeFilters>
+      <messageTypeFilters>CONCURRENT_BDX_INIT_ANSWER</messageTypeFilters>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" removeMatched="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.facility_type_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_u" value="64" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.function_code_u" value="6145" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_2_u" value="0" fieldType="BigDecimal"/>
+      <messageType>CONCURRENT_BDX_INIT</messageType>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.txstat_i" value="0" fieldType="Integer"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="0" fieldType="Integer"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_2_q" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_3_q" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_4_q" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_5_q" value="0" fieldType="BigDecimal"/>
+      <messageType>CONCURRENT_BDX_INIT_ANSWER</messageType>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:ForLoopCommand" dataSetId="i" dataSetProviderType="RANGE">
+      <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+        <instructionMultiLanguage key="en" value="Please submit a Market Order using MO1."/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" removeMatched="true">
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.facility_type_u" value="710" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_u" value="0" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.function_code_u" value="257" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_2_u" value="0" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.transaction_type[].transaction_type_t.central_module_c" value="M" fieldType="Char"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.transaction_type[].transaction_type_t.server_type_c" value="O" fieldType="Char"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.transaction_type[].transaction_type_t.transaction_number_n" value="1" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.series[].series_t.country_c" value="83" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.series[].series_t.market_c" value="153" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.series[].series_t.instrument_group_c" value="50" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.series[].series_t.modifier_c" value="0" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.series[].series_t.commodity_n" value="202" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.series[].series_t.expiration_date_n" value="13934" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="vim_subitems[].vim_subitem[1].basic_order_t[].basic_order_t.order_type_c" value="2" fieldType="BigDecimal"/>
+        <messageType>MO1</messageType>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="0" fieldType="Integer"/>
+        <messageType>TRANSACTION_ANSWER</messageType>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="false" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="broadcast_hdr_t[].broadcast_hdr_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="broadcast_hdr_t[].broadcast_hdr_t.broadcast_type[].broadcast_type_t.server_type_c" value="O" fieldType="Char"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="broadcast_hdr_t[].broadcast_hdr_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="5" fieldType="BigDecimal"/>
+        <messageType>BO5</messageType>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+        <instructionMultiLanguage key="en" value="Did the MO1 transaction complete successfully, and did you receive a BO5 broadcast about the order?&#xD;&#xA;(Enter y for yes, n for no)"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfStatementCommand">
+        <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="&quot;%VARIABLES.Response%&quot;!=&quot;y&quot; &amp;&amp; &quot;%VARIABLES.Response%&quot;!=&quot;yes&quot;">
+          <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a BO5 broadcast about the trade."/>
+        </testCommand>
+      </testCommand>
+      <dataSetProvider xsi:type="TestUnit:RangeDataSetProvider" skipColumnName="SKIP_TEST" executingTagColumnName="EXEC_TAG" loopCounterStart="1" loopCounterEnd="10" loopStep="1"/>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

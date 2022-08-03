@@ -1,0 +1,53 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CertificationCommands="com.esprow.nozomi.testunit.commands.certification" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test certificationUnit="true" dictionary="Quick Fix 4.2">
+    <testCommand xsi:type="TestUnit:NewVar" variableId="One" value="1"/>
+    <testCommand xsi:type="TestUnit:CreateGlobalVariable" variableId="OneG" value="1G"/>
+    <testCommand xsi:type="TestUnit:ImportGlobalVariables" filePath="Global Variables.gbl" override="true"/>
+    <testCommand xsi:type="TestUnit:CreateGlobalVariable" variableId="GlobalVar1" value="15550"/>
+    <testCommand xsi:type="TestUnit:CreateGlobalVariable" variableId="GlobalVar2" value="1555"/>
+    <testCommand xsi:type="TestUnit:ExportGlobalVariables" filePath="Global Variables.gbl">
+      <variableId>GlobalVar1</variableId>
+      <variableId>GlobalVar2</variableId>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" text="This is one: %VARIABLES.One%"/>
+    <testCommand xsi:type="TestUnit:Assert" actualValue="%GLOBALS.OneG%" expectedValue="1G"/>
+    <testCommand xsi:type="TestUnit:GroupCommand"/>
+    <testCommand xsi:type="TestUnit:GroupCommand" name="Some group name"/>
+    <testCommand xsi:type="TestUnit:TimestampCommand" variableId="timestamp" outputFormat="yyyyMMdd-HH:mm:ss.SSS" timezone="Asia/Tokyo"/>
+    <testCommand xsi:type="TestUnit:CallSubTestCommand" subTestName="AllCommandsSubTest.test" shareGlobals="true"/>
+    <testCommand xsi:type="TestUnit:IncludeSubTestCommand" subTestName="AllCommandsSubTest.test"/>
+    <testCommand xsi:type="TestUnit:ExecuteCommand" command="whoami" timeout="10" port="22" connectionTimeout="5"/>
+    <testCommand xsi:type="TestUnit:SendQuery" targetSystemId="Cert" targetDbId="AllCommands" sqlQuery="DROP TABLE IF EXISTS Orders"/>
+    <testCommand xsi:type="TestUnit:SendQuery" targetSystemId="Cert" targetDbId="AllCommands" sqlQuery="CREATE TABLE Orders ( OrderID VARCHAR(64) PRIMARY KEY, Symbol VARCHAR(64), Side VARCHAR(1), OrderQty DOUBLE, Price DOUBLE )"/>
+    <testCommand xsi:type="TestUnit:SendQuery" targetSystemId="Cert" targetDbId="AllCommands" sqlQuery="INSERT INTO Orders VALUES ( 'O1', 'AAPL', '1', 50, 1000 ), ( 'O2', 'GOOG', '2', 100, 900 )"/>
+    <testCommand xsi:type="TestUnit:SendQuery" dataSetId="orderSym" targetSystemId="Cert" targetDbId="AllCommands" sqlQuery="SELECT OrderID FROM Orders WHERE Symbol='AAPL'" resultCount="1"/>
+    <testCommand xsi:type="TestUnit:ImportFromExcelCommand" variableId="Axa" filePath="Excel_Data_File.xlsx" sheet="Test_Data" cell="A3"/>
+    <testCommand xsi:type="TestUnit:ExportToExcelCommand" filePath="Excel_Data_File.xlsx" sheet="Test_Data" type="CELL" removeFile="false" cell="A8" fontBold="false" fontItalic="false" fontUnderline="false" createNewColumnIfNotExist="false">
+      <values value="GOOG" dataFormat="" columnId="" rowId=""/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:PauseCommand" length="3"/>
+    <testCommand xsi:type="TestUnit:NewVar" variableId="Foo" value="Bar"/>
+    <testCommand xsi:type="TestUnit:LogEntry" text="%VARIABLES.Foo%"/>
+    <testCommand xsi:type="TestUnit:NewVar" variableId="Foo" value="Bar2"/>
+    <testCommand xsi:type="TestUnit:LogEntry" text="%VARIABLES.Foo%"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="re" requireUserInput="true">
+      <instructionMultiLanguage key="en" value="Hello"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="mood" requireUserInput="true">
+      <instructionMultiLanguage key="en" value="How are you?"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:QuestionnaireCommand">
+      <questions type="NUMBER" variableName="age">
+        <instructionMultiLanguage key="en" value="How old are you?"/>
+      </questions>
+      <questions variableName="name">
+        <instructionMultiLanguage key="en" value="What's your name?"/>
+      </questions>
+      <questions type="BOOLEAN" variableName="agree">
+        <instructionMultiLanguage key="en" value="Do you agree to the T&amp;Cs?"/>
+      </questions>
+    </testCommand>
+    <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" variableId="theTime" message="What time is it?" level="URGENT" waitForResolution="true"/>
+  </test>
+</TestUnit:TestContainerType>

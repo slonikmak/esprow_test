@@ -1,0 +1,39 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CertificationCommands="com.esprow.nozomi.testunit.commands.certification" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test loggingLevel="DEBUG" certificationUnit="true" dictionary="SGX_OUCH" implementsBridgeMode="true">
+    <testCommand xsi:type="CertificationCommands:CreateMessageRelayCommand" targetSystemId="%CONFIGURATIONS.CERTIFICATION.SYSTEM%" targetHandlerId="%CONFIGURATIONS.CERTIFICATION.DESTINATION%" forwardSystemId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.SYSTEM%" forwardHandlerId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.DESTINATION%" messageTypeFilters="" filterShowOnly="true" validateMessages="true"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please enter an order with Order Book ID = 458982"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.Header[].Message_Type" value="O" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="Order_book_ID" value="458982" fieldType="BigDecimal"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" timeout="" searchFromLastMatch="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.Header[].Message_Type" value="A" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="Order_book_ID" value="458982" fieldType="BigDecimal"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" timeout="" searchFromLastMatch="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.Header[].Message_Type" value="E" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="Order_book_ID" value="458982" fieldType="BigDecimal"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please replace the order with a higher price."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.Header[].Message_Type" value="U" fieldType="Char"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" timeout="" searchFromLastMatch="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.Header[].Message_Type" value="U" fieldType="Char"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please cancel the order."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.Header[].Message_Type" value="X" fieldType="Char"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" timeout="" searchFromLastMatch="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.Header[].Message_Type" value="C" fieldType="Char"/>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

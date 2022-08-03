@@ -1,0 +1,1301 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CertificationCommands="com.esprow.nozomi.testunit.commands.certification" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test comment="This certification test checks the handling of Market Place queries and their answers, and the ability to receive and process related broadcasts. It also checks whether you are able to get information about session states.&#xD;&#xA;&#xD;&#xA;In particular, you should be able to handle following queries and answers:&#xD;&#xA;&#xD;&#xA;UQ12-UA12, CQ68-CA68, UQ15-UA15, ML1-MA1, ML58-MA58, ML59-MA59, ML2156-MA2156, UQ14-UA14&#xD;&#xA;&#xD;&#xA;and following broadcasts:&#xD;&#xA;&#xD;&#xA;BI41, BI1, BL51, BL58, BL59, BL2155, BI81.&#xD;&#xA;&#xD;&#xA;You also have to be able to submit orders using MO1." loggingLevel="DEBUG" certificationUnit="true" dictionary="SGX_OMnet" implementsBridgeMode="true">
+    <testCommand xsi:type="TestUnit:GroupCommand" name="Initialize_Variables">
+      <testCommand xsi:type="TestUnit:NewVar" variableId="Test_Code" value="MP-T001"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="Timezone" value="&lt;None>"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="UQ12_Support" value="0"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="UQ12_Reason" value="&lt;None>"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="CQ68_Support" value="0"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="CQ68_Reason" value="&lt;None>"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="UQ15_Support" value="0"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="UQ15_Reason" value="&lt;None>"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="ML1_Support" value="0"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="ML58_Support" value="0"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="ML59_Support" value="0"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="ML2156_Support" value="0"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="UQ14_Support" value="0"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="UQ14_Reason" value="&lt;None>"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="BI41_Support" value="0"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="BI41_Reason" value="&lt;None>"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="BI1_Support" value="0"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="BI1_Reason" value="&lt;None>"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="BL51_Support" value="0"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="BL58_Support" value="0"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="BL59_Support" value="0"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="BL2155_Support" value="0"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="BI81_Support" value="0"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="BI81_Reason" value="&lt;None>"/>
+    </testCommand>
+    <testCommand xsi:type="CertificationCommands:CreateMessageRelayCommand" targetSystemId="%CONFIGURATIONS.CERTIFICATION.SYSTEM%" targetHandlerId="%CONFIGURATIONS.CERTIFICATION.DESTINATION%" forwardSystemId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.SYSTEM%" forwardHandlerId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.DESTINATION%" filterShowOnly="true" validateMessages="true">
+      <messageTypeFilters>UQ12</messageTypeFilters>
+      <messageTypeFilters>CQ68</messageTypeFilters>
+      <messageTypeFilters>UQ15</messageTypeFilters>
+      <messageTypeFilters>ML1</messageTypeFilters>
+      <messageTypeFilters>ML2156</messageTypeFilters>
+      <messageTypeFilters>ML58</messageTypeFilters>
+      <messageTypeFilters>ML59</messageTypeFilters>
+      <messageTypeFilters>UQ14</messageTypeFilters>
+      <messageTypeFilters>UA12</messageTypeFilters>
+      <messageTypeFilters>CA68</messageTypeFilters>
+      <messageTypeFilters>UA15</messageTypeFilters>
+      <messageTypeFilters>MA1</messageTypeFilters>
+      <messageTypeFilters>MA58</messageTypeFilters>
+      <messageTypeFilters>MA59</messageTypeFilters>
+      <messageTypeFilters>MA2156</messageTypeFilters>
+      <messageTypeFilters>UA14</messageTypeFilters>
+      <messageTypeFilters>BI41</messageTypeFilters>
+      <messageTypeFilters>BI1</messageTypeFilters>
+      <messageTypeFilters>BL51</messageTypeFilters>
+      <messageTypeFilters>BL58</messageTypeFilters>
+      <messageTypeFilters>BL59</messageTypeFilters>
+      <messageTypeFilters>BL2155</messageTypeFilters>
+      <messageTypeFilters>BI81</messageTypeFilters>
+      <messageTypeFilters>MO1</messageTypeFilters>
+      <messageTypeFilters>TRANSACTION_ANSWER</messageTypeFilters>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Pre-conditions"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please wait until the conformance support team sets up the market for the test:&#xD;&#xA;- The current session state of the market of the series to be used will be &quot;Open/Open_M/Opn_MP&quot;&#xD;&#xA;- There will be a price limit set for the instrument series to be used&#xD;&#xA;- There will be a reference price available for the instrument series to be used&#xD;&#xA;- There will be a price limit being triggered for the instrument series to be used&#xD;&#xA;- The price limit cooling-off period will have ended for the instrument series to be used&#xD;&#xA;- There will be ETPR Price Limit available for the instrument series to be used&#xD;&#xA;- There will be market announcements submitted by SGX"/>
+    </testCommand>
+    <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: Pre-conditions&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Make sure that the current session state of the market of the series to be used is &quot;Open/Open_M/Opn_MP&quot;.&#xD;&#xA;- Make sure that there is price limit set for the instrument series to be used.&#xD;&#xA;- Make sure that there is reference price available for the instrument series to be used.&#xD;&#xA;- Make sure that there is price limit being triggered for the instrument series to be used.&#xD;&#xA;- Make sure that the price limit cooling-off period has ended for the instrument series to be used.&#xD;&#xA;- Make sure that ETPR Price Limit is available for the instrument series to be used.&#xD;&#xA;- Make sure that there are market announcements submitted by SGX.&#xD;&#xA;&#xD;&#xA;Note: Please resolve this ticket as soon you have completed the required actions, otherwise the counterparty will not be able to continue the test." message="%VARIABLES.Test_Code%-PC: Set Up Market for Test" level="URGENT" waitForResolution="true"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" timeout="-1">
+      <instructionMultiLanguage key="en" value="Please make sure that your system is connected to the SGX TITAN Environment, and that you have subscribed to BI41, BI1, BL51, BL58, BL59, BL2155 and BI81 broadcasts (or the ones from this list that are supported by your system)."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="You have been assigned the following instrument series and market for this test:&#xD;&#xA;&#xD;&#xA;   Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;   Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;   Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;   Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;&#xD;&#xA;Please use this data in all steps where a specific series, underlying, market, etc. is required."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GroupCommand" name="Questions">
+      <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Timezone" requireUserInput="true" timeout="-1">
+        <instructionMultiLanguage key="en" value="Please enter your current timezone (or the city and country in which you are currently in)."/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfStatementCommand">
+        <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%CONFIGURATIONS.API_Order% || %CONFIGURATIONS.API_Market_Making% || %CONFIGURATIONS.API_Drop_Copy%">
+          <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+            <instructionMultiLanguage key="en" value="Does your system support UQ12 queries to retrieve the current business date?&#xD;&#xA;(Enter y for yes, n for no)"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:NewVar" variableId="UQ12_Support" value="1"/>
+            </testCommand>
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock">
+              <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="UQ12_Reason" requireUserInput="true">
+                <instructionMultiLanguage key="en" value="Please explain why your system doesn't support the mandatory message types UQ12?"/>
+              </testCommand>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+            <instructionMultiLanguage key="en" value="Does your system support CQ68 queries to retrieve the current and next clearing date of an instrument type?&#xD;&#xA;(Enter y for yes, n for no)"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:NewVar" variableId="CQ68_Support" value="1"/>
+            </testCommand>
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock">
+              <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="CQ68_Reason" requireUserInput="true">
+                <instructionMultiLanguage key="en" value="Please explain why your system doesn't support the mandatory message types CQ68?"/>
+              </testCommand>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+            <instructionMultiLanguage key="en" value="Does your system support UQ15 queries to retrieve the current instrument status of all instrument series?&#xD;&#xA;(Enter y for yes, n for no)"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:NewVar" variableId="UQ15_Support" value="1"/>
+            </testCommand>
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock">
+              <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="UQ15_Reason" requireUserInput="true">
+                <instructionMultiLanguage key="en" value="Please explain why your system doesn't support the mandatory message types UQ15?"/>
+              </testCommand>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+            <instructionMultiLanguage key="en" value="Does your system support BI41 broadcasts for information about the change in trading session state and instrument session state?&#xD;&#xA;(Enter y for yes, n for no)"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:NewVar" variableId="BI41_Support" value="1"/>
+            </testCommand>
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock">
+              <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="BI41_Reason" requireUserInput="true">
+                <instructionMultiLanguage key="en" value="Please explain why your system doesn't support the mandatory message types BI41?"/>
+              </testCommand>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+            <instructionMultiLanguage key="en" value="Does your system support BI1 broadcasts for information about the suspension and resumption of the trading of a commodity?&#xD;&#xA;(Enter y for yes, n for no)"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:NewVar" variableId="BI1_Support" value="1"/>
+            </testCommand>
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock">
+              <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="BI1_Reason" requireUserInput="true">
+                <instructionMultiLanguage key="en" value="Please explain why your system doesn't support the mandatory message types BI1?"/>
+              </testCommand>
+            </testCommand>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfThenElseStatementBlock">
+          <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+            <instructionMultiLanguage key="en" value="Does your system support UQ12 queries to retrieve the current business date?&#xD;&#xA;(Enter y for yes, n for no)"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:NewVar" variableId="UQ12_Support" value="1"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+            <instructionMultiLanguage key="en" value="Does your system support CQ68 queries to retrieve the current and next clearing date of an instrument type?&#xD;&#xA;(Enter y for yes, n for no)"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:NewVar" variableId="CQ68_Support" value="1"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+            <instructionMultiLanguage key="en" value="Does your system support UQ15 queries to retrieve the current instrument status of all instrument series?&#xD;&#xA;(Enter y for yes, n for no)"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:NewVar" variableId="UQ15_Support" value="1"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+            <instructionMultiLanguage key="en" value="Does your system support BI41 broadcasts for information about the change in trading session state and instrument session state?&#xD;&#xA;(Enter y for yes, n for no)"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:NewVar" variableId="BI41_Support" value="1"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+            <instructionMultiLanguage key="en" value="Does your system support BI1 broadcasts for information about the suspension and resumption of the trading of a commodity?&#xD;&#xA;(Enter y for yes, n for no)"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:NewVar" variableId="BI1_Support" value="1"/>
+            </testCommand>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+        <instructionMultiLanguage key="en" value="Does your system support ML1 queries to retrieve the price limit and reference price of all instrument series?&#xD;&#xA;(Enter y for yes, n for no)"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfStatementCommand">
+        <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+          <testCommand xsi:type="TestUnit:NewVar" variableId="ML1_Support" value="1"/>
+        </testCommand>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+        <instructionMultiLanguage key="en" value="Does your system support ML58 queries to retrieve information on triggered price limit?&#xD;&#xA;(Enter y for yes, n for no)"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfStatementCommand">
+        <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+          <testCommand xsi:type="TestUnit:NewVar" variableId="ML58_Support" value="1"/>
+        </testCommand>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+        <instructionMultiLanguage key="en" value="Does your system support ML59 queries to retrieve information sent when the price limit cooling-off period has ended?&#xD;&#xA;(Enter y for yes, n for no)"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfStatementCommand">
+        <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+          <testCommand xsi:type="TestUnit:NewVar" variableId="ML59_Support" value="1"/>
+        </testCommand>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+        <instructionMultiLanguage key="en" value="Does your system support ML2156 queries to retrieve ETPR price limit?&#xD;&#xA;(Enter y for yes, n for no)"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfStatementCommand">
+        <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+          <testCommand xsi:type="TestUnit:NewVar" variableId="ML2156_Support" value="1"/>
+        </testCommand>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+        <instructionMultiLanguage key="en" value="Does your system support UQ14 queries to retrieve the list of market announcements sent out during the day?&#xD;&#xA;(Enter y for yes, n for no)"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfStatementCommand">
+        <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+          <testCommand xsi:type="TestUnit:NewVar" variableId="UQ14_Support" value="1"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfThenElseStatementBlock">
+          <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="UQ14_Reason" requireUserInput="true">
+            <instructionMultiLanguage key="en" value="Please explain why your system doesn't support the mandatory message types UQ14?"/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+        <instructionMultiLanguage key="en" value="Does your system support BL51 broadcasts for information about updated price limit and reference price for an instrument series?&#xD;&#xA;(Enter y for yes, n for no)"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfStatementCommand">
+        <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+          <testCommand xsi:type="TestUnit:NewVar" variableId="BL51_Support" value="1"/>
+        </testCommand>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+        <instructionMultiLanguage key="en" value="Does your system support BL58 broadcasts for information about the triggering of the price limit?&#xD;&#xA;(Enter y for yes, n for no)"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfStatementCommand">
+        <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+          <testCommand xsi:type="TestUnit:NewVar" variableId="BL58_Support" value="1"/>
+        </testCommand>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+        <instructionMultiLanguage key="en" value="Does your system support BL59 broadcasts for information about the end of the price limit cooling-off period?&#xD;&#xA;(Enter y for yes, n for no)"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfStatementCommand">
+        <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+          <testCommand xsi:type="TestUnit:NewVar" variableId="BL59_Support" value="1"/>
+        </testCommand>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+        <instructionMultiLanguage key="en" value="Does your system support BL2155 broadcasts for information about updated ETPR price limit for an instrument series?&#xD;&#xA;(Enter y for yes, n for no)"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfStatementCommand">
+        <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+          <testCommand xsi:type="TestUnit:NewVar" variableId="BL2155_Support" value="1"/>
+        </testCommand>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+        <instructionMultiLanguage key="en" value="Does your system support BI81 broadcast with information of the market announcement from the SGX Titan Environment?&#xD;&#xA;(Enter y for yes, n for no)"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfStatementCommand">
+        <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+          <testCommand xsi:type="TestUnit:NewVar" variableId="BI81_Support" value="1"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfThenElseStatementBlock">
+          <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="BI81_Reason" requireUserInput="true">
+            <instructionMultiLanguage key="en" value="Please explain why your system doesn't support the mandatory message types BI81?"/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 1"/>
+    <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="%CONFIGURATIONS.API_Order% || %CONFIGURATIONS.API_Market_Making% || %CONFIGURATIONS.API_Drop_Copy%">
+        <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="UQ12_Support" value="1"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true">
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Does your system support UQ12 queries to retrieve the current business date?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="UQ12_Support" value="1"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true">
+            <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="UQ12_Support" value="0"/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%VARIABLES.UQ12_Support%">
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please submit a UQ12 query to retrieve the current business date in the SGX Titan Environment."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_business_date_t[].query_business_date_t.transaction_type[].transaction_type_t.central_module_c" value="U" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_business_date_t[].query_business_date_t.transaction_type[].transaction_type_t.server_type_c" value="Q" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_business_date_t[].query_business_date_t.transaction_type[].transaction_type_t.transaction_number_n" value="12" fieldType="BigDecimal"/>
+          <messageType>UQ12</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_business_date_t[].answer_business_date_t.transaction_type[].transaction_type_t.central_module_c" value="U" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_business_date_t[].answer_business_date_t.transaction_type[].transaction_type_t.server_type_c" value="A" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_business_date_t[].answer_business_date_t.transaction_type[].transaction_type_t.transaction_number_n" value="12" fieldType="BigDecimal"/>
+          <messageType>UA12</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+          <instructionMultiLanguage key="en" value="Did you receive a UA12 answer with the current business date in the SGX Titan Environment?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a UA12 answer with the current business date in the SGX Titan Environment."/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 2"/>
+    <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="%CONFIGURATIONS.API_Order% || %CONFIGURATIONS.API_Market_Making% || %CONFIGURATIONS.API_Drop_Copy%">
+        <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="CQ68_Support" value="1"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true">
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Does your system support CQ68 queries to retrieve the current and next clearing date of an instrument type?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="CQ68_Support" value="1"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true">
+            <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="CQ68_Support" value="0"/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%VARIABLES.CQ68_Support%">
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please submit a CQ68 query to retrieve the current and next clearing date of the assigned instrument type."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_clearing_date_t[].query_clearing_date_t.transaction_type[].transaction_type_t.central_module_c" value="C" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_clearing_date_t[].query_clearing_date_t.transaction_type[].transaction_type_t.server_type_c" value="Q" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_clearing_date_t[].query_clearing_date_t.transaction_type[].transaction_type_t.transaction_number_n" value="68" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_clearing_date_t[].query_clearing_date_t.search_series[].search_series_t.country_c" value="%CONFIGURATIONS.Series_Country%" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_clearing_date_t[].query_clearing_date_t.search_series[].search_series_t.market_c" value="%CONFIGURATIONS.Series_Market%" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_clearing_date_t[].query_clearing_date_t.search_series[].search_series_t.instrument_group_c" value="%CONFIGURATIONS.Series_Instrument_Group%" fieldType="BigDecimal"/>
+          <messageType>CQ68</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_clearing_date_t[].answer_clearing_date_t.transaction_type[].transaction_type_t.central_module_c" value="C" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_clearing_date_t[].answer_clearing_date_t.transaction_type[].transaction_type_t.server_type_c" value="A" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_clearing_date_t[].answer_clearing_date_t.transaction_type[].transaction_type_t.transaction_number_n" value="68" fieldType="BigDecimal"/>
+          <messageType>CA68</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+          <instructionMultiLanguage key="en" value="Did you receive a CA68 answer with the current and next clearing date of the assigned instrument type?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a CA68 answer with the current and next clearing date of the assigned instrument type."/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 3"/>
+    <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="%CONFIGURATIONS.API_Order% || %CONFIGURATIONS.API_Market_Making% || %CONFIGURATIONS.API_Drop_Copy%">
+        <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="UQ15_Support" value="1"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true">
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Does your system support UQ15 queries to retrieve the current instrument status of all instrument series?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="UQ15_Support" value="1"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true">
+            <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="UQ15_Support" value="0"/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%VARIABLES.UQ15_Support%">
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please submit a UQ15 query to retrieve the current instrument status of all instrument series in the SGX Titan Environment."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_instrument_status_t[].query_instrument_status_t.transaction_type[].transaction_type_t.central_module_c" value="U" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_instrument_status_t[].query_instrument_status_t.transaction_type[].transaction_type_t.server_type_c" value="Q" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_instrument_status_t[].query_instrument_status_t.transaction_type[].transaction_type_t.transaction_number_n" value="15" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_instrument_status_t[].query_instrument_status_t.segment_number_n" value="1" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_instrument_status_t[].query_instrument_status_t.series[].series_t.market_c" value="0" fieldType="BigDecimal"/>
+          <messageType>UQ15</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageId="UA15" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_instrument_status_t[].answer_instrument_status_t.transaction_type[].transaction_type_t.central_module_c" value="U" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_instrument_status_t[].answer_instrument_status_t.transaction_type[].transaction_type_t.server_type_c" value="A" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_instrument_status_t[].answer_instrument_status_t.transaction_type[].transaction_type_t.transaction_number_n" value="15" fieldType="BigDecimal"/>
+          <messageType>UA15</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:NewVar" variableId="Segment_No" value="%MESSAGES.UA15.answer_instrument_status_t[].answer_instrument_status_t.segment_number_n%"/>
+        <testCommand xsi:type="TestUnit:WhileLoopCommand" logicStatement="%VARIABLES.Segment_No%!=0" maxIterationSafety="">
+          <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" removeMatched="true">
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_instrument_status_t[].query_instrument_status_t.transaction_type[].transaction_type_t.central_module_c" value="U" fieldType="Char"/>
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_instrument_status_t[].query_instrument_status_t.transaction_type[].transaction_type_t.server_type_c" value="Q" fieldType="Char"/>
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_instrument_status_t[].query_instrument_status_t.transaction_type[].transaction_type_t.transaction_number_n" value="15" fieldType="BigDecimal"/>
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_instrument_status_t[].query_instrument_status_t.segment_number_n" value="%VARIABLES.Segment_No%+1" fieldType="BigDecimal"/>
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_instrument_status_t[].query_instrument_status_t.series[].series_t.market_c" value="0" fieldType="BigDecimal"/>
+            <messageType>UQ15</messageType>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:WaitCommand" messageId="UA15" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_instrument_status_t[].answer_instrument_status_t.transaction_type[].transaction_type_t.central_module_c" value="U" fieldType="Char"/>
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_instrument_status_t[].answer_instrument_status_t.transaction_type[].transaction_type_t.server_type_c" value="A" fieldType="Char"/>
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_instrument_status_t[].answer_instrument_status_t.transaction_type[].transaction_type_t.transaction_number_n" value="15" fieldType="BigDecimal"/>
+            <messageType>UA15</messageType>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Segment_No" value="%MESSAGES.UA15.answer_instrument_status_t[].answer_instrument_status_t.segment_number_n%"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+          <instructionMultiLanguage key="en" value="Did you receive UA15 answer(s) with the current instrument status of all instrument series in the SGX Titan Environment?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received UA15 answer(s) with the current instrument status of all instrument series in the SGX Titan Environment."/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 4"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="ML1_Support" requireUserInput="true" timeout="-1">
+      <instructionMultiLanguage key="en" value="Does your system support ML1 queries to retrieve the price limit and reference price of all instrument series?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%VARIABLES.ML1_Support%">
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please submit an ML1 query to retrieve the price limit and reference price of all instrument series."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_limit_trans_t[].query_limit_trans_t.transaction_type[].transaction_type_t.central_module_c" value="M" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_limit_trans_t[].query_limit_trans_t.transaction_type[].transaction_type_t.server_type_c" value="L" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_limit_trans_t[].query_limit_trans_t.transaction_type[].transaction_type_t.transaction_number_n" value="1" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_limit_trans_t[].query_limit_trans_t.series[].series_t.market_c" value="0" fieldType="BigDecimal"/>
+          <messageType>ML1</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_limit_t[].answer_limit_t.transaction_type[].transaction_type_t.central_module_c" value="M" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_limit_t[].answer_limit_t.transaction_type[].transaction_type_t.server_type_c" value="A" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_limit_t[].answer_limit_t.transaction_type[].transaction_type_t.transaction_number_n" value="1" fieldType="BigDecimal"/>
+          <messageType>MA1</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+          <instructionMultiLanguage key="en" value="Did you receive an MA1 answer with the price limit and reference price of all instrument series?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received an MA1 answer with the price limit and reference price of all instrument series."/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 5"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="ML58_Support" requireUserInput="true" timeout="-1">
+      <instructionMultiLanguage key="en" value="Does your system support ML58 queries to retrieve information on triggered price limit?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%VARIABLES.ML58_Support%">
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please submit an ML58 query to retrieve information of the price limit that has been triggered."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_price_limit_trigger_t[].query_price_limit_trigger_t.transaction_type[].transaction_type_t.central_module_c" value="M" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_price_limit_trigger_t[].query_price_limit_trigger_t.transaction_type[].transaction_type_t.server_type_c" value="L" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_price_limit_trigger_t[].query_price_limit_trigger_t.transaction_type[].transaction_type_t.transaction_number_n" value="58" fieldType="BigDecimal"/>
+          <messageType>ML58</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_price_limit_trigger_t[].answer_price_limit_trigger_t.transaction_type[].transaction_type_t.central_module_c" value="M" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_price_limit_trigger_t[].answer_price_limit_trigger_t.transaction_type[].transaction_type_t.server_type_c" value="A" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_price_limit_trigger_t[].answer_price_limit_trigger_t.transaction_type[].transaction_type_t.transaction_number_n" value="58" fieldType="BigDecimal"/>
+          <messageType>MA58</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+          <instructionMultiLanguage key="en" value="Did you receive an MA58 answer with information of the price limit that has been triggered?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received an MA58 answer with information of the price limit that has been triggered."/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 6"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="ML59_Support" requireUserInput="true" timeout="-1">
+      <instructionMultiLanguage key="en" value="Does your system support ML59 queries to retrieve information sent when the price limit cooling-off period has ended?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%VARIABLES.ML59_Support%">
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please submit an ML59 query to retrieve information sent when price limit cooling-off period has ended."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_cool_off_period_ended_t[].query_cool_off_period_ended_t.transaction_type[].transaction_type_t.central_module_c" value="M" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_cool_off_period_ended_t[].query_cool_off_period_ended_t.transaction_type[].transaction_type_t.server_type_c" value="L" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_cool_off_period_ended_t[].query_cool_off_period_ended_t.transaction_type[].transaction_type_t.transaction_number_n" value="59" fieldType="BigDecimal"/>
+          <messageType>ML59</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_cool_off_period_ended_t[].answer_cool_off_period_ended_t.transaction_type[].transaction_type_t.central_module_c" value="M" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_cool_off_period_ended_t[].answer_cool_off_period_ended_t.transaction_type[].transaction_type_t.server_type_c" value="A" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_cool_off_period_ended_t[].answer_cool_off_period_ended_t.transaction_type[].transaction_type_t.transaction_number_n" value="59" fieldType="BigDecimal"/>
+          <messageType>MA59</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+          <instructionMultiLanguage key="en" value="Did you receive an MA59 answer with information that was sent when price limit cooling-off period had ended?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received an MA59 answer with information that was sent when price limit cooling-off period had ended."/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 7"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="ML2156_Support" requireUserInput="true" timeout="-1">
+      <instructionMultiLanguage key="en" value="Does your system support ML2156 queries to retrieve ETPR price limit?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%VARIABLES.ML2156_Support%">
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please submit an ML2156 query to retrieve ETPR price limit information."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_delta_limit_trans_t[].query_delta_limit_trans_t.transaction_type[].transaction_type_t.central_module_c" value="M" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_delta_limit_trans_t[].query_delta_limit_trans_t.transaction_type[].transaction_type_t.server_type_c" value="L" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_delta_limit_trans_t[].query_delta_limit_trans_t.transaction_type[].transaction_type_t.transaction_number_n" value="2156" fieldType="BigDecimal"/>
+          <messageType>ML2156</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_etpr_delta_limit_t[].answer_etpr_delta_limit_t.transaction_type[].transaction_type_t.central_module_c" value="M" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_etpr_delta_limit_t[].answer_etpr_delta_limit_t.transaction_type[].transaction_type_t.server_type_c" value="A" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_etpr_delta_limit_t[].answer_etpr_delta_limit_t.transaction_type[].transaction_type_t.transaction_number_n" value="2156" fieldType="BigDecimal"/>
+          <messageType>MA2156</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+          <instructionMultiLanguage key="en" value="Did you receive an MA2156 answer with ETPR price limit information.&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received an MA2156 answer with ETPR price limit information."/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 8"/>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%VARIABLES.UQ14_Support%">
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please submit a UQ14 query to retrieve the list of market announcements sent out during the day."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_bi81_broadcasts_sent_t[].query_bi81_broadcasts_sent_t.transaction_type[].transaction_type_t.central_module_c" value="U" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_bi81_broadcasts_sent_t[].query_bi81_broadcasts_sent_t.transaction_type[].transaction_type_t.server_type_c" value="Q" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_bi81_broadcasts_sent_t[].query_bi81_broadcasts_sent_t.transaction_type[].transaction_type_t.transaction_number_n" value="14" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_bi81_broadcasts_sent_t[].query_bi81_broadcasts_sent_t.segment_number_n" value="1" fieldType="BigDecimal"/>
+          <messageType>UQ14</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageId="UA14" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_segment_hdr_t[].answer_segment_hdr_t.transaction_type[].transaction_type_t.central_module_c" value="U" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_segment_hdr_t[].answer_segment_hdr_t.transaction_type[].transaction_type_t.server_type_c" value="A" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_segment_hdr_t[].answer_segment_hdr_t.transaction_type[].transaction_type_t.transaction_number_n" value="14" fieldType="BigDecimal"/>
+          <messageType>UA14</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:NewVar" variableId="Segment_No" value="%MESSAGES.UA14.answer_segment_hdr_t[].answer_segment_hdr_t.segment_number_n%"/>
+        <testCommand xsi:type="TestUnit:WhileLoopCommand" logicStatement="%VARIABLES.Segment_No%!=0" maxIterationSafety="">
+          <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" removeMatched="true">
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_bi81_broadcasts_sent_t[].query_bi81_broadcasts_sent_t.transaction_type[].transaction_type_t.central_module_c" value="U" fieldType="Char"/>
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_bi81_broadcasts_sent_t[].query_bi81_broadcasts_sent_t.transaction_type[].transaction_type_t.server_type_c" value="Q" fieldType="Char"/>
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_bi81_broadcasts_sent_t[].query_bi81_broadcasts_sent_t.transaction_type[].transaction_type_t.transaction_number_n" value="14" fieldType="BigDecimal"/>
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_bi81_broadcasts_sent_t[].query_bi81_broadcasts_sent_t.segment_number_n" value="%VARIABLES.Segment_No%+1" fieldType="BigDecimal"/>
+            <messageType>UQ14</messageType>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:WaitCommand" messageId="UA14" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_segment_hdr_t[].answer_segment_hdr_t.transaction_type[].transaction_type_t.central_module_c" value="U" fieldType="Char"/>
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_segment_hdr_t[].answer_segment_hdr_t.transaction_type[].transaction_type_t.server_type_c" value="A" fieldType="Char"/>
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_segment_hdr_t[].answer_segment_hdr_t.transaction_type[].transaction_type_t.transaction_number_n" value="14" fieldType="BigDecimal"/>
+            <messageType>UA14</messageType>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Segment_No" value="%MESSAGES.UA14.answer_segment_hdr_t[].answer_segment_hdr_t.segment_number_n%"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+          <instructionMultiLanguage key="en" value="Did you receive UA14 answer(s) with the list of market announcements sent out during the day?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received UA14 answer(s) with the list of market announcements sent out during the day."/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Steps 9-11"/>
+    <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="%CONFIGURATIONS.API_Order% || %CONFIGURATIONS.API_Market_Making% || %CONFIGURATIONS.API_Drop_Copy%">
+        <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="BI41_Support" value="1"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true">
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Does your system support BI41 broadcasts for information about the change in trading session state and instrument session state?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="BI41_Support" value="1"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true">
+            <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="BI41_Support" value="0"/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%VARIABLES.BI41_Support%">
+        <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 9"/>
+        <testCommand xsi:type="TestUnit:ForLoopCommand" dataSetId="i" dataSetProviderType="RANGE">
+          <testCommand xsi:type="TestUnit:NewVar" variableId="States_Seen" value="None"/>
+          <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+          <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" timeout="-1">
+            <instructionMultiLanguage key="en" value="Please wait until the conformance support team changes the trading session state, and then confirm that you receive a BI41 broadcast with information about the change."/>
+          </testCommand>
+          <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 9&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Transit the trading session state to one of the following states:&#xD;&#xA;     Pre_Open 76&#xD;&#xA;     Non_Cxl 77&#xD;&#xA;     Open 4&#xD;&#xA;     Open_M 46&#xD;&#xA;     Open_MP 78&#xD;&#xA;     Pre_Close 80&#xD;&#xA;     Surv_Int 6&#xD;&#xA;     Series_Gen 81&#xD;&#xA;     Transition 82&#xD;&#xA;     Remove_Day_Orders 18&#xD;&#xA;&#xD;&#xA;So far, you have used the following states: %VARIABLES.States_Seen% " message="%VARIABLES.Test_Code%-9: Transit Trading Session State" level="URGENT" waitForResolution="false"/>
+          <testCommand xsi:type="TestUnit:WaitCommand" messageId="BI41" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="41" fieldType="BigDecimal"/>
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.series[].series_t.country_c" value="%CONFIGURATIONS.Series_Country%" fieldType="BigDecimal"/>
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.series[].series_t.market_c" value="%CONFIGURATIONS.Series_Market%" fieldType="BigDecimal"/>
+            <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.seconds_to_state_change_n" value="0" fieldType="BigDecimal"/>
+            <messageType>BI41</messageType>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+            <instructionMultiLanguage key="en" value="Did you receive a BI41 broadcast about the change in trading session state?&#xD;&#xA;(Enter y for yes, n for no)"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a BI41 broadcast about the change in trading session state."/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+            <instructionMultiLanguage key="en" value="Please enter the state number for the currently active state, i.e. the state number included in the BI41 broadcast (for example, if the new state is &quot;PRE_OPEN&quot;, you should enter 76)."/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="trim(&quot;%VARIABLES.Response%&quot;)!=&quot;%MESSAGES.BI41.instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.state_number_n%&quot;">
+              <testCommand xsi:type="TestUnit:FailCommand" text="You have entered a wrong state number (%VARIABLES.Response% instead of %MESSAGES.BI41.instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.state_number_n%)."/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="State_Change_Time" requireUserInput="true" timeout="-1">
+            <instructionMultiLanguage key="en" value="Please enter the time when you received the BI41 broadcast about the change in trading session state (for state number %MESSAGES.BI41.instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.state_number_n%).&#xD;&#xA;&#xD;&#xA;Please use the HH:MM:SS format (H: hours, M: minutes, S: seconds). You can either indicate if it's AM or PM, or use a 24-hour format."/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="&quot;%VARIABLES.States_Seen%&quot;==&quot;None&quot;">
+              <testCommand xsi:type="TestUnit:NewVar" variableId="States_Seen" value="%MESSAGES.BI41.instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.state_number_n%"/>
+            </testCommand>
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock">
+              <testCommand xsi:type="TestUnit:NewVar" variableId="States_Seen" value="%VARIABLES.States_Seen%+&quot;, &quot;+%MESSAGES.BI41.instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.state_number_n%"/>
+            </testCommand>
+          </testCommand>
+          <dataSetProvider xsi:type="TestUnit:RangeDataSetProvider" skipColumnName="SKIP_TEST" executingTagColumnName="EXEC_TAG" loopCounterStart="1" loopCounterEnd="10" loopStep="1"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 9 (Pre-Open)"/>
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" disabled="true" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team changes the trading session state to &quot;Pre-Open&quot;, and then confirm that you receive a BI41 broadcast with information about the change."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 9&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Transit the trading session state to &quot;Pre-Open&quot;." disabled="true" message="%VARIABLES.Test_Code%-9: Transit Trading Session State to &quot;Pre-Open&quot;" level="URGENT" waitForResolution="false"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" disabled="true" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="41" fieldType="BigDecimal"/>
+          <messageType>BI41</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BI41 broadcast about the change in trading session state for the &quot;Pre-Open&quot; state?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" disabled="true" text="You should have received a BI41 broadcast about the change in trading session state for the &quot;Pre-Open&quot; state."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="State_Change_Time" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please enter the time when you received the BI41 broadcast about the change in trading session state for the &quot;Pre-Open&quot; state.&#xD;&#xA;&#xD;&#xA;Please use the HH:MM:SS format (H: hours, M: minutes, S: seconds). You can either indicate if it's AM or PM, or use a 24-hour format."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 9 (Non_Cxl)"/>
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" disabled="true" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team changes the trading session state to &quot;Non_Cxl&quot;, and then confirm that you receive a BI41 broadcast with information about the change."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 9&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Transit the trading session state to &quot;Non_Cxl&quot;." disabled="true" message="%VARIABLES.Test_Code%-9: Transit Trading Session State to &quot;Non_Cxl&quot;" level="URGENT" waitForResolution="false"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" disabled="true" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="41" fieldType="BigDecimal"/>
+          <messageType>BI41</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BI41 broadcast about the change in trading session state for the &quot;Non_Cxl&quot; state?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" disabled="true" text="You should have received a BI41 broadcast about the change in trading session state for the &quot;Non_Cxl&quot; state."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="State_Change_Time" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please enter the time when you received the BI41 broadcast about the change in trading session state for the &quot;Non_Cxl&quot; state.&#xD;&#xA;&#xD;&#xA;Please use the HH:MM:SS format (H: hours, M: minutes, S: seconds). You can either indicate if it's AM or PM, or use a 24-hour format."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 9 (Open)"/>
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" disabled="true" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team changes the trading session state to &quot;Open&quot;, and then confirm that you receive a BI41 broadcast with information about the change."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 9&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Transit the trading session state to &quot;Open&quot;." disabled="true" message="%VARIABLES.Test_Code%-9: Transit Trading Session State to &quot;Open&quot;" level="URGENT" waitForResolution="false"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" disabled="true" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="41" fieldType="BigDecimal"/>
+          <messageType>BI41</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BI41 broadcast about the change in trading session state for the &quot;Open&quot; state?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" disabled="true" text="You should have received a BI41 broadcast about the change in trading session state for the &quot;Open&quot; state."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="State_Change_Time" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please enter the time when you received the BI41 broadcast about the change in trading session state for the &quot;Open&quot; state.&#xD;&#xA;&#xD;&#xA;Please use the HH:MM:SS format (H: hours, M: minutes, S: seconds). You can either indicate if it's AM or PM, or use a 24-hour format."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 9 (Open_M)"/>
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" disabled="true" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team changes the trading session state to &quot;Open_M&quot;, and then confirm that you receive a BI41 broadcast with information about the change."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 9&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Transit the trading session state to &quot;Open_M&quot;." disabled="true" message="%VARIABLES.Test_Code%-9: Transit Trading Session State to &quot;Open_M&quot;" level="URGENT" waitForResolution="false"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" disabled="true" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="41" fieldType="BigDecimal"/>
+          <messageType>BI41</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BI41 broadcast about the change in trading session state for the &quot;Open_M&quot; state?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" disabled="true" text="You should have received a BI41 broadcast about the change in trading session state for the &quot;Open_M&quot; state."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="State_Change_Time" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please enter the time when you received the BI41 broadcast about the change in trading session state for the &quot;Open_M&quot; state.&#xD;&#xA;&#xD;&#xA;Please use the HH:MM:SS format (H: hours, M: minutes, S: seconds). You can either indicate if it's AM or PM, or use a 24-hour format."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 9 (Open_MP)"/>
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" disabled="true" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team changes the trading session state to &quot;Open_MP&quot;, and then confirm that you receive a BI41 broadcast with information about the change."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 9&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Transit the trading session state to &quot;Open_MP&quot;." disabled="true" message="%VARIABLES.Test_Code%-9: Transit Trading Session State to &quot;Open_MP&quot;" level="URGENT" waitForResolution="false"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" disabled="true" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="41" fieldType="BigDecimal"/>
+          <messageType>BI41</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BI41 broadcast about the change in trading session state for the &quot;Open_MP&quot; state?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" disabled="true" text="You should have received a BI41 broadcast about the change in trading session state for the &quot;Open_MP&quot; state."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="State_Change_Time" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please enter the time when you received the BI41 broadcast about the change in trading session state for the &quot;Open_MP&quot; state.&#xD;&#xA;&#xD;&#xA;Please use the HH:MM:SS format (H: hours, M: minutes, S: seconds). You can either indicate if it's AM or PM, or use a 24-hour format."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 9 (Pre-Close)"/>
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" disabled="true" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team changes the trading session state to &quot;Pre-Close&quot;, and then confirm that you receive a BI41 broadcast with information about the change."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 9&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Transit the trading session state to &quot;Pre-Close&quot;." disabled="true" message="%VARIABLES.Test_Code%-9: Transit Trading Session State to &quot;Pre-Close&quot;" level="URGENT" waitForResolution="false"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" disabled="true" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="41" fieldType="BigDecimal"/>
+          <messageType>BI41</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BI41 broadcast about the change in trading session state for the &quot;Pre-Close&quot; state?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" disabled="true" text="You should have received a BI41 broadcast about the change in trading session state for the &quot;Pre-Close&quot; state."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="State_Change_Time" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please enter the time when you received the BI41 broadcast about the change in trading session state for the &quot;Pre-Close&quot; state.&#xD;&#xA;&#xD;&#xA;Please use the HH:MM:SS format (H: hours, M: minutes, S: seconds). You can either indicate if it's AM or PM, or use a 24-hour format."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 9 (Surv_Int)"/>
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" disabled="true" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team changes the trading session state to &quot;Surv_Int&quot;, and then confirm that you receive a BI41 broadcast with information about the change."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 9&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Transit the trading session state to &quot;Surv_Int&quot;." disabled="true" message="%VARIABLES.Test_Code%-9: Transit Trading Session State to &quot;Surv_Int&quot;" level="URGENT" waitForResolution="false"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" disabled="true" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="41" fieldType="BigDecimal"/>
+          <messageType>BI41</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BI41 broadcast about the change in trading session state for the &quot;Surv_Int&quot; state?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" disabled="true" text="You should have received a BI41 broadcast about the change in trading session state for the &quot;Surv_Int&quot; state."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="State_Change_Time" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please enter the time when you received the BI41 broadcast about the change in trading session state for the &quot;Surv_Int&quot; state.&#xD;&#xA;&#xD;&#xA;Please use the HH:MM:SS format (H: hours, M: minutes, S: seconds). You can either indicate if it's AM or PM, or use a 24-hour format."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 9 (Series Gen)"/>
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" disabled="true" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team changes the trading session state to &quot;Series Gen&quot;, and then confirm that you receive a BI41 broadcast with information about the change."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 9&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Transit the trading session state to &quot;Series Gen&quot;." disabled="true" message="%VARIABLES.Test_Code%-9: Transit Trading Session State to &quot;Series Gen&quot;" level="URGENT" waitForResolution="false"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" disabled="true" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="41" fieldType="BigDecimal"/>
+          <messageType>BI41</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BI41 broadcast about the change in trading session state for the &quot;Series Gen&quot; state?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" disabled="true" text="You should have received a BI41 broadcast about the change in trading session state for the &quot;Series Gen&quot; state."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="State_Change_Time" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please enter the time when you received the BI41 broadcast about the change in trading session state for the &quot;Series Gen&quot; state.&#xD;&#xA;&#xD;&#xA;Please use the HH:MM:SS format (H: hours, M: minutes, S: seconds). You can either indicate if it's AM or PM, or use a 24-hour format."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 9 (Transition)"/>
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" disabled="true" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team changes the trading session state to &quot;Transition&quot;, and then confirm that you receive a BI41 broadcast with information about the change."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 9&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Transit the trading session state to &quot;Transition&quot;." disabled="true" message="%VARIABLES.Test_Code%-9: Transit Trading Session State to &quot;Transition&quot;" level="URGENT" waitForResolution="false"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" disabled="true" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="41" fieldType="BigDecimal"/>
+          <messageType>BI41</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BI41 broadcast about the change in trading session state for the &quot;Transition&quot; state?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" disabled="true" text="You should have received a BI41 broadcast about the change in trading session state for the &quot;Transition&quot; state."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="State_Change_Time" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please enter the time when you received the BI41 broadcast about the change in trading session state for the &quot;Transition&quot; state.&#xD;&#xA;&#xD;&#xA;Please use the HH:MM:SS format (H: hours, M: minutes, S: seconds). You can either indicate if it's AM or PM, or use a 24-hour format."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 9 (Remove_Day_Order)"/>
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" disabled="true" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team changes the trading session state to &quot;Remove_Day_Order&quot;, and then confirm that you receive a BI41 broadcast with information about the change."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 9&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Transit the trading session state to &quot;Remove_Day_Order&quot;." disabled="true" message="%VARIABLES.Test_Code%-9: Transit Trading Session State to &quot;Remove_Day_Order&quot;" level="URGENT" waitForResolution="false"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" disabled="true" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="41" fieldType="BigDecimal"/>
+          <messageType>BI41</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BI41 broadcast about the change in trading session state for the &quot;Remove_Day_Order&quot; state?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" disabled="true" text="You should have received a BI41 broadcast about the change in trading session state for the &quot;Remove_Day_Order&quot; state."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="State_Change_Time" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please enter the time when you received the BI41 broadcast about the change in trading session state for the &quot;Remove_Day_Order&quot; state.&#xD;&#xA;&#xD;&#xA;Please use the HH:MM:SS format (H: hours, M: minutes, S: seconds). You can either indicate if it's AM or PM, or use a 24-hour format."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 10 (Market 1 - Underlying)"/>
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team STARTs an instrument session state in &quot;Market 1 - Underlying&quot; level, and then confirm that you receive a BI41 broadcast with information about the start of the state."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 10&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- START an instrument session state in &quot;Market 1 - Underlying&quot; level." message="%VARIABLES.Test_Code%-10: Start Instrument Session State in &quot;Market 1 - Underlying&quot;" level="URGENT" waitForResolution="false"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageId="BI41" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="41" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.seconds_to_state_change_n" value="0" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.state_level_e" value="5" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.series[].series_t.commodity_n" value="%CONFIGURATIONS.Series_Commodity%" fieldType="BigDecimal"/>
+          <messageType>BI41</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BI41 broadcast about the START of an instrument session state in &quot;Market 1 - Underlying&quot; level?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a BI41 broadcast about the START of an instrument session state in &quot;Market 1 - Underlying&quot; level."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Session_State_Market1" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please enter the state number of the current active session state in Market 1, i.e. the state number included in the BI41 broadcast (for example, if the new state is &quot;PRE_OPEN&quot;, you should enter 76)."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="trim(&quot;%VARIABLES.Session_State_Market1%&quot;)!=&quot;%MESSAGES.BI41.instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.state_number_n%&quot;">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You have entered a wrong state number (trim(&quot;%VARIABLES.Session_State_Market1%&quot;) instead of %MESSAGES.BI41.instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.state_number_n%)."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 10 (Market 2 - Instrument Series)"/>
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team STARTs an instrument session state in &quot;Market 2 - Instrument Series&quot; level, and then confirm that you receive a BI41 broadcast with information about the start of the state."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 10&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- START an instrument session state in &quot;Market 2 - Instrument Series&quot; level." message="%VARIABLES.Test_Code%-10: Start Instrument Session State in &quot;Market 2 - Instrument Series&quot;" level="URGENT" waitForResolution="false"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageId="BI41" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="41" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.seconds_to_state_change_n" value="0" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.state_level_e" value="4" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.series[].series_t.country_c" value="%CONFIGURATIONS.Series2_Country%" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.series[].series_t.market_c" value="%CONFIGURATIONS.Series2_Market%" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.series[].series_t.instrument_group_c" value="%CONFIGURATIONS.Series2_Instrument_Group%" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.series[].series_t.commodity_n" value="%CONFIGURATIONS.Series2_Commodity%" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.series[].series_t.expiration_date_n" value="%CONFIGURATIONS.Series2_Expiration_Date%" fieldType="BigDecimal"/>
+          <messageType>BI41</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BI41 broadcast about the START of an instrument session state in &quot;Market 2 - Instrument Series&quot; level?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a BI41 broadcast about the START of an instrument session state in &quot;Market 2 - Instrument Series&quot; level."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Session_State_Market2" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please enter the state number of the current active session state in Market 2, i.e. the state number included in the BI41 broadcast (for example, if the new state is &quot;PRE_OPEN&quot;, you should enter 76)."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="trim(&quot;%VARIABLES.Session_State_Market2%&quot;)!=&quot;%MESSAGES.BI41.instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.state_number_n%&quot;">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You have entered a wrong state number (trim(&quot;%VARIABLES.Session_State_Market2%&quot;) instead of %MESSAGES.BI41.instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.state_number_n%)."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 11 (Market 1 - Underlying)"/>
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team ENDs an instrument session state in &quot;Market 1 - Underlying&quot; level, and then confirm that you receive a BI41 broadcast with information about the end of the state."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 11&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;IMPORTANT: After executing the action below, enter the state number of the active session state of the market in the resolution field of the ticket (don't enter anything else besides the state number), and resolve the ticket after that.&#xD;&#xA;Required action(s):&#xD;&#xA;- END an instrument session state in &quot;Market 1 - Underlying&quot; level." variableId="Session_State_Market1_Correct" message="%VARIABLES.Test_Code%-11: End Instrument Session State in &quot;Market 1 - Underlying&quot;" level="URGENT" waitForResolution="true"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="41" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.state_number_n" value="0" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.seconds_to_state_change_n" value="0" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.state_level_e" value="5" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.series[].series_t.commodity_n" value="%CONFIGURATIONS.Series_Commodity%" fieldType="BigDecimal"/>
+          <messageType>BI41</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BI41 broadcast about the END of an instrument session state in &quot;Market 1 - Underlying&quot; level?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a BI41 broadcast about the END of an instrument session state in &quot;Market 1 - Underlying&quot; level."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Session_State_Market1" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please enter the state number of the current active session state in Market 1."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="trim(&quot;%VARIABLES.Session_State_Market1%&quot;)!=trim(&quot;%VARIABLES.Session_State_Market1_Correct%&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You have entered a wrong state number (trim(&quot;%VARIABLES.Session_State_Market1%&quot;) instead of trim(&quot;%VARIABLES.Session_State_Market1_Correct%&quot;))."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 11 (Market 2 - Instrument Series)"/>
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team ENDs an instrument session state in &quot;Market 2 - Instrument Series&quot; level, and then confirm that you receive a BI41 broadcast with information about the end of the state."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 11&#xD;&#xA;&#xD;&#xA;IMPORTANT: After executing the action below, enter the state number of the active session state of the market in the resolution field of the ticket (don't enter anything else besides the state number), and resolve the ticket after that.&#xD;&#xA;Required action(s):&#xD;&#xA;- END an instrument session state in &quot;Market 2 - Instrument Series&quot; level." variableId="Session_State_Market2_Correct" message="%VARIABLES.Test_Code%-11: End Instrument Session State in &quot;Market 2 - Instrument Series&quot;" level="URGENT" waitForResolution="true"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="41" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.seconds_to_state_change_n" value="0" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.state_level_e" value="4" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.state_number_n" value="0" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.series[].series_t.country_c" value="%CONFIGURATIONS.Series2_Country%" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.series[].series_t.market_c" value="%CONFIGURATIONS.Series2_Market%" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.series[].series_t.instrument_group_c" value="%CONFIGURATIONS.Series2_Instrument_Group%" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.series[].series_t.commodity_n" value="%CONFIGURATIONS.Series2_Commodity%" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="instrument_status_info_t[].instrument_status_info_t.items[].item[*].instrument_status_info_item_t.series[].series_t.expiration_date_n" value="%CONFIGURATIONS.Series2_Expiration_Date%" fieldType="BigDecimal"/>
+          <messageType>BI41</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BI41 broadcast about the END of an instrument session state in &quot;Market 2 - Instrument Series&quot; level?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a BI41 broadcast about the END of an instrument session state in &quot;Market 2 - Instrument Series&quot; level."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Session_State_Market2" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Please enter the state number of the current active session state in Market 2."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="trim(&quot;%VARIABLES.Session_State_Market2%&quot;)!=trim(&quot;%VARIABLES.Session_State_Market2_Correct%&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You have entered a wrong state number (trim(&quot;%VARIABLES.Session_State_Market2%&quot;) instead of trim(&quot;%VARIABLES.Session_State_Market2_Correct%&quot;))."/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 12"/>
+    <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="%CONFIGURATIONS.API_Order% || %CONFIGURATIONS.API_Market_Making% || %CONFIGURATIONS.API_Drop_Copy%">
+        <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="BI1_Support" value="1"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true">
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Does your system support BI1 broadcasts for information about the suspension and resumption of the trading of a commodity?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand" disabled="true">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="BI1_Support" value="1"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" disabled="true">
+            <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="BI1_Support" value="0"/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%VARIABLES.BI1_Support%">
+        <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 12"/>
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team suspends the trading of a commodity, and then confirm that you receive a BI1 broadcast with information about the suspension."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 12&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Suspend the trading of a commodity." message="%VARIABLES.Test_Code%-12: Suspend Trading of Commodity" level="URGENT" waitForResolution="false"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="suspend_resume_trading_t[].suspend_resume_trading_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="suspend_resume_trading_t[].suspend_resume_trading_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="suspend_resume_trading_t[].suspend_resume_trading_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="1" fieldType="BigDecimal"/>
+          <messageType>BI1</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BI1 broadcast with information about the suspension of the trading of a commodity?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a BI1 with information about the suspension of the trading of a commodity."/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 13"/>
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team resumes the trading of a commodity, and then confirm that you receive a BI1 broadcast with information about the resumption."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 13&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Resume the trading of a commodity." message="%VARIABLES.Test_Code%-13: Resume Trading of Commodity" level="URGENT" waitForResolution="false"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="suspend_resume_trading_t[].suspend_resume_trading_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="suspend_resume_trading_t[].suspend_resume_trading_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="suspend_resume_trading_t[].suspend_resume_trading_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="1" fieldType="BigDecimal"/>
+          <messageType>BI1</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BI1 broadcast with information about the resumption of the trading of a commodity?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a BI1 with information about the resumption of the trading of a commodity."/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 14"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="BL51_Support" requireUserInput="true" timeout="-1">
+      <instructionMultiLanguage key="en" value="Does your system support BL51 broadcasts for information about updated price limit and reference price for an instrument series?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%VARIABLES.BL51_Support%">
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team changes the price limit and reference price for the instrument series, and then confirm that you receive a BL51 broadcast with information about the change."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 14&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Change price limit and reference price of the instrument series." message="%VARIABLES.Test_Code%-14: Change Price Limit and Reference Price of Series" level="URGENT" waitForResolution="false"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="limit_change_t[].limit_change_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="limit_change_t[].limit_change_t.broadcast_type[].broadcast_type_t.server_type_c" value="L" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="limit_change_t[].limit_change_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="51" fieldType="BigDecimal"/>
+          <messageType>BL51</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BL51 broadcast with information about the updated price limit and reference price of the instrument series?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a BL51 broadcast with information about the updated price limit and reference price of the instrument series."/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 15"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="BL58_Support" requireUserInput="true" timeout="-1">
+      <instructionMultiLanguage key="en" value="Does your system support BL58 broadcasts for information about the triggering of the price limit?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%VARIABLES.BL58_Support%">
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%CONFIGURATIONS.API_Order% || %CONFIGURATIONS.API_Market_Making%">
+            <testCommand xsi:type="TestUnit:NewVar" variableId="Order_Support" value="1"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%CONFIGURATIONS.API_Drop_Copy%">
+            <testCommand xsi:type="TestUnit:NewVar" variableId="Order_Support" value="0"/>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock">
+            <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+              <instructionMultiLanguage key="en" value="Does your system support order submission using MO1?&#xD;&#xA;(Enter y for yes, n for no)"/>
+            </testCommand>
+            <testCommand xsi:type="TestUnit:IfStatementCommand">
+              <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+                <testCommand xsi:type="TestUnit:NewVar" variableId="Order_Support" value="1"/>
+              </testCommand>
+              <testCommand xsi:type="TestUnit:IfThenElseStatementBlock">
+                <testCommand xsi:type="TestUnit:NewVar" variableId="Order_Support" value="0"/>
+              </testCommand>
+            </testCommand>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%VARIABLES.Order_Support%">
+            <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+            <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+              <instructionMultiLanguage key="en" value="Please submit a bid and an ask order for a series, which will result in a trade outside the price limit of the instrument series. Afterwards, confirm that you receive a BL58 broadcast about the price limit being triggered."/>
+            </testCommand>
+            <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="false" removeMatched="true">
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.transaction_type[].transaction_type_t.central_module_c" value="M" fieldType="Char"/>
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.transaction_type[].transaction_type_t.server_type_c" value="O" fieldType="Char"/>
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.transaction_type[].transaction_type_t.transaction_number_n" value="1" fieldType="BigDecimal"/>
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="vim_subitems[].vim_subitem[*].basic_order_t[].basic_order_t.bid_or_ask_c" value="1" fieldType="BigDecimal"/>
+              <messageType>MO1</messageType>
+            </testCommand>
+            <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="0" checkType="GREATER_OR_EQUAL" fieldType="Integer"/>
+              <messageType>TRANSACTION_ANSWER</messageType>
+            </testCommand>
+            <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="false" removeMatched="true">
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.transaction_type[].transaction_type_t.central_module_c" value="M" fieldType="Char"/>
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.transaction_type[].transaction_type_t.server_type_c" value="O" fieldType="Char"/>
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.transaction_type[].transaction_type_t.transaction_number_n" value="1" fieldType="BigDecimal"/>
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="vim_subitems[].vim_subitem[*].basic_order_t[].basic_order_t.bid_or_ask_c" value="2" fieldType="BigDecimal"/>
+              <messageType>MO1</messageType>
+            </testCommand>
+            <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="0" checkType="GREATER_OR_EQUAL" fieldType="Integer"/>
+              <messageType>TRANSACTION_ANSWER</messageType>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock">
+            <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+              <instructionMultiLanguage key="en" value="Please wait until the conformance support team submits a bid and an ask order for a series, which will result in a trade outside the price limit of the instrument series. Afterwards, confirm that you receive a BL58 broadcast about the price limit being triggered."/>
+            </testCommand>
+            <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A DropCopy member is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member (DropCopy):&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 15&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Submit a bid and an ask order for a series, which will result in a trade outside the price limit of the instrument series." message="%VARIABLES.Test_Code%-15 (DropCopy): Submit Orders to Trade Outside Price Limit" level="URGENT" waitForResolution="false"/>
+          </testCommand>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="false" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="price_limit_trigger_t[].price_limit_trigger_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="price_limit_trigger_t[].price_limit_trigger_t.broadcast_type[].broadcast_type_t.server_type_c" value="L" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="price_limit_trigger_t[].price_limit_trigger_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="58" fieldType="BigDecimal"/>
+          <messageType>BL58</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+          <instructionMultiLanguage key="en" value="Did you receive a BL58 broadcast about the price limit being triggered?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a BL58 broadcast about the price limit being triggered."/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 16"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="BL59_Support" requireUserInput="true" timeout="-1">
+      <instructionMultiLanguage key="en" value="Does your system support BL59 broadcasts for information about the end of the price limit cooling-off period?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%VARIABLES.BL59_Support%">
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please wait until you receive a BL59 broadcast with information that the price limit cooling off period for the series has ended."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="cool_off_period_ended_t[].cool_off_period_ended_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="cool_off_period_ended_t[].cool_off_period_ended_t.broadcast_type[].broadcast_type_t.server_type_c" value="L" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="cool_off_period_ended_t[].cool_off_period_ended_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="59" fieldType="BigDecimal"/>
+          <messageType>BL59</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BL59 broadcast with information that the price limit cooling off period for the series has ended?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a BL59 broadcast with information that the price limit cooling off period for the series has ended."/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 17"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true" variableId="BL2155_Support" requireUserInput="true" timeout="-1">
+      <instructionMultiLanguage key="en" value="Does your system support BL2155 broadcasts for information about updated ETPR price limit for an instrument series?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%VARIABLES.BL2155_Support%">
+        <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please wait until the conformance support team changes the ETPR price limit of the instrument series, and then confirm that you receive a BL2155 broadcast with information about the change."/>
+        </testCommand>
+        <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 17&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Change ETPR price limit of the instrument series." message="%VARIABLES.Test_Code%-17: Change ETPR Price Limit of Series" level="URGENT" waitForResolution="false"/>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="etpr_limit_change_t[].etpr_limit_change_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="etpr_limit_change_t[].etpr_limit_change_t.broadcast_type[].broadcast_type_t.server_type_c" value="L" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="etpr_limit_change_t[].etpr_limit_change_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="2155" fieldType="BigDecimal"/>
+          <messageType>BL2155</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BL2155 broadcast with information about the updated ETPR price limit of the instrument series?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a BL2155 broadcast with information about the updated ETPR price limit of the instrument series."/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 18"/>
+    <testCommand xsi:type="TestUnit:ClearMessageQueue" messageSenderProducer="//@test/@testCommand.1" incoming="true" outgoing="true"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please wait until the conformance support team sends a market announcement, and then confirm that you receive a BI81 broadcast with information of the announcement (if your system supports that)."/>
+    </testCommand>
+    <testCommand xsi:type="CertificationCommands:NotifyAdminCommand" comment="A counterparty is executing a test and requires assistance.&#xD;&#xA;&#xD;&#xA;Member:&#xD;&#xA;   Country ID: %CONFIGURATIONS.Member_Country%&#xD;&#xA;   Identity: %CONFIGURATIONS.Member_Identity%&#xD;&#xA;Series: %CONFIGURATIONS.Series_Name%&#xD;&#xA;Market: %CONFIGURATIONS.Market_Name%&#xD;&#xA;Series 2: %CONFIGURATIONS.Series2_Name%&#xD;&#xA;Market 2: %CONFIGURATIONS.Market2_Name%&#xD;&#xA;Test: %VARIABLES.Test_Code%&#xD;&#xA;Step: 18&#xD;&#xA;&#xD;&#xA;Required action(s):&#xD;&#xA;- Submit a market announcement." message="%VARIABLES.Test_Code%-18: Submit Market Announcement" level="URGENT" waitForResolution="false"/>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="%VARIABLES.BI81_Support%">
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.1" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true" removeMatched="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="broadcast_hdr_t[].broadcast_hdr_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="broadcast_hdr_t[].broadcast_hdr_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="broadcast_hdr_t[].broadcast_hdr_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="81" fieldType="BigDecimal"/>
+          <messageType>BI81</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Did you receive a BI81 broadcast with information of the market announcement from the SGX Titan Environment?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a BI81 broadcast with information of the market announcement from the SGX Titan Environment."/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <localDefaults name="Series2_Country" value="0"/>
+    <localDefaults name="Series2_Commodity" value="0"/>
+    <localDefaults name="Series2_Instrument_Group" value="0"/>
+    <localDefaults name="Series2_Market" value="0"/>
+    <localDefaults name="Series2_Expiration_Date" value="0"/>
+    <localDefaults name="Series2_Name" value="AAA01"/>
+    <localDefaults name="Market2_Name" value="XYZ"/>
+  </test>
+</TestUnit:TestContainerType>

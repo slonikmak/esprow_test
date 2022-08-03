@@ -1,0 +1,196 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CertificationCommands="com.esprow.nozomi.testunit.commands.certification" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test comment="This certification test focuses on the Login and Logout functionality.&#xD;&#xA;&#xD;&#xA;In particular, it checks if your system supports logging in and out correctly, and handling error messages for invalid login attempts and locked or suspended account.&#xD;&#xA;It also makes sure that your system behaves according to the specifications in terms of the frequency of login attempts it tries to submit, and whether it stops trying to log in, in case a login is not possible (i.e. when the account has been locked or suspended).&#xD;&#xA;&#xD;&#xA;Please make sure that your system is NOT connected to the SGX TITAN environment when you begin the test." loggingLevel="DEBUG" certificationUnit="true" dictionary="SGX_OMnet" implementsBridgeMode="true">
+    <testCommand xsi:type="CertificationCommands:CreateMessageRelayCommand" targetSystemId="%CONFIGURATIONS.CERTIFICATION.SYSTEM%" targetHandlerId="%CONFIGURATIONS.CERTIFICATION.DESTINATION%" forwardSystemId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.SYSTEM%" forwardHandlerId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.DESTINATION%" filterShowOnly="false" validateMessages="true">
+      <messageTypeFilters>READ_EVENT</messageTypeFilters>
+      <messageTypeFilters>READ_EVENT_BLOCK</messageTypeFilters>
+      <messageTypeFilters>READ_EVENTS_ALL_ANSWER</messageTypeFilters>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please submit a Login request with an invalid user name."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.facility_type_u" value="1" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.function_code_u" value="257" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_2_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.type_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.user_s" value="94,228,141,248,147,205,185,149,213,251,186,188,132,174,163,112,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" checkType="NOTEQUAL" fieldType="BigDecimalArray"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.pass_s" value="20,0,83,59,183,168,70,243,91,13,35,194,68,29,172,29,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" fieldType="BigDecimalArray"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.filler_32_s" value="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" fieldType="BigDecimalArray"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.node_s" value="10.68.3.75"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.sock_s" value="21025"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.idnt_s" value="OMexus"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="-2024" fieldType="Integer"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+      <instructionMultiLanguage key="en" value="Did you receive an Invalid Login Attempt message?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="&quot;%VARIABLES.Response%&quot;!=&quot;y&quot; &amp;&amp; &quot;%VARIABLES.Response%&quot;!=&quot;yes&quot;">
+        <testCommand xsi:type="TestUnit:FailCommand" text="You should have received an Invalid Login Attempt message."/>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="After 60 seconds, please submit a Login request with an invalid password."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.facility_type_u" value="1" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.function_code_u" value="257" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_2_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.type_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.user_s" value="94,228,141,248,147,205,185,149,213,251,186,188,132,174,163,112,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" fieldType="BigDecimalArray"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.pass_s" value="20,0,83,59,183,168,70,243,91,13,35,194,68,29,172,29,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" checkType="NOTEQUAL" fieldType="BigDecimalArray"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.filler_32_s" value="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" fieldType="BigDecimalArray"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.node_s" value="10.68.3.75"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.sock_s" value="21025"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.idnt_s" value="OMexus"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" timeout="" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="-2024" fieldType="Integer"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+      <instructionMultiLanguage key="en" value="Did you receive an Invalid Login Attempt message?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="&quot;%VARIABLES.Response%&quot;!=&quot;y&quot; &amp;&amp; &quot;%VARIABLES.Response%&quot;!=&quot;yes&quot;">
+        <testCommand xsi:type="TestUnit:FailCommand" text="You should have received an Invalid Login Attempt message."/>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Submit 4 more Login requests with an invalid password, each request at least 60 seconds apart."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:ForLoopCommand" dataSetId="i" dataSetProviderType="RANGE">
+      <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.facility_type_u" value="1" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_u" value="0" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.function_code_u" value="257" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_2_u" value="0" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.type_u" value="0" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.user_s" value="94,228,141,248,147,205,185,149,213,251,186,188,132,174,163,112,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" fieldType="BigDecimalArray"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.pass_s" value="20,0,83,59,183,168,70,243,91,13,35,194,68,29,172,29,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" checkType="NOTEQUAL" fieldType="BigDecimalArray"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.filler_32_s" value="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" fieldType="BigDecimalArray"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.node_s" value="10.68.3.75"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.sock_s" value="21025"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.idnt_s" value="OMexus"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" timeout="" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true">
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="-2024" fieldType="Integer"/>
+      </testCommand>
+      <dataSetProvider xsi:type="TestUnit:RangeDataSetProvider" skipColumnName="SKIP_TEST" executingTagColumnName="EXEC_TAG" loopCounterStart="1" loopCounterEnd="4" loopStep="1"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+      <instructionMultiLanguage key="en" value="Did you receive 4 Invalid Login Attempt messages?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="&quot;%VARIABLES.Response%&quot;!=&quot;y&quot; &amp;&amp; &quot;%VARIABLES.Response%&quot;!=&quot;yes&quot;">
+        <testCommand xsi:type="TestUnit:FailCommand" text="You should have received 4 Invalid Login Attempt messages."/>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="After 60 seconds, submit a Login request with a correct password."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.facility_type_u" value="1" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.function_code_u" value="257" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_2_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.type_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.user_s" value="94,228,141,248,147,205,185,149,213,251,186,188,132,174,163,112,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" fieldType="BigDecimalArray"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.pass_s" value="20,0,83,59,183,168,70,243,91,13,35,194,68,29,172,29,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" fieldType="BigDecimalArray"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.filler_32_s" value="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" fieldType="BigDecimalArray"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.node_s" value="10.68.3.75"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.sock_s" value="21025"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.idnt_s" value="OMexus"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" timeout="" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="-2033" fieldType="Integer"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+      <instructionMultiLanguage key="en" value="Did you receive a message that your user ID had been locked?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="&quot;%VARIABLES.Response%&quot;!=&quot;y&quot; &amp;&amp; &quot;%VARIABLES.Response%&quot;!=&quot;yes&quot;">
+        <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a message that your user ID has been locked."/>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Your user account has been unlocked. Please submit a Login request with a correct password."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.facility_type_u" value="1" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.function_code_u" value="257" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_2_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.type_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.user_s" value="94,228,141,248,147,205,185,149,213,251,186,188,132,174,163,112,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" fieldType="BigDecimalArray"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.pass_s" value="20,0,83,59,183,168,70,243,91,13,35,194,68,29,172,29,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" fieldType="BigDecimalArray"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.filler_32_s" value="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" fieldType="BigDecimalArray"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.node_s" value="10.68.3.75"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.sock_s" value="21025"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.idnt_s" value="OMexus"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" timeout="" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="0" fieldType="Integer"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+      <instructionMultiLanguage key="en" value="Did you receive a message that you have logged in successfully?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="&quot;%VARIABLES.Response%&quot;!=&quot;y&quot; &amp;&amp; &quot;%VARIABLES.Response%&quot;!=&quot;yes&quot;">
+        <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a message that you have logged on successfully."/>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please log out of the SGX TITAN Environment."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.facility_type_u" value="2" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.function_code_u" value="257" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_2_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_logout_t[].omni_logout_t.filler_4_s" value="0,0,0,0" fieldType="BigDecimalArray"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" timeout="" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="0" fieldType="Integer"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+      <instructionMultiLanguage key="en" value="Did you receive a message that you have logged out successfully?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="&quot;%VARIABLES.Response%&quot;!=&quot;y&quot; &amp;&amp; &quot;%VARIABLES.Response%&quot;!=&quot;yes&quot;">
+        <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a message that you have logged out successfully."/>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Your user account has been suspended. Please try submitting a Login request with a correct password."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.facility_type_u" value="1" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.function_code_u" value="257" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_2_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.type_u" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.user_s" value="94,228,141,248,147,205,185,149,213,251,186,188,132,174,163,112,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" fieldType="BigDecimalArray"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.pass_s" value="20,0,83,59,183,168,70,243,91,13,35,194,68,29,172,29,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" fieldType="BigDecimalArray"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.filler_32_s" value="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" fieldType="BigDecimalArray"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.node_s" value="10.68.3.75"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.sock_s" value="21025"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="omni_login_message_t[].omni_login_message_t.idnt_s" value="OMexus"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" timeout="" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="-2034" fieldType="Integer"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+      <instructionMultiLanguage key="en" value="Did you receive a message that your user ID had been suspended?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="&quot;%VARIABLES.Response%&quot;!=&quot;y&quot; &amp;&amp; &quot;%VARIABLES.Response%&quot;!=&quot;yes&quot;">
+        <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a message that your user ID has been suspended."/>
+      </testCommand>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

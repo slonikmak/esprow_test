@@ -1,0 +1,38 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test certificationUnit="true" dictionary="SGX_OMnet" implementsBridgeMode="true">
+    <testCommand xsi:type="TestUnit:NewVar" variableId="Correct_Answer" value="42"/>
+    <testCommand xsi:type="TestUnit:NewVar" variableId="foo" value="-1"/>
+    <testCommand xsi:type="TestUnit:NewVar" variableId="foo" value="eval(&quot;trim(&quot;%VARIABLES.foo%&quot;)&quot;)"/>
+    <testCommand xsi:type="TestUnit:LogEntry" text="eval(&quot;%VARIABLES.foo%+1&quot;)"/>
+    <testCommand xsi:type="TestUnit:LogEntry" text="eval(&quot;max(%VARIABLES.foo%,eval(&quot;-1+2&quot;))&quot;)"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+      <instructionMultiLanguage key="en" value="Please enter the correct answer (%VARIABLES.Correct_Answer%)."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:NewVar" variableId="Response" value="eval(&quot;trim(&quot;%VARIABLES.Response%&quot;)&quot;)"/>
+    <testCommand xsi:type="TestUnit:LogEntry" text="eval(&quot;%VARIABLES.Response%&quot;)"/>
+    <testCommand xsi:type="TestUnit:LogEntry" text="eval(&quot;!equals(&quot;%VARIABLES.Response%&quot;,&quot;%VARIABLES.Correct_Answer%&quot;)&quot;)"/>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equals(&quot;%VARIABLES.Response%&quot;,&quot;%VARIABLES.Correct_Answer%&quot;)&quot;)">
+        <testCommand xsi:type="TestUnit:LogEntry" text="true"/>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WhileLoopCommand" logicStatement="eval(&quot;!equals(&quot;%VARIABLES.Response%&quot;,&quot;%VARIABLES.Correct_Answer%&quot;)&quot;)" maxIterationSafety="">
+      <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+        <instructionMultiLanguage key="en" value="You have entered a wrong answer. Please enter the correct answer (%VARIABLES.Correct_Answer%)."/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="Response" value="eval(&quot;trim(&quot;%VARIABLES.Response%&quot;)&quot;)"/>
+      <testCommand xsi:type="TestUnit:LogEntry" text="%VARIABLES.Response%"/>
+      <testCommand xsi:type="TestUnit:LogEntry" text="eval(&quot;!equals(&quot;%VARIABLES.Response%&quot;,&quot;%VARIABLES.Correct_Answer%&quot;)&quot;)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WhileLoopCommand" logicStatement="1" maxIterationSafety="">
+      <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="num" requireUserInput="true">
+        <instructionMultiLanguage key="en" value="Enter a number"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="abs" value="eval(&quot;abs(%VARIABLES.num%)&quot;)"/>
+      <testCommand xsi:type="TestUnit:LogEntry" text="Abs: %VARIABLES.abs%"/>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="max" value="eval(&quot;max(%VARIABLES.num%,5)&quot;)"/>
+      <testCommand xsi:type="TestUnit:LogEntry" text="5 or more: %VARIABLES.max%"/>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

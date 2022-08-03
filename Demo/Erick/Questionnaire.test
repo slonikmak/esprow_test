@@ -1,0 +1,27 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test certificationUnit="true" dictionary="SGX_OMnet" implementsBridgeMode="true">
+    <testCommand xsi:type="TestUnit:QuestionnaireCommand">
+      <questions variableName="a">
+        <instructionMultiLanguage key="en" value="Var A"/>
+      </questions>
+      <questions type="NUMBER" variableName="b">
+        <instructionMultiLanguage key="en" value="Var B"/>
+      </questions>
+      <questions type="BOOLEAN" variableName="c">
+        <instructionMultiLanguage key="en" value="Var C"/>
+      </questions>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" text="%VARIABLES.a%"/>
+    <testCommand xsi:type="TestUnit:LogEntry" text="%VARIABLES.b%"/>
+    <testCommand xsi:type="TestUnit:LogEntry" text="%VARIABLES.c%"/>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! %VARIABLES.c%&quot;)">
+        <testCommand xsi:type="TestUnit:LogEntry" text="C is false"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock">
+        <testCommand xsi:type="TestUnit:LogEntry" text="C is true"/>
+      </testCommand>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

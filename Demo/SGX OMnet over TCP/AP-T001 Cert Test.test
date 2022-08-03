@@ -1,0 +1,46 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CertificationCommands="com.esprow.nozomi.testunit.commands.certification" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test comment="This certification test checks the submission of application status (UI1) and handling of price information heartbeats (BI9)." loggingLevel="DEBUG" certificationUnit="true" dictionary="SGX_OMnet" implementsBridgeMode="true">
+    <testCommand xsi:type="CertificationCommands:CreateMessageRelayCommand" targetSystemId="%CONFIGURATIONS.CERTIFICATION.SYSTEM%" targetHandlerId="%CONFIGURATIONS.CERTIFICATION.DESTINATION%" forwardSystemId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.SYSTEM%" forwardHandlerId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.DESTINATION%" messageTypeFilters="" filterShowOnly="true" validateMessages="true"/>
+    <testCommand xsi:type="TestUnit:TimestampCommand" variableId="Start" outputFormat="&lt;seconds>" timezone="Asia/Tokyo"/>
+    <testCommand xsi:type="TestUnit:TimestampCommand" variableId="End" outputFormat="&lt;seconds>" timezone="Asia/Tokyo"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="eval(&quot;1+1&quot;) a"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" text="a eval(&quot;1+1&quot;)"/>
+    <testCommand xsi:type="TestUnit:FailCommand" text="a 1+1"/>
+    <testCommand xsi:type="TestUnit:FailCommand" text="You submitted the login requests too fast. You should have waited at least 60 seconds (instead of eval(&quot;%VARIABLES.End%-%VARIABLES.Start%&quot;))."/>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" messageCount="" timeout="" optional="true" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_2_u" value="0" fieldType="BigDecimal"/>
+      <messageType>READ_EVENT</messageType>
+      <messageType>CQ10</messageType>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="false" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_missing_trade_t[].query_missing_trade_t.transaction_type[].transaction_type_t.central_module_c" value="C" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_missing_trade_t[].query_missing_trade_t.transaction_type[].transaction_type_t.server_type_c" value="Q" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_missing_trade_t[].query_missing_trade_t.transaction_type[].transaction_type_t.transaction_number_n" value="10" fieldType="BigDecimal"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="result" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_missing_trade_hdr_t[].answer_missing_trade_hdr_t.transaction_type[].transaction_type_t.central_module_c" value="C" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_missing_trade_hdr_t[].answer_missing_trade_hdr_t.transaction_type[].transaction_type_t.server_type_c" value="A" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_missing_trade_hdr_t[].answer_missing_trade_hdr_t.transaction_type[].transaction_type_t.transaction_number_n" value="10" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="vim_items[].vim_item[*].vim_subitems[].vim_subitem[*].cl_trade_base_api_t[].cl_trade_base_api_t.series[].series_t.country_c" value="83" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="vim_items[].vim_item[*].vim_subitems[].vim_subitem[*].sub_item_hdr_t[].sub_item_hdr_t.size_n" value="220" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="vim_items[].vim_item[*].vim_subitems[].vim_subitem[*].cl_trade_trade_report_api_t[].cl_trade_trade_report_api_t.filler_2_s" value="32,32" fieldType="BigDecimalArray"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="vim_items[].vim_item[*].vim_subitems[].vim_subitem[*].sub_item_hdr_t[].sub_item_hdr_t.size_n" value="272" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="vim_items[].vim_item[2].vim_subitems[].vim_subitem[*].cl_trade_base_api_t[].cl_trade_base_api_t.order_number_u" value="6676663967441541511" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="vim_items[].vim_item[*].vim_subitems[].vim_subitem[*].cl_trade_secur_part_t[].cl_trade_secur_part_t.cab_price_ind_c" value="2" fieldType="BigDecimal"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="tmp1" value="%MESSAGES.result.vim_items[].vim_item[2].vim_subitems[].vim_subitem[1].cl_trade_base_api_t[].cl_trade_base_api_t.order_number_u%"/>
+    <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="tmp2" value="%VARIABLES.tmp1%+1"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true">
+      <instructionMultiLanguage key="en" value="tmp1: %VARIABLES.tmp1%&#xD;&#xA;tmp1+1 : eval(&quot;%VARIABLES.tmp1%+1&quot;)&#xD;&#xA;tmp2: %VARIABLES.tmp2%"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="misc" value="1234567890123"/>
+    <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="misc2" value="%VARIABLES.misc%-1234567890123"/>
+    <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="misc3" value="%VARIABLES.misc%+1234567890123"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true">
+      <instructionMultiLanguage key="en" value="misc: %VARIABLES.misc%&#xD;&#xA;misc2: %VARIABLES.misc2%&#xD;&#xA;misc3: %VARIABLES.misc3%&#xD;&#xA;misc-1: %VARIABLES.misc%-1&#xD;&#xA;misc+1: eval(&quot;%VARIABLES.misc%+1&quot;)"/>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

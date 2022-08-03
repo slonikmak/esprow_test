@@ -1,0 +1,206 @@
+<formata major="1">
+  <header>
+    <group name="Header" required="N">
+      <field name="Message_Type" required="Y"/>
+    </group>
+    <group name="SoupBinTCP_Header" required="N">
+      <field name="SoupBinTCP_Packet_Length" required="Y"/>
+      <field name="SoupBinTCP_Packet_Type" offset="2" required="Y"/>
+    </group>
+  </header>
+  <messages>
+    <message msgcat="Inbound_Messages" name="Enter_Order" msgtype="O">
+      <field name="Order_Token" offset="1" required="Y"/>
+      <field name="Order_Book_ID" offset="15" required="Y"/>
+      <field name="Side" offset="19" required="Y"/>
+      <field name="Quantity" offset="20" required="Y"/>
+      <field name="Price" offset="28" required="Y"/>
+      <field name="Time_In_Force" offset="32" required="Y"/>
+      <field name="Open_Close" offset="33" required="Y"/>
+      <field name="Client/Account" offset="34" required="Y"/>
+      <field name="Customer_Info" offset="50" required="Y"/>
+      <field name="Exchange_Info" offset="65" required="Y"/>
+      <field name="Display_Quantity" offset="97" required="Y"/>
+      <field name="Reserved_9" offset="105" required="Y"/>
+    </message>
+    <message msgcat="Inbound_Messages" name="Replace_Order" msgtype="U_U">
+      <field name="Existing_Order_Token" offset="1" required="Y"/>
+      <field name="Replacement_Order_Token" offset="15" required="Y"/>
+      <field name="Quantity" offset="29" required="Y"/>
+      <field name="Price" offset="37" required="Y"/>
+      <field name="Open_Close" offset="41" required="Y"/>
+      <field name="Client/Account" offset="42" required="Y"/>
+      <field name="Customer_Info" offset="58" required="Y"/>
+      <field name="Exchange_Info" offset="73" required="Y"/>
+      <field name="Display_Quantity" offset="105" required="Y"/>
+      <field name="Reserved_9" offset="113" required="Y"/>
+    </message>
+    <message msgcat="Inbound_Messages" name="Cancel_Order" msgtype="X">
+      <field name="Order_Token" offset="1" required="Y"/>
+    </message>
+    <message msgcat="Inbound_Messages" name="Cancel_Order_by_ID" msgtype="Y">
+      <field name="Order_Book_ID" offset="1" required="Y"/>
+      <field name="Side" offset="5" required="Y"/>
+      <field name="Order_ID" offset="6" required="Y"/>
+    </message>
+    <message msgcat="Outbound_Messages" name="Order_Accepted" msgtype="A">
+      <field name="Timestamp" offset="1" required="Y"/>
+      <field name="Order_Token" offset="9" required="Y"/>
+      <field name="Order_Book_ID" offset="23" required="Y"/>
+      <field name="Side" offset="27" required="Y"/>
+      <field name="Order_ID" offset="28" required="Y"/>
+      <field name="Quantity" offset="36" required="Y"/>
+      <field name="Price" offset="44" required="Y"/>
+      <field name="Time_In_Force" offset="48" required="Y"/>
+      <field name="Open_Close" offset="49" required="Y"/>
+      <field name="Client/Account" offset="50" required="Y"/>
+      <field name="Order_State" offset="66" required="Y"/>
+      <field name="Customer_Info" offset="67" required="Y"/>
+      <field name="Exchange_Info" offset="82" required="Y"/>
+      <field name="Pre_Trade_Quantity" offset="114" required="Y"/>
+      <field name="Display_Quantity" offset="122" required="Y"/>
+    </message>
+    <message msgcat="Outbound_Messages" name="Order_Rejected" msgtype="J">
+      <field name="Timestamp" offset="1" required="Y"/>
+      <field name="Order_Token" offset="9" required="Y"/>
+      <field name="Reject_Code" offset="23" required="Y"/>
+    </message>
+    <message msgcat="Outbound_Messages" name="Order_Replaced" msgtype="U_S">
+      <field name="Timestamp" offset="1" required="Y"/>
+      <field name="Replacement_Order_Token" offset="9" required="Y"/>
+      <field name="Previous_Order_Token" offset="23" required="Y"/>
+      <field name="Order_Book_ID" offset="37" required="Y"/>
+      <field name="Side" offset="41" required="Y"/>
+      <field name="Order_ID" offset="42" required="Y"/>
+      <field name="Quantity" offset="50" required="Y"/>
+      <field name="Price" offset="58" required="Y"/>
+      <field name="Time_In_Force" offset="62" required="Y"/>
+      <field name="Open_Close" offset="63" required="Y"/>
+      <field name="Client/Account" offset="64" required="Y"/>
+      <field name="Order_State" offset="80" required="Y"/>
+      <field name="Customer_Info" offset="81" required="Y"/>
+      <field name="Exchange_Info" offset="96" required="Y"/>
+      <field name="Pre_Trade_Quantity" offset="128" required="Y"/>
+      <field name="Display_Quantity" offset="136" required="Y"/>
+    </message>
+    <message msgcat="Outbound_Messages" name="Order_Cancelled" msgtype="C">
+      <field name="Timestamp" offset="1" required="Y"/>
+      <field name="Order_Token" offset="9" required="Y"/>
+      <field name="Order_Book_ID" offset="23" required="Y"/>
+      <field name="Side" offset="27" required="Y"/>
+      <field name="Order_ID" offset="28" required="Y"/>
+      <field name="Reason" offset="36" required="Y"/>
+    </message>
+    <message msgcat="Outbound_Messages" name="Order_Executed" msgtype="E">
+      <field name="Timestamp" offset="1" required="Y"/>
+      <field name="Order_Token" offset="9" required="Y"/>
+      <field name="Order_Book_ID" offset="23" required="Y"/>
+      <field name="Traded_Quantity" offset="27" required="Y"/>
+      <field name="Trade_Price" offset="35" required="Y"/>
+      <field name="Match_ID" offset="39" required="Y"/>
+      <field name="Reserved_17" offset="51" required="Y"/>
+    </message>
+    <message msgcat="SoupBinTCP_Sent_by_Server" name="SoupBinTCP_Login_Accepted" msgtype="SoupBinTCP_A">
+      <field name="SoupBinTCP_Session" offset="3" required="Y"/>
+      <field name="SoupBinTCP_Sequence_Number" offset="13" required="Y"/>
+    </message>
+    <message msgcat="SoupBinTCP_Sent_by_Server" name="SoupBinTCP_Login_Rejected" msgtype="SoupBinTCP_J">
+      <field name="SoupBinTCP_Reject_Reason_Code" offset="3" required="Y"/>
+    </message>
+    <message msgcat="SoupBinTCP_Sent_by_Server" name="SoupBinTCP_Sequenced_Data_Packet" msgtype="SoupBinTCP_S">
+      <field name="SoupBinTCP_Message" offset="3" required="Y"/>
+    </message>
+    <message msgcat="SoupBinTCP_Sent_by_Server" name="SoupBinTCP_Server_Heartbeat" msgtype="SoupBinTCP_H"/>
+    <message msgcat="SoupBinTCP_Sent_by_Server" name="SoupBinTCP_End_of_Session" msgtype="SoupBinTCP_Z"/>
+    <message msgcat="SoupBinTCP_Sent_by_Client" name="SoupBinTCP_Login_Request" msgtype="SoupBinTCP_L">
+      <field name="SoupBinTCP_Username" offset="3" required="Y"/>
+      <field name="SoupBinTCP_Password" offset="9" required="Y"/>
+      <field name="SoupBinTCP_Requested_Session" offset="19" required="Y"/>
+      <field name="SoupBinTCP_Requested_Sequence_Number" offset="29" required="Y"/>
+    </message>
+    <message msgcat="SoupBinTCP_Sent_by_Client" name="SoupBinTCP_Unsequenced_Data_Packet" msgtype="SoupBinTCP_U">
+      <field name="SoupBinTCP_Message" offset="3" required="Y"/>
+    </message>
+    <message msgcat="SoupBinTCP_Sent_by_Client" name="SoupBinTCP_Client_Heartbeat" msgtype="SoupBinTCP_R"/>
+    <message msgcat="SoupBinTCP_Sent_by_Client" name="SoupBinTCP_Logout_Request" msgtype="SoupBinTCP_O"/>
+  </messages>
+  <fields>
+    <field name="Client/Account" length="16" padding="RIGHT" paddingChar="32" type="STRING"/>
+    <field name="Customer_Info" length="15" type="UBYTE_ARRAY"/>
+    <field name="Display_Quantity" length="8" type="UINT"/>
+    <field name="Exchange_Info" length="32" type="UBYTE_ARRAY"/>
+    <field name="Existing_Order_Token" length="14" padding="RIGHT" paddingChar="32" type="STRING"/>
+    <field name="Match_ID" length="12" type="UINT"/>
+    <field name="Message_Type" length="1" type="CHAR"/>
+    <field name="Open_Close" length="1" type="UINT">
+      <value enum="0"/>
+      <value enum="1"/>
+      <value enum="2"/>
+      <value enum="3"/>
+      <value enum="4"/>
+    </field>
+    <field name="Order_ID" length="8" type="UINT"/>
+    <field name="Order_State" length="1" type="UINT">
+      <value enum="1"/>
+      <value enum="2"/>
+      <value enum="4"/>
+      <value enum="99"/>
+    </field>
+    <field name="Order_Token" length="14" padding="RIGHT" paddingChar="32" type="STRING"/>
+    <field name="Order_Book_ID" length="4" type="UINT"/>
+    <field name="Pre_Trade_Quantity" length="8" type="UINT"/>
+    <field name="Previous_Order_Token" length="14" padding="RIGHT" paddingChar="32" type="STRING"/>
+    <field name="Price" length="4" type="INT"/>
+    <field name="Quantity" length="8" type="UINT"/>
+    <field name="Reason" length="1" type="UINT">
+      <value enum="1"/>
+      <value enum="3"/>
+      <value enum="4"/>
+      <value enum="5"/>
+      <value enum="6"/>
+      <value enum="7"/>
+      <value enum="8"/>
+      <value enum="9"/>
+      <value enum="10"/>
+      <value enum="12"/>
+      <value enum="13"/>
+      <value enum="15"/>
+      <value enum="19"/>
+      <value enum="21"/>
+      <value enum="30"/>
+      <value enum="31"/>
+      <value enum="34"/>
+      <value enum="43"/>
+    </field>
+    <field name="Reject_Code" length="4" type="INT"/>
+    <field name="Replacement_Order_Token" length="14" padding="RIGHT" paddingChar="32" type="STRING"/>
+    <field name="Reserved_9" length="9" type="UBYTE_ARRAY"/>
+    <field name="Reserved_17" length="17" type="UBYTE_ARRAY"/>
+    <field name="Side" length="1" type="CHAR">
+      <value enum="B"/>
+      <value enum="S"/>
+      <value enum="T"/>
+    </field>
+    <field name="SoupBinTCP_Message" type="UBYTE_ARRAY"/>
+    <field name="SoupBinTCP_Packet_Length" length="2" type="UINT"/>
+    <field name="SoupBinTCP_Packet_Type" length="1" type="CHAR"/>
+    <field name="SoupBinTCP_Password" length="10" padding="RIGHT" paddingChar="32" type="STRING"/>
+    <field name="SoupBinTCP_Reject_Reason_Code" length="1" type="CHAR">
+      <value enum="A"/>
+      <value enum="S"/>
+    </field>
+    <field name="SoupBinTCP_Requested_Sequence_Number" length="20" paddingChar="32" type="STRING"/>
+    <field name="SoupBinTCP_Requested_Session" length="10" paddingChar="32" type="STRING"/>
+    <field name="SoupBinTCP_Sequence_Number" length="20" paddingChar="32" type="STRING"/>
+    <field name="SoupBinTCP_Session" length="10" paddingChar="32" type="STRING"/>
+    <field name="SoupBinTCP_Username" length="6" padding="RIGHT" paddingChar="32" type="STRING"/>
+    <field name="Time_In_Force" length="1" type="UINT">
+      <value enum="0"/>
+      <value enum="3"/>
+      <value enum="4"/>
+    </field>
+    <field name="Timestamp" length="8" type="UINT"/>
+    <field name="Trade_Price" length="4" type="INT"/>
+    <field name="Traded_Quantity" length="8" type="UINT"/>
+  </fields>
+</formata>

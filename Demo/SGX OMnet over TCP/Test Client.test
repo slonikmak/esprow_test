@@ -1,0 +1,232 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ExchangeDictionary="com.esprow.nozomi.dictionary.exchange" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test loggingLevel="DEBUG">
+    <testCommand xsi:type="TestUnit:NewMessageSender" messageHandlerId="sender" targetSystemId="Cert" targetHandlerId="SGX OMnet Relay Target" autoConnect="true" collectStatistics="false" sendSync="true" override="true" validateMessages="true" cleanQueue="true" disableDictionaryMismatchCheck="false"/>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" disabled="true" messageId="Read_Event_All" messageSenderProducer="//@test/@testCommand.0">
+      <message xsi:type="ExchangeDictionary:ExchangeMessage" name="READ_EVENT" dictionaryName="SGX_OMnet">
+        <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_common_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="length_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_request_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_request_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="facility_type_u" required="true" stringValue="999" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_u" required="true" stringValue="64000" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="function_code_u" required="true" stringValue="66561" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_2_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+            </content>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_response_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_response_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="txstat_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="return_value_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_2_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_3_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_4_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_5_q" required="true" length="8" padding="LEFT"/>
+            </content>
+          </content>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" disabled="true" messageId="BI9" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="info_heartbeat_t[].info_heartbeat_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="info_heartbeat_t[].info_heartbeat_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="info_heartbeat_t[].info_heartbeat_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="9" fieldType="BigDecimal"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="OrderId" value="6676663967441541511"/>
+    <testCommand xsi:type="TestUnit:ForLoopCommand" disabled="true" dataSetId="i" dataSetProviderType="RANGE">
+      <testCommand xsi:type="TestUnit:NewVar" disabled="true" variableId="abc" value="%DATA_SETS.i.LOOP_COUNTER%"/>
+      <dataSetProvider xsi:type="TestUnit:RangeDataSetProvider" skipColumnName="SKIP_TEST" executingTagColumnName="EXEC_TAG" loopCounterStart="1" loopCounterEnd="3" loopStep="1"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" disabled="true">
+      <instructionMultiLanguage key="en" value="%VARIABLES.OrderId%"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CallSubTestCommand" disabled="true" subTestName="Sub2Fix.test"/>
+    <testCommand xsi:type="TestUnit:NewVar" variableId="num" value="10+random()"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="%VARIABLES.num%"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="dq124" messageSenderProducer="//@test/@testCommand.0">
+      <message xsi:type="ExchangeDictionary:ExchangeMessage" name="DQ124" dictionaryName="SGX_OMnet">
+        <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_common_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="length_u" required="true" stringValue="40" length="4" padding="LEFT"/>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_request_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_request_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="facility_type_u" required="true" stringValue="710" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_u" required="true" stringValue="64000" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="function_code_u" required="true" stringValue="66049" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_2_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+            </content>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_response_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_response_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="txstat_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="return_value_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_2_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_3_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_4_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_5_q" required="true" length="8" padding="LEFT"/>
+            </content>
+          </content>
+        </content>
+        <content xsi:type="ExchangeDictionary:ExchangeGroup" name="query_delta_t" required="true">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="query_delta_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeGroup" name="transaction_type" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="transaction_type_t" required="true">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="central_module_c" required="true" stringValue="D" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="server_type_c" required="true" stringValue="Q" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="transaction_number_n" required="true" stringValue="124" length="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeGroup" name="series" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="series_t" required="true" tag="50000">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="country_c" required="true" stringValue="83" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="market_c" required="true" stringValue="158" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="instrument_group_c" required="true" stringValue="50" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="modifier_c" required="true" stringValue="0" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="commodity_n" required="true" stringValue="0" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="expiration_date_n" required="true" stringValue="0" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeIntField" name="strike_price_i" required="true" stringValue="0" length="4" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="segment_number_n" required="true" stringValue="1" length="2" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="filler_2_s" required="true" stringValue="&quot;0&quot;,&quot;0&quot;" length="2" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeLongField" name="download_ref_number_q" required="true" stringValue="0" length="8" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeGroup" name="full_answer_timestamp" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="time_spec_t" required="true">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="tv_sec" required="true" stringValue="0" length="4" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeIntField" name="tv_nsec" required="true" stringValue="0" length="4" padding="LEFT"/>
+              </content>
+            </content>
+          </content>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="logout" messageSenderProducer="//@test/@testCommand.0">
+      <message xsi:type="ExchangeDictionary:ExchangeMessage" name="LOGOUT" dictionaryName="SGX_OMnet">
+        <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_common_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="length_u" required="true" stringValue="8" length="4" padding="LEFT"/>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_request_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_request_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="facility_type_u" required="true" stringValue="2" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="function_code_u" required="true" stringValue="257" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_2_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+            </content>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_response_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_response_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="txstat_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="return_value_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_2_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_3_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_4_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_5_q" required="true" length="8" padding="LEFT"/>
+            </content>
+          </content>
+        </content>
+        <content xsi:type="ExchangeDictionary:ExchangeGroup" name="omni_logout_t" required="true">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="omni_logout_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="filler_4_s" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;" length="4" padding="LEFT"/>
+          </content>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:PauseCommand" length="10"/>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="dq124" messageSenderProducer="//@test/@testCommand.0">
+      <message xsi:type="ExchangeDictionary:ExchangeMessage" name="DQ124" dictionaryName="SGX_OMnet">
+        <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_common_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="length_u" required="true" stringValue="40" length="4" padding="LEFT"/>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_request_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_request_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="facility_type_u" required="true" stringValue="710" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_u" required="true" stringValue="64000" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="function_code_u" required="true" stringValue="66049" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_2_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+            </content>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_response_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_response_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="txstat_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="return_value_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_2_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_3_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_4_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_5_q" required="true" length="8" padding="LEFT"/>
+            </content>
+          </content>
+        </content>
+        <content xsi:type="ExchangeDictionary:ExchangeGroup" name="query_delta_t" required="true">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="query_delta_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeGroup" name="transaction_type" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="transaction_type_t" required="true">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="central_module_c" required="true" stringValue="D" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="server_type_c" required="true" stringValue="Q" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="transaction_number_n" required="true" stringValue="124" length="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeGroup" name="series" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="series_t" required="true" tag="50000">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="country_c" required="true" stringValue="83" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="market_c" required="true" stringValue="158" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="instrument_group_c" required="true" stringValue="50" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="modifier_c" required="true" stringValue="0" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="commodity_n" required="true" stringValue="0" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="expiration_date_n" required="true" stringValue="0" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeIntField" name="strike_price_i" required="true" stringValue="0" length="4" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="segment_number_n" required="true" stringValue="1" length="2" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="filler_2_s" required="true" stringValue="&quot;0&quot;,&quot;0&quot;" length="2" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeLongField" name="download_ref_number_q" required="true" stringValue="0" length="8" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeGroup" name="full_answer_timestamp" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="time_spec_t" required="true">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="tv_sec" required="true" stringValue="0" length="4" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeIntField" name="tv_nsec" required="true" stringValue="0" length="4" padding="LEFT"/>
+              </content>
+            </content>
+          </content>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="logout" messageSenderProducer="//@test/@testCommand.0">
+      <message xsi:type="ExchangeDictionary:ExchangeMessage" name="LOGOUT" dictionaryName="SGX_OMnet">
+        <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_common_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="length_u" required="true" stringValue="8" length="4" padding="LEFT"/>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_request_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_request_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="facility_type_u" required="true" stringValue="2" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="function_code_u" required="true" stringValue="257" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_2_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+            </content>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_response_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_response_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="txstat_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="return_value_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_2_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_3_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_4_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_5_q" required="true" length="8" padding="LEFT"/>
+            </content>
+          </content>
+        </content>
+        <content xsi:type="ExchangeDictionary:ExchangeGroup" name="omni_logout_t" required="true">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="omni_logout_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="filler_4_s" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;" length="4" padding="LEFT"/>
+          </content>
+        </content>
+      </message>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

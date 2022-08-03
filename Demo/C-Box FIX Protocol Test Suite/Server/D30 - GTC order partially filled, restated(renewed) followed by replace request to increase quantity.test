@@ -1,0 +1,978 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CertificationCommands="com.esprow.nozomi.testunit.commands.certification" xmlns:FixDictionary="com.esprow.nozomi.dictionary.fix" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test comment="D30 - GTC order partially filled, restated(renewed) followed by replace request to increase quantity&#xD;&#xA;Client send in new order of quantity 10000, partial fill and then done for day, on second day, order restated and issue Replace Request to increase quantity, order successfully replaced" certificationUnit="true" dictionary="Quick Fix 4.2">
+    <testCommand xsi:type="CertificationCommands:CreateCertificationReceiverCommand" targetSystemId="%CONFIGURATIONS.CERTIFICATION.SYSTEM%" targetHandlerId="%CONFIGURATIONS.CERTIFICATION.DESTINATION%" ignoreAdminMessages="true" validateMessages="true" disableDictionaryMismatchCheck="false"/>
+    <testCommand xsi:type="TestUnit:LogEntry" comment="Day 1" disabled="true" text="# Day 1"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please enter a new GTC limit order to buy (B) 10,000 shares of %CONFIGURATIONS.Symbol% at price %CONFIGURATIONS.Price%."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="incomingLimitOrder" messageSenderProducer="//@test/@testCommand.0" timeout="%CONFIGURATIONS.WAIT_COMMAND_TIMEOUT%" searchFromLastMatch="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="ClOrdID" checkType="EXISTS"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="TimeInForce" value="1" fieldType="Char"/>
+      <validationTemplateName>../Messages/NewOrderSingle_Validation.msg</validationTemplateName>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" comment="Execution Report 'New'" messageId="D30_ExecutionReport_New" messageSenderProducer="//@test/@testCommand.0">
+      <messageTemplates>../Messages/ExecutionReport_New.msg</messageTemplates>
+      <message xsi:type="FixDictionary:FixMessage" name="ExecutionReport" dictionaryName="Quick Fix 4.2" msgType="8">
+        <content xsi:type="FixDictionary:FixComponent" name="StandardHeader">
+          <content xsi:type="FixDictionary:FixStringField" name="BeginString" required="true" tag="8"/>
+          <content xsi:type="FixDictionary:FixIntField" name="BodyLength" required="true" tag="9"/>
+          <content xsi:type="FixDictionary:FixStringField" name="MsgType" required="true" tag="35"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderCompID" required="true" tag="49"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetCompID" required="true" tag="56"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfCompID" tag="115"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToCompID" tag="128"/>
+          <content xsi:type="FixDictionary:FixIntField" name="SecureDataLen" tag="90"/>
+          <content xsi:type="FixDictionary:FixDataField" name="SecureData" tag="91"/>
+          <content xsi:type="FixDictionary:FixIntField" name="MsgSeqNum" required="true" tag="34"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderSubID" tag="50"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderLocationID" tag="142"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetSubID" tag="57"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetLocationID" tag="143"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfSubID" tag="116"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfLocationID" tag="144"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToSubID" tag="129"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToLocationID" tag="145"/>
+          <content xsi:type="FixDictionary:FixBooleanField" name="PossDupFlag" tag="43"/>
+          <content xsi:type="FixDictionary:FixBooleanField" name="PossResend" tag="97"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="SendingTime" required="true" tag="52"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="OrigSendingTime" tag="122"/>
+          <content xsi:type="FixDictionary:FixIntField" name="XmlDataLen" tag="212"/>
+          <content xsi:type="FixDictionary:FixDataField" name="XmlData" tag="213"/>
+          <content xsi:type="FixDictionary:FixStringField" name="MessageEncoding" tag="347"/>
+          <content xsi:type="FixDictionary:FixIntField" name="LastMsgSeqNumProcessed" tag="369"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="OnBehalfOfSendingTime" tag="370"/>
+        </content>
+        <content xsi:type="FixDictionary:FixStringField" name="OrderID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" tag="37"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecondaryOrderID" tag="198"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClOrdID" stringValue="@tagFromLastIncomingMessage(11, 1, D)@" tag="11"/>
+        <content xsi:type="FixDictionary:FixStringField" name="OrigClOrdID" tag="41"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClientID" tag="109"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecBroker" tag="76"/>
+        <content xsi:type="FixDictionary:FixGroup" name="NoContraBrokers" repeating="true" repeatingIndex="1" tag="382">
+          <content xsi:type="FixDictionary:FixStringField" name="ContraBroker" tag="375"/>
+          <content xsi:type="FixDictionary:FixStringField" name="ContraTrader" tag="337"/>
+          <content xsi:type="FixDictionary:FixQtyField" name="ContraTradeQty" tag="437"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="ContraTradeTime" tag="438"/>
+        </content>
+        <content xsi:type="FixDictionary:FixStringField" name="ListID" tag="66"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" tag="17"/>
+        <content xsi:type="FixDictionary:FixCharField" name="ExecTransType" required="true" stringValue="0" tag="20"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecRefID" tag="19"/>
+        <content xsi:type="FixDictionary:FixCharField" name="ExecType" required="true" stringValue="0" tag="150"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OrdStatus" required="true" stringValue="0" tag="39"/>
+        <content xsi:type="FixDictionary:FixIntField" name="OrdRejReason" tag="103"/>
+        <content xsi:type="FixDictionary:FixIntField" name="ExecRestatementReason" tag="378"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Account" tag="1"/>
+        <content xsi:type="FixDictionary:FixCharField" name="SettlmntTyp" tag="63"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="FutSettDate" tag="64"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Symbol" required="true" stringValue="@tagFromLastIncomingMessage(55, 1, D)@" tag="55"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SymbolSfx" tag="65"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityID" tag="48"/>
+        <content xsi:type="FixDictionary:FixStringField" name="IDSource" tag="22"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityType" tag="167"/>
+        <content xsi:type="FixDictionary:FixMonthYearField" name="MaturityMonthYear" tag="200"/>
+        <content xsi:type="FixDictionary:FixDayOfMonthField" name="MaturityDay" tag="205"/>
+        <content xsi:type="FixDictionary:FixIntField" name="PutOrCall" tag="201"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="StrikePrice" tag="202"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OptAttribute" tag="206"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="ContractMultiplier" tag="231"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="CouponRate" tag="223"/>
+        <content xsi:type="FixDictionary:FixExchangeField" name="SecurityExchange" tag="207"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Issuer" tag="106"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedIssuerLen" tag="348"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedIssuer" tag="349"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityDesc" tag="107"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedSecurityDescLen" tag="350"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedSecurityDesc" tag="351"/>
+        <content xsi:type="FixDictionary:FixCharField" name="Side" required="true" stringValue="@tagFromLastIncomingMessage(54, 1, D)@" tag="54"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="OrderQty" stringValue="@tagFromLastIncomingMessage(38, 1, D)@" tag="38"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="CashOrderQty" tag="152"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OrdType" tag="40"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="Price" tag="44"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="StopPx" tag="99"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="PegDifference" tag="211"/>
+        <content xsi:type="FixDictionary:FixCharField" name="DiscretionInst" tag="388"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="DiscretionOffset" tag="389"/>
+        <content xsi:type="FixDictionary:FixCurrencyField" name="Currency" tag="15"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ComplianceID" tag="376"/>
+        <content xsi:type="FixDictionary:FixBooleanField" name="SolicitedFlag" tag="377"/>
+        <content xsi:type="FixDictionary:FixCharField" name="TimeInForce" tag="59"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="EffectiveTime" tag="168"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="ExpireDate" tag="432"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="ExpireTime" tag="126"/>
+        <content xsi:type="FixDictionary:FixMultipleStringValueField" name="ExecInst" tag="18"/>
+        <content xsi:type="FixDictionary:FixCharField" name="Rule80A" tag="47"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="LastShares" stringValue="0" tag="32"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastPx" stringValue="0" tag="31"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastSpotRate" tag="194"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastForwardPoints" tag="195"/>
+        <content xsi:type="FixDictionary:FixExchangeField" name="LastMkt" tag="30"/>
+        <content xsi:type="FixDictionary:FixStringField" name="TradingSessionID" tag="336"/>
+        <content xsi:type="FixDictionary:FixCharField" name="LastCapacity" tag="29"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="LeavesQty" required="true" stringValue="@tagFromLastIncomingMessage(38, 1, D)@" tag="151"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="CumQty" required="true" stringValue="0" tag="14"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="AvgPx" required="true" stringValue="0" tag="6"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="DayOrderQty" tag="424"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="DayCumQty" tag="425"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="DayAvgPx" tag="426"/>
+        <content xsi:type="FixDictionary:FixIntField" name="GTBookingInst" tag="427"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="TradeDate" tag="75"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="TransactTime" tag="60"/>
+        <content xsi:type="FixDictionary:FixBooleanField" name="ReportToExch" tag="113"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="Commission" tag="12"/>
+        <content xsi:type="FixDictionary:FixCharField" name="CommType" tag="13"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="GrossTradeAmt" tag="381"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="SettlCurrAmt" tag="119"/>
+        <content xsi:type="FixDictionary:FixCurrencyField" name="SettlCurrency" tag="120"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="SettlCurrFxRate" tag="155"/>
+        <content xsi:type="FixDictionary:FixCharField" name="SettlCurrFxRateCalc" tag="156"/>
+        <content xsi:type="FixDictionary:FixCharField" name="HandlInst" tag="21"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MinQty" tag="110"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MaxFloor" tag="111"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OpenClose" tag="77"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MaxShow" tag="210"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Text" tag="58"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedTextLen" tag="354"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedText" tag="355"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="FutSettDate2" tag="193"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="OrderQty2" tag="192"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClearingFirm" tag="439"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClearingAccount" tag="440"/>
+        <content xsi:type="FixDictionary:FixCharField" name="MultiLegReportingType" tag="442"/>
+        <content xsi:type="FixDictionary:FixComponent" name="StandardTrailer">
+          <content xsi:type="FixDictionary:FixIntField" name="SignatureLength" tag="93"/>
+          <content xsi:type="FixDictionary:FixDataField" name="Signature" tag="89"/>
+          <content xsi:type="FixDictionary:FixStringField" name="CheckSum" required="true" tag="10"/>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" comment="Partial fill of 2000 shares" messageId="D30_ExecutionReport_PF1" messageSenderProducer="//@test/@testCommand.0">
+      <messageTemplates>../Messages/ExecutionReport_Partial_Fill.msg</messageTemplates>
+      <message xsi:type="FixDictionary:FixMessage" name="ExecutionReport" dictionaryName="Quick Fix 4.2" msgType="8">
+        <content xsi:type="FixDictionary:FixComponent" name="StandardHeader">
+          <content xsi:type="FixDictionary:FixStringField" name="BeginString" required="true" tag="8"/>
+          <content xsi:type="FixDictionary:FixIntField" name="BodyLength" required="true" tag="9"/>
+          <content xsi:type="FixDictionary:FixStringField" name="MsgType" required="true" tag="35"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderCompID" required="true" tag="49"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetCompID" required="true" tag="56"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfCompID" tag="115"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToCompID" tag="128"/>
+          <content xsi:type="FixDictionary:FixIntField" name="SecureDataLen" tag="90"/>
+          <content xsi:type="FixDictionary:FixDataField" name="SecureData" tag="91"/>
+          <content xsi:type="FixDictionary:FixIntField" name="MsgSeqNum" required="true" tag="34"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderSubID" tag="50"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderLocationID" tag="142"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetSubID" tag="57"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetLocationID" tag="143"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfSubID" tag="116"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfLocationID" tag="144"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToSubID" tag="129"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToLocationID" tag="145"/>
+          <content xsi:type="FixDictionary:FixBooleanField" name="PossDupFlag" tag="43"/>
+          <content xsi:type="FixDictionary:FixBooleanField" name="PossResend" tag="97"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="SendingTime" required="true" tag="52"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="OrigSendingTime" tag="122"/>
+          <content xsi:type="FixDictionary:FixIntField" name="XmlDataLen" tag="212"/>
+          <content xsi:type="FixDictionary:FixDataField" name="XmlData" tag="213"/>
+          <content xsi:type="FixDictionary:FixStringField" name="MessageEncoding" tag="347"/>
+          <content xsi:type="FixDictionary:FixIntField" name="LastMsgSeqNumProcessed" tag="369"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="OnBehalfOfSendingTime" tag="370"/>
+        </content>
+        <content xsi:type="FixDictionary:FixStringField" name="OrderID" required="true" stringValue="@tagFromLastOutgoingMessage(37, 1, 8)@" tag="37"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecondaryOrderID" tag="198"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClOrdID" stringValue="@tagFromLastIncomingMessage(11, 1, D)@" tag="11"/>
+        <content xsi:type="FixDictionary:FixStringField" name="OrigClOrdID" tag="41"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClientID" tag="109"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecBroker" tag="76"/>
+        <content xsi:type="FixDictionary:FixGroup" name="NoContraBrokers" repeating="true" repeatingIndex="1" tag="382">
+          <content xsi:type="FixDictionary:FixStringField" name="ContraBroker" tag="375"/>
+          <content xsi:type="FixDictionary:FixStringField" name="ContraTrader" tag="337"/>
+          <content xsi:type="FixDictionary:FixQtyField" name="ContraTradeQty" tag="437"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="ContraTradeTime" tag="438"/>
+        </content>
+        <content xsi:type="FixDictionary:FixStringField" name="ListID" tag="66"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" tag="17"/>
+        <content xsi:type="FixDictionary:FixCharField" name="ExecTransType" required="true" stringValue="0" tag="20"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecRefID" tag="19"/>
+        <content xsi:type="FixDictionary:FixCharField" name="ExecType" required="true" stringValue="1" tag="150"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OrdStatus" required="true" stringValue="1" tag="39"/>
+        <content xsi:type="FixDictionary:FixIntField" name="OrdRejReason" tag="103"/>
+        <content xsi:type="FixDictionary:FixIntField" name="ExecRestatementReason" tag="378"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Account" tag="1"/>
+        <content xsi:type="FixDictionary:FixCharField" name="SettlmntTyp" tag="63"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="FutSettDate" tag="64"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Symbol" required="true" stringValue="@tagFromLastIncomingMessage(55, 1, D)@" tag="55"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SymbolSfx" tag="65"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityID" tag="48"/>
+        <content xsi:type="FixDictionary:FixStringField" name="IDSource" tag="22"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityType" tag="167"/>
+        <content xsi:type="FixDictionary:FixMonthYearField" name="MaturityMonthYear" tag="200"/>
+        <content xsi:type="FixDictionary:FixDayOfMonthField" name="MaturityDay" tag="205"/>
+        <content xsi:type="FixDictionary:FixIntField" name="PutOrCall" tag="201"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="StrikePrice" tag="202"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OptAttribute" tag="206"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="ContractMultiplier" tag="231"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="CouponRate" tag="223"/>
+        <content xsi:type="FixDictionary:FixExchangeField" name="SecurityExchange" tag="207"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Issuer" tag="106"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedIssuerLen" tag="348"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedIssuer" tag="349"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityDesc" tag="107"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedSecurityDescLen" tag="350"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedSecurityDesc" tag="351"/>
+        <content xsi:type="FixDictionary:FixCharField" name="Side" required="true" stringValue="@tagFromLastIncomingMessage(54, 1, D)@" tag="54"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="OrderQty" stringValue="@tagFromLastIncomingMessage(38, 1, D)@" tag="38"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="CashOrderQty" tag="152"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OrdType" tag="40"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="Price" tag="44"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="StopPx" tag="99"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="PegDifference" tag="211"/>
+        <content xsi:type="FixDictionary:FixCharField" name="DiscretionInst" tag="388"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="DiscretionOffset" tag="389"/>
+        <content xsi:type="FixDictionary:FixCurrencyField" name="Currency" tag="15"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ComplianceID" tag="376"/>
+        <content xsi:type="FixDictionary:FixBooleanField" name="SolicitedFlag" tag="377"/>
+        <content xsi:type="FixDictionary:FixCharField" name="TimeInForce" tag="59"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="EffectiveTime" tag="168"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="ExpireDate" tag="432"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="ExpireTime" tag="126"/>
+        <content xsi:type="FixDictionary:FixMultipleStringValueField" name="ExecInst" tag="18"/>
+        <content xsi:type="FixDictionary:FixCharField" name="Rule80A" tag="47"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="LastShares" stringValue="2000" tag="32"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastPx" stringValue="@tagFromLastIncomingMessage(44, 1, D)@" tag="31"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastSpotRate" tag="194"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastForwardPoints" tag="195"/>
+        <content xsi:type="FixDictionary:FixExchangeField" name="LastMkt" tag="30"/>
+        <content xsi:type="FixDictionary:FixStringField" name="TradingSessionID" tag="336"/>
+        <content xsi:type="FixDictionary:FixCharField" name="LastCapacity" tag="29"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="LeavesQty" required="true" stringValue="8000" tag="151"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="CumQty" required="true" stringValue="2000" tag="14"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="AvgPx" required="true" stringValue="@tagFromLastIncomingMessage(44, 1, D)@" tag="6"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="DayOrderQty" tag="424"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="DayCumQty" tag="425"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="DayAvgPx" tag="426"/>
+        <content xsi:type="FixDictionary:FixIntField" name="GTBookingInst" tag="427"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="TradeDate" tag="75"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="TransactTime" tag="60"/>
+        <content xsi:type="FixDictionary:FixBooleanField" name="ReportToExch" tag="113"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="Commission" tag="12"/>
+        <content xsi:type="FixDictionary:FixCharField" name="CommType" tag="13"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="GrossTradeAmt" tag="381"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="SettlCurrAmt" tag="119"/>
+        <content xsi:type="FixDictionary:FixCurrencyField" name="SettlCurrency" tag="120"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="SettlCurrFxRate" tag="155"/>
+        <content xsi:type="FixDictionary:FixCharField" name="SettlCurrFxRateCalc" tag="156"/>
+        <content xsi:type="FixDictionary:FixCharField" name="HandlInst" tag="21"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MinQty" tag="110"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MaxFloor" tag="111"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OpenClose" tag="77"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MaxShow" tag="210"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Text" tag="58"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedTextLen" tag="354"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedText" tag="355"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="FutSettDate2" tag="193"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="OrderQty2" tag="192"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClearingFirm" tag="439"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClearingAccount" tag="440"/>
+        <content xsi:type="FixDictionary:FixCharField" name="MultiLegReportingType" tag="442"/>
+        <content xsi:type="FixDictionary:FixComponent" name="StandardTrailer">
+          <content xsi:type="FixDictionary:FixIntField" name="SignatureLength" tag="93"/>
+          <content xsi:type="FixDictionary:FixDataField" name="Signature" tag="89"/>
+          <content xsi:type="FixDictionary:FixStringField" name="CheckSum" required="true" tag="10"/>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" comment="Execution Report Done for Day" messageId="D30_ExecutionReport_DFD" messageSenderProducer="//@test/@testCommand.0">
+      <messageTemplates>../Messages/ExecutionReport_DFD.msg</messageTemplates>
+      <message xsi:type="FixDictionary:FixMessage" name="ExecutionReport" dictionaryName="Quick Fix 4.2" msgType="8">
+        <content xsi:type="FixDictionary:FixComponent" name="StandardHeader">
+          <content xsi:type="FixDictionary:FixStringField" name="BeginString" required="true" tag="8"/>
+          <content xsi:type="FixDictionary:FixIntField" name="BodyLength" required="true" tag="9"/>
+          <content xsi:type="FixDictionary:FixStringField" name="MsgType" required="true" tag="35"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderCompID" required="true" tag="49"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetCompID" required="true" tag="56"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfCompID" tag="115"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToCompID" tag="128"/>
+          <content xsi:type="FixDictionary:FixIntField" name="SecureDataLen" tag="90"/>
+          <content xsi:type="FixDictionary:FixDataField" name="SecureData" tag="91"/>
+          <content xsi:type="FixDictionary:FixIntField" name="MsgSeqNum" required="true" tag="34"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderSubID" tag="50"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderLocationID" tag="142"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetSubID" tag="57"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetLocationID" tag="143"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfSubID" tag="116"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfLocationID" tag="144"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToSubID" tag="129"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToLocationID" tag="145"/>
+          <content xsi:type="FixDictionary:FixBooleanField" name="PossDupFlag" tag="43"/>
+          <content xsi:type="FixDictionary:FixBooleanField" name="PossResend" tag="97"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="SendingTime" required="true" tag="52"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="OrigSendingTime" tag="122"/>
+          <content xsi:type="FixDictionary:FixIntField" name="XmlDataLen" tag="212"/>
+          <content xsi:type="FixDictionary:FixDataField" name="XmlData" tag="213"/>
+          <content xsi:type="FixDictionary:FixStringField" name="MessageEncoding" tag="347"/>
+          <content xsi:type="FixDictionary:FixIntField" name="LastMsgSeqNumProcessed" tag="369"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="OnBehalfOfSendingTime" tag="370"/>
+        </content>
+        <content xsi:type="FixDictionary:FixStringField" name="OrderID" required="true" stringValue="@tagFromLastOutgoingMessage(37, 1, 8)@" tag="37"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecondaryOrderID" tag="198"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClOrdID" stringValue="@tagFromLastIncomingMessage(11, 1, D)@" tag="11"/>
+        <content xsi:type="FixDictionary:FixStringField" name="OrigClOrdID" tag="41"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClientID" tag="109"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecBroker" tag="76"/>
+        <content xsi:type="FixDictionary:FixGroup" name="NoContraBrokers" repeating="true" repeatingIndex="1" tag="382">
+          <content xsi:type="FixDictionary:FixStringField" name="ContraBroker" tag="375"/>
+          <content xsi:type="FixDictionary:FixStringField" name="ContraTrader" tag="337"/>
+          <content xsi:type="FixDictionary:FixQtyField" name="ContraTradeQty" tag="437"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="ContraTradeTime" tag="438"/>
+        </content>
+        <content xsi:type="FixDictionary:FixStringField" name="ListID" tag="66"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" tag="17"/>
+        <content xsi:type="FixDictionary:FixCharField" name="ExecTransType" required="true" stringValue="0" tag="20"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecRefID" tag="19"/>
+        <content xsi:type="FixDictionary:FixCharField" name="ExecType" required="true" stringValue="3" tag="150"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OrdStatus" required="true" stringValue="3" tag="39"/>
+        <content xsi:type="FixDictionary:FixIntField" name="OrdRejReason" tag="103"/>
+        <content xsi:type="FixDictionary:FixIntField" name="ExecRestatementReason" tag="378"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Account" tag="1"/>
+        <content xsi:type="FixDictionary:FixCharField" name="SettlmntTyp" tag="63"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="FutSettDate" tag="64"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Symbol" required="true" stringValue="@tagFromLastOutgoingMessage(55, 1, 8)@" tag="55"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SymbolSfx" tag="65"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityID" tag="48"/>
+        <content xsi:type="FixDictionary:FixStringField" name="IDSource" tag="22"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityType" tag="167"/>
+        <content xsi:type="FixDictionary:FixMonthYearField" name="MaturityMonthYear" tag="200"/>
+        <content xsi:type="FixDictionary:FixDayOfMonthField" name="MaturityDay" tag="205"/>
+        <content xsi:type="FixDictionary:FixIntField" name="PutOrCall" tag="201"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="StrikePrice" tag="202"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OptAttribute" tag="206"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="ContractMultiplier" tag="231"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="CouponRate" tag="223"/>
+        <content xsi:type="FixDictionary:FixExchangeField" name="SecurityExchange" tag="207"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Issuer" tag="106"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedIssuerLen" tag="348"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedIssuer" tag="349"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityDesc" tag="107"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedSecurityDescLen" tag="350"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedSecurityDesc" tag="351"/>
+        <content xsi:type="FixDictionary:FixCharField" name="Side" required="true" stringValue="@tagFromLastOutgoingMessage(54, 1, 8)@" tag="54"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="OrderQty" stringValue="10000" tag="38"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="CashOrderQty" tag="152"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OrdType" tag="40"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="Price" tag="44"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="StopPx" tag="99"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="PegDifference" tag="211"/>
+        <content xsi:type="FixDictionary:FixCharField" name="DiscretionInst" tag="388"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="DiscretionOffset" tag="389"/>
+        <content xsi:type="FixDictionary:FixCurrencyField" name="Currency" tag="15"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ComplianceID" tag="376"/>
+        <content xsi:type="FixDictionary:FixBooleanField" name="SolicitedFlag" tag="377"/>
+        <content xsi:type="FixDictionary:FixCharField" name="TimeInForce" tag="59"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="EffectiveTime" tag="168"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="ExpireDate" tag="432"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="ExpireTime" tag="126"/>
+        <content xsi:type="FixDictionary:FixMultipleStringValueField" name="ExecInst" tag="18"/>
+        <content xsi:type="FixDictionary:FixCharField" name="Rule80A" tag="47"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="LastShares" stringValue="0" tag="32"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastPx" stringValue="@tagFromLastOutgoingMessage(44, 1, 8)@" tag="31"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastSpotRate" tag="194"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastForwardPoints" tag="195"/>
+        <content xsi:type="FixDictionary:FixExchangeField" name="LastMkt" tag="30"/>
+        <content xsi:type="FixDictionary:FixStringField" name="TradingSessionID" tag="336"/>
+        <content xsi:type="FixDictionary:FixCharField" name="LastCapacity" tag="29"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="LeavesQty" required="true" stringValue="8000" tag="151"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="CumQty" required="true" stringValue="2000" tag="14"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="AvgPx" required="true" stringValue="@tagFromLastIncomingMessage(44, 1, D)@" tag="6"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="DayOrderQty" tag="424"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="DayCumQty" tag="425"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="DayAvgPx" tag="426"/>
+        <content xsi:type="FixDictionary:FixIntField" name="GTBookingInst" tag="427"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="TradeDate" tag="75"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="TransactTime" tag="60"/>
+        <content xsi:type="FixDictionary:FixBooleanField" name="ReportToExch" tag="113"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="Commission" tag="12"/>
+        <content xsi:type="FixDictionary:FixCharField" name="CommType" tag="13"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="GrossTradeAmt" tag="381"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="SettlCurrAmt" tag="119"/>
+        <content xsi:type="FixDictionary:FixCurrencyField" name="SettlCurrency" tag="120"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="SettlCurrFxRate" tag="155"/>
+        <content xsi:type="FixDictionary:FixCharField" name="SettlCurrFxRateCalc" tag="156"/>
+        <content xsi:type="FixDictionary:FixCharField" name="HandlInst" tag="21"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MinQty" tag="110"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MaxFloor" tag="111"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OpenClose" tag="77"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MaxShow" tag="210"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Text" tag="58"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedTextLen" tag="354"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedText" tag="355"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="FutSettDate2" tag="193"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="OrderQty2" tag="192"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClearingFirm" tag="439"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClearingAccount" tag="440"/>
+        <content xsi:type="FixDictionary:FixCharField" name="MultiLegReportingType" tag="442"/>
+        <content xsi:type="FixDictionary:FixComponent" name="StandardTrailer">
+          <content xsi:type="FixDictionary:FixIntField" name="SignatureLength" tag="93"/>
+          <content xsi:type="FixDictionary:FixDataField" name="Signature" tag="89"/>
+          <content xsi:type="FixDictionary:FixStringField" name="CheckSum" required="true" tag="10"/>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" comment="Day 2" disabled="true" text="# Day 2"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+      <instructionMultiLanguage key="en" value="Done for Day completed for the first day.  System will change to the second day, press 'Yes' and &lt;Submit> to continue and receive the executions."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" comment="ExecRestatementReason = GTC renewal/restatement (no change) - optionally sent the following morning" messageId="D30_ExecutionReport_Restated" messageSenderProducer="//@test/@testCommand.0">
+      <messageTemplates>../Messages/ExecutionReport_Restated.msg</messageTemplates>
+      <message xsi:type="FixDictionary:FixMessage" name="ExecutionReport" dictionaryName="Quick Fix 4.2" msgType="8">
+        <content xsi:type="FixDictionary:FixComponent" name="StandardHeader">
+          <content xsi:type="FixDictionary:FixStringField" name="BeginString" required="true" tag="8"/>
+          <content xsi:type="FixDictionary:FixIntField" name="BodyLength" required="true" tag="9"/>
+          <content xsi:type="FixDictionary:FixStringField" name="MsgType" required="true" tag="35"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderCompID" required="true" tag="49"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetCompID" required="true" tag="56"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfCompID" tag="115"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToCompID" tag="128"/>
+          <content xsi:type="FixDictionary:FixIntField" name="SecureDataLen" tag="90"/>
+          <content xsi:type="FixDictionary:FixDataField" name="SecureData" tag="91"/>
+          <content xsi:type="FixDictionary:FixIntField" name="MsgSeqNum" required="true" tag="34"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderSubID" tag="50"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderLocationID" tag="142"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetSubID" tag="57"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetLocationID" tag="143"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfSubID" tag="116"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfLocationID" tag="144"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToSubID" tag="129"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToLocationID" tag="145"/>
+          <content xsi:type="FixDictionary:FixBooleanField" name="PossDupFlag" tag="43"/>
+          <content xsi:type="FixDictionary:FixBooleanField" name="PossResend" tag="97"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="SendingTime" required="true" tag="52"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="OrigSendingTime" tag="122"/>
+          <content xsi:type="FixDictionary:FixIntField" name="XmlDataLen" tag="212"/>
+          <content xsi:type="FixDictionary:FixDataField" name="XmlData" tag="213"/>
+          <content xsi:type="FixDictionary:FixStringField" name="MessageEncoding" tag="347"/>
+          <content xsi:type="FixDictionary:FixIntField" name="LastMsgSeqNumProcessed" tag="369"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="OnBehalfOfSendingTime" tag="370"/>
+        </content>
+        <content xsi:type="FixDictionary:FixStringField" name="OrderID" required="true" stringValue="@tagFromLastOutgoingMessage(37, 1, 8)@" tag="37"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecondaryOrderID" tag="198"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClOrdID" stringValue="@tagFromLastOutgoingMessage(11, 1, 8)@" tag="11"/>
+        <content xsi:type="FixDictionary:FixStringField" name="OrigClOrdID" tag="41"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClientID" tag="109"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecBroker" tag="76"/>
+        <content xsi:type="FixDictionary:FixGroup" name="NoContraBrokers" repeating="true" repeatingIndex="1" tag="382">
+          <content xsi:type="FixDictionary:FixStringField" name="ContraBroker" tag="375"/>
+          <content xsi:type="FixDictionary:FixStringField" name="ContraTrader" tag="337"/>
+          <content xsi:type="FixDictionary:FixQtyField" name="ContraTradeQty" tag="437"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="ContraTradeTime" tag="438"/>
+        </content>
+        <content xsi:type="FixDictionary:FixStringField" name="ListID" tag="66"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" tag="17"/>
+        <content xsi:type="FixDictionary:FixCharField" name="ExecTransType" required="true" stringValue="0" tag="20"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecRefID" tag="19"/>
+        <content xsi:type="FixDictionary:FixCharField" name="ExecType" required="true" stringValue="D" tag="150"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OrdStatus" required="true" stringValue="1" tag="39"/>
+        <content xsi:type="FixDictionary:FixIntField" name="OrdRejReason" tag="103"/>
+        <content xsi:type="FixDictionary:FixIntField" name="ExecRestatementReason" stringValue="1" tag="378"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Account" tag="1"/>
+        <content xsi:type="FixDictionary:FixCharField" name="SettlmntTyp" tag="63"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="FutSettDate" tag="64"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Symbol" required="true" stringValue="@tagFromLastIncomingMessage(55, 1, D)@" tag="55"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SymbolSfx" tag="65"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityID" tag="48"/>
+        <content xsi:type="FixDictionary:FixStringField" name="IDSource" tag="22"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityType" tag="167"/>
+        <content xsi:type="FixDictionary:FixMonthYearField" name="MaturityMonthYear" tag="200"/>
+        <content xsi:type="FixDictionary:FixDayOfMonthField" name="MaturityDay" tag="205"/>
+        <content xsi:type="FixDictionary:FixIntField" name="PutOrCall" tag="201"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="StrikePrice" tag="202"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OptAttribute" tag="206"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="ContractMultiplier" tag="231"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="CouponRate" tag="223"/>
+        <content xsi:type="FixDictionary:FixExchangeField" name="SecurityExchange" tag="207"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Issuer" tag="106"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedIssuerLen" tag="348"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedIssuer" tag="349"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityDesc" tag="107"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedSecurityDescLen" tag="350"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedSecurityDesc" tag="351"/>
+        <content xsi:type="FixDictionary:FixCharField" name="Side" required="true" stringValue="@tagFromLastIncomingMessage(54, 1, D)@" tag="54"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="OrderQty" stringValue="10000" tag="38"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="CashOrderQty" tag="152"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OrdType" tag="40"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="Price" tag="44"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="StopPx" tag="99"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="PegDifference" tag="211"/>
+        <content xsi:type="FixDictionary:FixCharField" name="DiscretionInst" tag="388"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="DiscretionOffset" tag="389"/>
+        <content xsi:type="FixDictionary:FixCurrencyField" name="Currency" tag="15"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ComplianceID" tag="376"/>
+        <content xsi:type="FixDictionary:FixBooleanField" name="SolicitedFlag" tag="377"/>
+        <content xsi:type="FixDictionary:FixCharField" name="TimeInForce" tag="59"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="EffectiveTime" tag="168"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="ExpireDate" tag="432"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="ExpireTime" tag="126"/>
+        <content xsi:type="FixDictionary:FixMultipleStringValueField" name="ExecInst" tag="18"/>
+        <content xsi:type="FixDictionary:FixCharField" name="Rule80A" tag="47"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="LastShares" stringValue="0" tag="32"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastPx" stringValue="0" tag="31"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastSpotRate" tag="194"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastForwardPoints" tag="195"/>
+        <content xsi:type="FixDictionary:FixExchangeField" name="LastMkt" tag="30"/>
+        <content xsi:type="FixDictionary:FixStringField" name="TradingSessionID" tag="336"/>
+        <content xsi:type="FixDictionary:FixCharField" name="LastCapacity" tag="29"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="LeavesQty" required="true" stringValue="8000" tag="151"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="CumQty" required="true" stringValue="2000" tag="14"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="AvgPx" required="true" stringValue="0" tag="6"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="DayOrderQty" stringValue="8000" tag="424"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="DayCumQty" stringValue="0" tag="425"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="DayAvgPx" tag="426"/>
+        <content xsi:type="FixDictionary:FixIntField" name="GTBookingInst" tag="427"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="TradeDate" tag="75"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="TransactTime" tag="60"/>
+        <content xsi:type="FixDictionary:FixBooleanField" name="ReportToExch" tag="113"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="Commission" tag="12"/>
+        <content xsi:type="FixDictionary:FixCharField" name="CommType" tag="13"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="GrossTradeAmt" tag="381"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="SettlCurrAmt" tag="119"/>
+        <content xsi:type="FixDictionary:FixCurrencyField" name="SettlCurrency" tag="120"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="SettlCurrFxRate" tag="155"/>
+        <content xsi:type="FixDictionary:FixCharField" name="SettlCurrFxRateCalc" tag="156"/>
+        <content xsi:type="FixDictionary:FixCharField" name="HandlInst" tag="21"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MinQty" tag="110"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MaxFloor" tag="111"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OpenClose" tag="77"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MaxShow" tag="210"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Text" tag="58"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedTextLen" tag="354"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedText" tag="355"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="FutSettDate2" tag="193"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="OrderQty2" tag="192"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClearingFirm" tag="439"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClearingAccount" tag="440"/>
+        <content xsi:type="FixDictionary:FixCharField" name="MultiLegReportingType" tag="442"/>
+        <content xsi:type="FixDictionary:FixComponent" name="StandardTrailer">
+          <content xsi:type="FixDictionary:FixIntField" name="SignatureLength" tag="93"/>
+          <content xsi:type="FixDictionary:FixDataField" name="Signature" tag="89"/>
+          <content xsi:type="FixDictionary:FixStringField" name="CheckSum" required="true" tag="10"/>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please send in an Order Cancel Replace Request, to increase the quantity to 15,000 shares."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="D30_OrderReplaceRequest" messageSenderProducer="//@test/@testCommand.0" timeout="%CONFIGURATIONS.WAIT_COMMAND_TIMEOUT%" searchFromLastMatch="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="OrderQty" value="15000" fieldType="Double"/>
+      <validationTemplateName>../Messages/OrderCancelReplaceRequest_Validation.msg</validationTemplateName>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="D30_ExecutionReport_PendingReplace" messageSenderProducer="//@test/@testCommand.0">
+      <messageTemplates>../Messages/ExecutionReport_PendingReplace.msg</messageTemplates>
+      <message xsi:type="FixDictionary:FixMessage" name="ExecutionReport" dictionaryName="Quick Fix 4.2" msgType="8">
+        <content xsi:type="FixDictionary:FixComponent" name="StandardHeader">
+          <content xsi:type="FixDictionary:FixStringField" name="BeginString" required="true" tag="8"/>
+          <content xsi:type="FixDictionary:FixIntField" name="BodyLength" required="true" tag="9"/>
+          <content xsi:type="FixDictionary:FixStringField" name="MsgType" required="true" tag="35"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderCompID" required="true" tag="49"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetCompID" required="true" tag="56"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfCompID" tag="115"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToCompID" tag="128"/>
+          <content xsi:type="FixDictionary:FixIntField" name="SecureDataLen" tag="90"/>
+          <content xsi:type="FixDictionary:FixDataField" name="SecureData" tag="91"/>
+          <content xsi:type="FixDictionary:FixIntField" name="MsgSeqNum" required="true" tag="34"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderSubID" tag="50"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderLocationID" tag="142"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetSubID" tag="57"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetLocationID" tag="143"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfSubID" tag="116"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfLocationID" tag="144"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToSubID" tag="129"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToLocationID" tag="145"/>
+          <content xsi:type="FixDictionary:FixBooleanField" name="PossDupFlag" tag="43"/>
+          <content xsi:type="FixDictionary:FixBooleanField" name="PossResend" tag="97"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="SendingTime" required="true" tag="52"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="OrigSendingTime" tag="122"/>
+          <content xsi:type="FixDictionary:FixIntField" name="XmlDataLen" tag="212"/>
+          <content xsi:type="FixDictionary:FixDataField" name="XmlData" tag="213"/>
+          <content xsi:type="FixDictionary:FixStringField" name="MessageEncoding" tag="347"/>
+          <content xsi:type="FixDictionary:FixIntField" name="LastMsgSeqNumProcessed" tag="369"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="OnBehalfOfSendingTime" tag="370"/>
+        </content>
+        <content xsi:type="FixDictionary:FixStringField" name="OrderID" required="true" stringValue="@tagFromLastOutgoingMessage(37, 1, 8)@" tag="37"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecondaryOrderID" tag="198"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClOrdID" stringValue="@tagFromLastIncomingMessage(11, 1, G)@" tag="11"/>
+        <content xsi:type="FixDictionary:FixStringField" name="OrigClOrdID" stringValue="@tagFromLastIncomingMessage(41, 1, G)@" tag="41"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClientID" tag="109"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecBroker" tag="76"/>
+        <content xsi:type="FixDictionary:FixGroup" name="NoContraBrokers" repeating="true" repeatingIndex="1" tag="382">
+          <content xsi:type="FixDictionary:FixStringField" name="ContraBroker" tag="375"/>
+          <content xsi:type="FixDictionary:FixStringField" name="ContraTrader" tag="337"/>
+          <content xsi:type="FixDictionary:FixQtyField" name="ContraTradeQty" tag="437"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="ContraTradeTime" tag="438"/>
+        </content>
+        <content xsi:type="FixDictionary:FixStringField" name="ListID" tag="66"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" tag="17"/>
+        <content xsi:type="FixDictionary:FixCharField" name="ExecTransType" required="true" stringValue="0" tag="20"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecRefID" tag="19"/>
+        <content xsi:type="FixDictionary:FixCharField" name="ExecType" required="true" stringValue="E" tag="150"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OrdStatus" required="true" stringValue="E" tag="39"/>
+        <content xsi:type="FixDictionary:FixIntField" name="OrdRejReason" tag="103"/>
+        <content xsi:type="FixDictionary:FixIntField" name="ExecRestatementReason" tag="378"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Account" tag="1"/>
+        <content xsi:type="FixDictionary:FixCharField" name="SettlmntTyp" tag="63"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="FutSettDate" tag="64"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Symbol" required="true" stringValue="@tagFromLastIncomingMessage(55, 1, D)@" tag="55"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SymbolSfx" tag="65"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityID" tag="48"/>
+        <content xsi:type="FixDictionary:FixStringField" name="IDSource" tag="22"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityType" tag="167"/>
+        <content xsi:type="FixDictionary:FixMonthYearField" name="MaturityMonthYear" tag="200"/>
+        <content xsi:type="FixDictionary:FixDayOfMonthField" name="MaturityDay" tag="205"/>
+        <content xsi:type="FixDictionary:FixIntField" name="PutOrCall" tag="201"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="StrikePrice" tag="202"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OptAttribute" tag="206"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="ContractMultiplier" tag="231"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="CouponRate" tag="223"/>
+        <content xsi:type="FixDictionary:FixExchangeField" name="SecurityExchange" tag="207"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Issuer" tag="106"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedIssuerLen" tag="348"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedIssuer" tag="349"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityDesc" tag="107"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedSecurityDescLen" tag="350"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedSecurityDesc" tag="351"/>
+        <content xsi:type="FixDictionary:FixCharField" name="Side" required="true" stringValue="@tagFromLastIncomingMessage(54, 1, D)@" tag="54"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="OrderQty" stringValue="10000" tag="38"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="CashOrderQty" tag="152"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OrdType" tag="40"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="Price" stringValue="@tagFromLastIncomingMessage(44, 1, D)@" tag="44"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="StopPx" tag="99"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="PegDifference" tag="211"/>
+        <content xsi:type="FixDictionary:FixCharField" name="DiscretionInst" tag="388"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="DiscretionOffset" tag="389"/>
+        <content xsi:type="FixDictionary:FixCurrencyField" name="Currency" tag="15"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ComplianceID" tag="376"/>
+        <content xsi:type="FixDictionary:FixBooleanField" name="SolicitedFlag" tag="377"/>
+        <content xsi:type="FixDictionary:FixCharField" name="TimeInForce" tag="59"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="EffectiveTime" tag="168"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="ExpireDate" tag="432"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="ExpireTime" tag="126"/>
+        <content xsi:type="FixDictionary:FixMultipleStringValueField" name="ExecInst" tag="18"/>
+        <content xsi:type="FixDictionary:FixCharField" name="Rule80A" tag="47"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="LastShares" stringValue="0" tag="32"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastPx" stringValue="0" tag="31"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastSpotRate" tag="194"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastForwardPoints" tag="195"/>
+        <content xsi:type="FixDictionary:FixExchangeField" name="LastMkt" tag="30"/>
+        <content xsi:type="FixDictionary:FixStringField" name="TradingSessionID" tag="336"/>
+        <content xsi:type="FixDictionary:FixCharField" name="LastCapacity" tag="29"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="LeavesQty" required="true" stringValue="8000" tag="151"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="CumQty" required="true" stringValue="2000" tag="14"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="AvgPx" required="true" stringValue="0" tag="6"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="DayOrderQty" stringValue="8000" tag="424"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="DayCumQty" stringValue="0" tag="425"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="DayAvgPx" tag="426"/>
+        <content xsi:type="FixDictionary:FixIntField" name="GTBookingInst" tag="427"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="TradeDate" tag="75"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="TransactTime" tag="60"/>
+        <content xsi:type="FixDictionary:FixBooleanField" name="ReportToExch" tag="113"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="Commission" tag="12"/>
+        <content xsi:type="FixDictionary:FixCharField" name="CommType" tag="13"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="GrossTradeAmt" tag="381"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="SettlCurrAmt" tag="119"/>
+        <content xsi:type="FixDictionary:FixCurrencyField" name="SettlCurrency" tag="120"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="SettlCurrFxRate" tag="155"/>
+        <content xsi:type="FixDictionary:FixCharField" name="SettlCurrFxRateCalc" tag="156"/>
+        <content xsi:type="FixDictionary:FixCharField" name="HandlInst" tag="21"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MinQty" tag="110"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MaxFloor" tag="111"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OpenClose" tag="77"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MaxShow" tag="210"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Text" tag="58"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedTextLen" tag="354"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedText" tag="355"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="FutSettDate2" tag="193"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="OrderQty2" tag="192"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClearingFirm" tag="439"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClearingAccount" tag="440"/>
+        <content xsi:type="FixDictionary:FixCharField" name="MultiLegReportingType" tag="442"/>
+        <content xsi:type="FixDictionary:FixComponent" name="StandardTrailer">
+          <content xsi:type="FixDictionary:FixIntField" name="SignatureLength" tag="93"/>
+          <content xsi:type="FixDictionary:FixDataField" name="Signature" tag="89"/>
+          <content xsi:type="FixDictionary:FixStringField" name="CheckSum" required="true" tag="10"/>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" comment="Partial fill of 1000 shares" messageId="D30_ExecutionReport_PF2" messageSenderProducer="//@test/@testCommand.0">
+      <messageTemplates>../Messages/ExecutionReport_Partial_Fill.msg</messageTemplates>
+      <message xsi:type="FixDictionary:FixMessage" name="ExecutionReport" dictionaryName="Quick Fix 4.2" msgType="8">
+        <content xsi:type="FixDictionary:FixComponent" name="StandardHeader">
+          <content xsi:type="FixDictionary:FixStringField" name="BeginString" required="true" tag="8"/>
+          <content xsi:type="FixDictionary:FixIntField" name="BodyLength" required="true" tag="9"/>
+          <content xsi:type="FixDictionary:FixStringField" name="MsgType" required="true" tag="35"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderCompID" required="true" tag="49"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetCompID" required="true" tag="56"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfCompID" tag="115"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToCompID" tag="128"/>
+          <content xsi:type="FixDictionary:FixIntField" name="SecureDataLen" tag="90"/>
+          <content xsi:type="FixDictionary:FixDataField" name="SecureData" tag="91"/>
+          <content xsi:type="FixDictionary:FixIntField" name="MsgSeqNum" required="true" tag="34"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderSubID" tag="50"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderLocationID" tag="142"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetSubID" tag="57"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetLocationID" tag="143"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfSubID" tag="116"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfLocationID" tag="144"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToSubID" tag="129"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToLocationID" tag="145"/>
+          <content xsi:type="FixDictionary:FixBooleanField" name="PossDupFlag" tag="43"/>
+          <content xsi:type="FixDictionary:FixBooleanField" name="PossResend" tag="97"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="SendingTime" required="true" tag="52"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="OrigSendingTime" tag="122"/>
+          <content xsi:type="FixDictionary:FixIntField" name="XmlDataLen" tag="212"/>
+          <content xsi:type="FixDictionary:FixDataField" name="XmlData" tag="213"/>
+          <content xsi:type="FixDictionary:FixStringField" name="MessageEncoding" tag="347"/>
+          <content xsi:type="FixDictionary:FixIntField" name="LastMsgSeqNumProcessed" tag="369"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="OnBehalfOfSendingTime" tag="370"/>
+        </content>
+        <content xsi:type="FixDictionary:FixStringField" name="OrderID" required="true" stringValue="@tagFromLastOutgoingMessage(37, 1, 8)@" tag="37"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecondaryOrderID" tag="198"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClOrdID" stringValue="@tagFromLastIncomingMessage(11, 1, D)@" tag="11"/>
+        <content xsi:type="FixDictionary:FixStringField" name="OrigClOrdID" tag="41"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClientID" tag="109"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecBroker" tag="76"/>
+        <content xsi:type="FixDictionary:FixGroup" name="NoContraBrokers" repeating="true" repeatingIndex="1" tag="382">
+          <content xsi:type="FixDictionary:FixStringField" name="ContraBroker" tag="375"/>
+          <content xsi:type="FixDictionary:FixStringField" name="ContraTrader" tag="337"/>
+          <content xsi:type="FixDictionary:FixQtyField" name="ContraTradeQty" tag="437"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="ContraTradeTime" tag="438"/>
+        </content>
+        <content xsi:type="FixDictionary:FixStringField" name="ListID" tag="66"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" tag="17"/>
+        <content xsi:type="FixDictionary:FixCharField" name="ExecTransType" required="true" stringValue="0" tag="20"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecRefID" tag="19"/>
+        <content xsi:type="FixDictionary:FixCharField" name="ExecType" required="true" stringValue="1" tag="150"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OrdStatus" required="true" stringValue="E" tag="39"/>
+        <content xsi:type="FixDictionary:FixIntField" name="OrdRejReason" tag="103"/>
+        <content xsi:type="FixDictionary:FixIntField" name="ExecRestatementReason" tag="378"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Account" tag="1"/>
+        <content xsi:type="FixDictionary:FixCharField" name="SettlmntTyp" tag="63"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="FutSettDate" tag="64"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Symbol" required="true" stringValue="@tagFromLastIncomingMessage(55, 1, D)@" tag="55"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SymbolSfx" tag="65"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityID" tag="48"/>
+        <content xsi:type="FixDictionary:FixStringField" name="IDSource" tag="22"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityType" tag="167"/>
+        <content xsi:type="FixDictionary:FixMonthYearField" name="MaturityMonthYear" tag="200"/>
+        <content xsi:type="FixDictionary:FixDayOfMonthField" name="MaturityDay" tag="205"/>
+        <content xsi:type="FixDictionary:FixIntField" name="PutOrCall" tag="201"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="StrikePrice" tag="202"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OptAttribute" tag="206"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="ContractMultiplier" tag="231"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="CouponRate" tag="223"/>
+        <content xsi:type="FixDictionary:FixExchangeField" name="SecurityExchange" tag="207"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Issuer" tag="106"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedIssuerLen" tag="348"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedIssuer" tag="349"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityDesc" tag="107"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedSecurityDescLen" tag="350"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedSecurityDesc" tag="351"/>
+        <content xsi:type="FixDictionary:FixCharField" name="Side" required="true" stringValue="@tagFromLastIncomingMessage(54, 1, D)@" tag="54"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="OrderQty" stringValue="@tagFromLastIncomingMessage(38, 1, D)@" tag="38"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="CashOrderQty" tag="152"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OrdType" tag="40"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="Price" tag="44"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="StopPx" tag="99"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="PegDifference" tag="211"/>
+        <content xsi:type="FixDictionary:FixCharField" name="DiscretionInst" tag="388"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="DiscretionOffset" tag="389"/>
+        <content xsi:type="FixDictionary:FixCurrencyField" name="Currency" tag="15"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ComplianceID" tag="376"/>
+        <content xsi:type="FixDictionary:FixBooleanField" name="SolicitedFlag" tag="377"/>
+        <content xsi:type="FixDictionary:FixCharField" name="TimeInForce" tag="59"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="EffectiveTime" tag="168"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="ExpireDate" tag="432"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="ExpireTime" tag="126"/>
+        <content xsi:type="FixDictionary:FixMultipleStringValueField" name="ExecInst" tag="18"/>
+        <content xsi:type="FixDictionary:FixCharField" name="Rule80A" tag="47"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="LastShares" stringValue="1000" tag="32"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastPx" stringValue="@tagFromLastIncomingMessage(44, 1, D)@" tag="31"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastSpotRate" tag="194"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastForwardPoints" tag="195"/>
+        <content xsi:type="FixDictionary:FixExchangeField" name="LastMkt" tag="30"/>
+        <content xsi:type="FixDictionary:FixStringField" name="TradingSessionID" tag="336"/>
+        <content xsi:type="FixDictionary:FixCharField" name="LastCapacity" tag="29"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="LeavesQty" required="true" stringValue="7000" tag="151"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="CumQty" required="true" stringValue="3000" tag="14"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="AvgPx" required="true" stringValue="@tagFromLastIncomingMessage(44, 1, D)@" tag="6"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="DayOrderQty" stringValue="8000" tag="424"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="DayCumQty" stringValue="1000" tag="425"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="DayAvgPx" tag="426"/>
+        <content xsi:type="FixDictionary:FixIntField" name="GTBookingInst" tag="427"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="TradeDate" tag="75"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="TransactTime" tag="60"/>
+        <content xsi:type="FixDictionary:FixBooleanField" name="ReportToExch" tag="113"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="Commission" tag="12"/>
+        <content xsi:type="FixDictionary:FixCharField" name="CommType" tag="13"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="GrossTradeAmt" tag="381"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="SettlCurrAmt" tag="119"/>
+        <content xsi:type="FixDictionary:FixCurrencyField" name="SettlCurrency" tag="120"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="SettlCurrFxRate" tag="155"/>
+        <content xsi:type="FixDictionary:FixCharField" name="SettlCurrFxRateCalc" tag="156"/>
+        <content xsi:type="FixDictionary:FixCharField" name="HandlInst" tag="21"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MinQty" tag="110"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MaxFloor" tag="111"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OpenClose" tag="77"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MaxShow" tag="210"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Text" tag="58"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedTextLen" tag="354"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedText" tag="355"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="FutSettDate2" tag="193"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="OrderQty2" tag="192"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClearingFirm" tag="439"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClearingAccount" tag="440"/>
+        <content xsi:type="FixDictionary:FixCharField" name="MultiLegReportingType" tag="442"/>
+        <content xsi:type="FixDictionary:FixComponent" name="StandardTrailer">
+          <content xsi:type="FixDictionary:FixIntField" name="SignatureLength" tag="93"/>
+          <content xsi:type="FixDictionary:FixDataField" name="Signature" tag="89"/>
+          <content xsi:type="FixDictionary:FixStringField" name="CheckSum" required="true" tag="10"/>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="D30_ExecutionReport_Replaceed" messageSenderProducer="//@test/@testCommand.0">
+      <messageTemplates>../Messages/ExecutionReport_Replaced.msg</messageTemplates>
+      <message xsi:type="FixDictionary:FixMessage" name="ExecutionReport" dictionaryName="Quick Fix 4.2" msgType="8">
+        <content xsi:type="FixDictionary:FixComponent" name="StandardHeader">
+          <content xsi:type="FixDictionary:FixStringField" name="BeginString" required="true" tag="8"/>
+          <content xsi:type="FixDictionary:FixIntField" name="BodyLength" required="true" tag="9"/>
+          <content xsi:type="FixDictionary:FixStringField" name="MsgType" required="true" tag="35"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderCompID" required="true" tag="49"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetCompID" required="true" tag="56"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfCompID" tag="115"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToCompID" tag="128"/>
+          <content xsi:type="FixDictionary:FixIntField" name="SecureDataLen" tag="90"/>
+          <content xsi:type="FixDictionary:FixDataField" name="SecureData" tag="91"/>
+          <content xsi:type="FixDictionary:FixIntField" name="MsgSeqNum" required="true" tag="34"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderSubID" tag="50"/>
+          <content xsi:type="FixDictionary:FixStringField" name="SenderLocationID" tag="142"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetSubID" tag="57"/>
+          <content xsi:type="FixDictionary:FixStringField" name="TargetLocationID" tag="143"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfSubID" tag="116"/>
+          <content xsi:type="FixDictionary:FixStringField" name="OnBehalfOfLocationID" tag="144"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToSubID" tag="129"/>
+          <content xsi:type="FixDictionary:FixStringField" name="DeliverToLocationID" tag="145"/>
+          <content xsi:type="FixDictionary:FixBooleanField" name="PossDupFlag" tag="43"/>
+          <content xsi:type="FixDictionary:FixBooleanField" name="PossResend" tag="97"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="SendingTime" required="true" tag="52"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="OrigSendingTime" tag="122"/>
+          <content xsi:type="FixDictionary:FixIntField" name="XmlDataLen" tag="212"/>
+          <content xsi:type="FixDictionary:FixDataField" name="XmlData" tag="213"/>
+          <content xsi:type="FixDictionary:FixStringField" name="MessageEncoding" tag="347"/>
+          <content xsi:type="FixDictionary:FixIntField" name="LastMsgSeqNumProcessed" tag="369"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="OnBehalfOfSendingTime" tag="370"/>
+        </content>
+        <content xsi:type="FixDictionary:FixStringField" name="OrderID" required="true" stringValue="@tagFromLastOutgoingMessage(37, 1, 8)@" tag="37"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecondaryOrderID" tag="198"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClOrdID" stringValue="@tagFromLastIncomingMessage(11, 1, G)@" tag="11"/>
+        <content xsi:type="FixDictionary:FixStringField" name="OrigClOrdID" stringValue="@tagFromLastIncomingMessage(41, 1, G)@" tag="41"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClientID" tag="109"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecBroker" tag="76"/>
+        <content xsi:type="FixDictionary:FixGroup" name="NoContraBrokers" repeating="true" repeatingIndex="1" tag="382">
+          <content xsi:type="FixDictionary:FixStringField" name="ContraBroker" tag="375"/>
+          <content xsi:type="FixDictionary:FixStringField" name="ContraTrader" tag="337"/>
+          <content xsi:type="FixDictionary:FixQtyField" name="ContraTradeQty" tag="437"/>
+          <content xsi:type="FixDictionary:FixUTCTimestampType" name="ContraTradeTime" tag="438"/>
+        </content>
+        <content xsi:type="FixDictionary:FixStringField" name="ListID" tag="66"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" tag="17"/>
+        <content xsi:type="FixDictionary:FixCharField" name="ExecTransType" required="true" stringValue="0" tag="20"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ExecRefID" tag="19"/>
+        <content xsi:type="FixDictionary:FixCharField" name="ExecType" required="true" stringValue="5" tag="150"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OrdStatus" required="true" stringValue="1" tag="39"/>
+        <content xsi:type="FixDictionary:FixIntField" name="OrdRejReason" tag="103"/>
+        <content xsi:type="FixDictionary:FixIntField" name="ExecRestatementReason" tag="378"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Account" tag="1"/>
+        <content xsi:type="FixDictionary:FixCharField" name="SettlmntTyp" tag="63"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="FutSettDate" tag="64"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Symbol" required="true" stringValue="@tagFromLastIncomingMessage(55, 1, D)@" tag="55"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SymbolSfx" tag="65"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityID" tag="48"/>
+        <content xsi:type="FixDictionary:FixStringField" name="IDSource" tag="22"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityType" tag="167"/>
+        <content xsi:type="FixDictionary:FixMonthYearField" name="MaturityMonthYear" tag="200"/>
+        <content xsi:type="FixDictionary:FixDayOfMonthField" name="MaturityDay" tag="205"/>
+        <content xsi:type="FixDictionary:FixIntField" name="PutOrCall" tag="201"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="StrikePrice" tag="202"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OptAttribute" tag="206"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="ContractMultiplier" tag="231"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="CouponRate" tag="223"/>
+        <content xsi:type="FixDictionary:FixExchangeField" name="SecurityExchange" tag="207"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Issuer" tag="106"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedIssuerLen" tag="348"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedIssuer" tag="349"/>
+        <content xsi:type="FixDictionary:FixStringField" name="SecurityDesc" tag="107"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedSecurityDescLen" tag="350"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedSecurityDesc" tag="351"/>
+        <content xsi:type="FixDictionary:FixCharField" name="Side" required="true" stringValue="@tagFromLastIncomingMessage(54, 1, D)@" tag="54"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="OrderQty" stringValue="15000" tag="38"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="CashOrderQty" tag="152"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OrdType" tag="40"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="Price" stringValue="@tagFromLastIncomingMessage(44, 1, G)@" tag="44"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="StopPx" tag="99"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="PegDifference" tag="211"/>
+        <content xsi:type="FixDictionary:FixCharField" name="DiscretionInst" tag="388"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="DiscretionOffset" tag="389"/>
+        <content xsi:type="FixDictionary:FixCurrencyField" name="Currency" tag="15"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ComplianceID" tag="376"/>
+        <content xsi:type="FixDictionary:FixBooleanField" name="SolicitedFlag" tag="377"/>
+        <content xsi:type="FixDictionary:FixCharField" name="TimeInForce" tag="59"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="EffectiveTime" tag="168"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="ExpireDate" tag="432"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="ExpireTime" tag="126"/>
+        <content xsi:type="FixDictionary:FixMultipleStringValueField" name="ExecInst" tag="18"/>
+        <content xsi:type="FixDictionary:FixCharField" name="Rule80A" tag="47"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="LastShares" stringValue="0" tag="32"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastPx" stringValue="0" tag="31"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastSpotRate" tag="194"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="LastForwardPoints" tag="195"/>
+        <content xsi:type="FixDictionary:FixExchangeField" name="LastMkt" tag="30"/>
+        <content xsi:type="FixDictionary:FixStringField" name="TradingSessionID" tag="336"/>
+        <content xsi:type="FixDictionary:FixCharField" name="LastCapacity" tag="29"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="LeavesQty" required="true" stringValue="12000" tag="151"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="CumQty" required="true" stringValue="3000" tag="14"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="AvgPx" required="true" stringValue="0" tag="6"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="DayOrderQty" stringValue="13000" tag="424"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="DayCumQty" stringValue="1000" tag="425"/>
+        <content xsi:type="FixDictionary:FixPriceField" name="DayAvgPx" tag="426"/>
+        <content xsi:type="FixDictionary:FixIntField" name="GTBookingInst" tag="427"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="TradeDate" tag="75"/>
+        <content xsi:type="FixDictionary:FixUTCTimestampType" name="TransactTime" tag="60"/>
+        <content xsi:type="FixDictionary:FixBooleanField" name="ReportToExch" tag="113"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="Commission" tag="12"/>
+        <content xsi:type="FixDictionary:FixCharField" name="CommType" tag="13"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="GrossTradeAmt" tag="381"/>
+        <content xsi:type="FixDictionary:FixAmtField" name="SettlCurrAmt" tag="119"/>
+        <content xsi:type="FixDictionary:FixCurrencyField" name="SettlCurrency" tag="120"/>
+        <content xsi:type="FixDictionary:FixFloatField" name="SettlCurrFxRate" tag="155"/>
+        <content xsi:type="FixDictionary:FixCharField" name="SettlCurrFxRateCalc" tag="156"/>
+        <content xsi:type="FixDictionary:FixCharField" name="HandlInst" tag="21"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MinQty" tag="110"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MaxFloor" tag="111"/>
+        <content xsi:type="FixDictionary:FixCharField" name="OpenClose" tag="77"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="MaxShow" tag="210"/>
+        <content xsi:type="FixDictionary:FixStringField" name="Text" tag="58"/>
+        <content xsi:type="FixDictionary:FixIntField" name="EncodedTextLen" tag="354"/>
+        <content xsi:type="FixDictionary:FixDataField" name="EncodedText" tag="355"/>
+        <content xsi:type="FixDictionary:FixLocalMktDateField" name="FutSettDate2" tag="193"/>
+        <content xsi:type="FixDictionary:FixQtyField" name="OrderQty2" tag="192"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClearingFirm" tag="439"/>
+        <content xsi:type="FixDictionary:FixStringField" name="ClearingAccount" tag="440"/>
+        <content xsi:type="FixDictionary:FixCharField" name="MultiLegReportingType" tag="442"/>
+        <content xsi:type="FixDictionary:FixComponent" name="StandardTrailer">
+          <content xsi:type="FixDictionary:FixIntField" name="SignatureLength" tag="93"/>
+          <content xsi:type="FixDictionary:FixDataField" name="Signature" tag="89"/>
+          <content xsi:type="FixDictionary:FixStringField" name="CheckSum" required="true" tag="10"/>
+        </content>
+      </message>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

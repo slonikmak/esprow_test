@@ -1,0 +1,19 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CertificationCommands="com.esprow.nozomi.testunit.commands.certification" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test loggingLevel="DEBUG" certificationUnit="true" dictionary="SGX_OMnet" implementsBridgeMode="true">
+    <testCommand xsi:type="CertificationCommands:CreateMessageRelayCommand" targetSystemId="%CONFIGURATIONS.CERTIFICATION.SYSTEM%" targetHandlerId="%CONFIGURATIONS.CERTIFICATION.DESTINATION%" forwardSystemId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.SYSTEM%" forwardHandlerId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.DESTINATION%" messageTypeFilters="" filterShowOnly="true" validateMessages="true"/>
+    <testCommand xsi:type="TestUnit:WhileLoopCommand" logicStatement="1==1" maxIterationSafety="">
+      <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.facility_type_u" value="999" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_u" value="64000" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.function_code_u" value="66561" fieldType="BigDecimal"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_request_t[].header_request_t.parameter_2_u" value="0" fieldType="BigDecimal"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:WaitCommand" messageId="BI9" messageSenderProducer="//@test/@testCommand.0" timeout="" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true">
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="info_heartbeat_t[].info_heartbeat_t.broadcast_type[].broadcast_type_t.central_module_c" value="B" fieldType="Char"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="info_heartbeat_t[].info_heartbeat_t.broadcast_type[].broadcast_type_t.server_type_c" value="I" fieldType="Char"/>
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="info_heartbeat_t[].info_heartbeat_t.broadcast_type[].broadcast_type_t.transaction_number_n" value="9" fieldType="BigDecimal"/>
+      </testCommand>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

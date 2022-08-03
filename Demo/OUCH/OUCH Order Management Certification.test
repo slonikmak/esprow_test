@@ -1,0 +1,195 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CertificationCommands="com.esprow.nozomi.testunit.commands.certification" xmlns:ExchangeDictionary="com.esprow.nozomi.dictionary.exchange" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test certificationUnit="true" dictionary="OUCH">
+    <testCommand xsi:type="CertificationCommands:CreateCertificationReceiverCommand" targetSystemId="%CONFIGURATIONS.CERTIFICATION.SYSTEM%" targetHandlerId="%CONFIGURATIONS.CERTIFICATION.DESTINATION%" ignoreAdminMessages="true" validateMessages="true" disableDictionaryMismatchCheck="false"/>
+    <testCommand xsi:type="TestUnit:QuestionnaireCommand">
+      <questions type="BOOLEAN" variableName="OUCH_Support">
+        <instructionMultiLanguage key="en" value="Does your trading application support order management via OUCH?"/>
+      </questions>
+      <questions type="NUMBER" variableName="OBK_ID">
+        <instructionMultiLanguage key="en" value="Please enter the Order Book ID which you will be using."/>
+      </questions>
+      <questions type="BOOLEAN" variableName="X_Support">
+        <instructionMultiLanguage key="en" value="Does your system support the Cancel Order (X) message type?"/>
+      </questions>
+      <questions type="BOOLEAN" variableName="Y_Support">
+        <instructionMultiLanguage key="en" value="Does your system support the Cancel Order by ID (Y) message type?"/>
+      </questions>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;!%VARIABLES.OUCH_Support%&quot;)">
+        <testCommand xsi:type="TestUnit:FailCommand" text="Your trading application must support order management via OUCH to complete this certification test."/>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;!%VARIABLES.X_Support% &amp;&amp; !%VARIABLES.Y_Support%&quot;)">
+        <testCommand xsi:type="TestUnit:FailCommand" text="Your trading application must support either Cancel Order [X] or Cancel Order by ID [Y] messages."/>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:NewVar" variableId="Quantity" value="1000"/>
+    <testCommand xsi:type="TestUnit:NewVar" variableId="Executed_Quantity" value="500"/>
+    <testCommand xsi:type="TestUnit:NewVar" variableId="Price" value="16500"/>
+    <testCommand xsi:type="TestUnit:NewVar" variableId="Amended_Price" value="15000"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please submit a buy order (message type &quot;O&quot;) for the specified order book ID (%VARIABLES.OBK_ID%) for %VARIABLES.Quantity% shares at a price of %VARIABLES.Price%."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="Enter_Order" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.Header[].Message_Type" value="O" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="Order_Book_ID" value="%VARIABLES.OBK_ID%" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="Side" value="B" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="Quantity" value="%VARIABLES.Quantity%" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="Price" value="%VARIABLES.Price%" fieldType="Integer"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Accepted" messageSenderProducer="//@test/@testCommand.0">
+      <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Accepted" dictionaryName="OUCH" msgType="A">
+        <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="A" length="1" padding="LEFT"/>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+          </content>
+        </content>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%MESSAGES.Enter_Order.Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="%VARIABLES.OBK_ID%" length="4" offset="23" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Side" required="true" stringValue="B" length="1" offset="27" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_ID" required="true" stringValue="%CONFIGURATIONS.UTC_TIMESTAMP%" length="8" offset="28" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Quantity" required="true" stringValue="eval(&quot;%VARIABLES.Quantity%-%VARIABLES.Executed_Quantity%&quot;)" length="8" offset="36" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Price" required="true" stringValue="%VARIABLES.Price%" length="4" offset="44" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Time_In_Force" required="true" stringValue="%MESSAGES.Enter_Order.Time_In_Force%" length="1" offset="48" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Open_Close" required="true" stringValue="%MESSAGES.Enter_Order.Open_Close%" length="1" offset="49" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Client/Account" required="true" stringValue="%MESSAGES.Enter_Order.Client/Account%" length="16" offset="50" padding="RIGHT" paddingChar="32"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_State" required="true" stringValue="1" length="1" offset="66" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Customer_Info" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;" length="15" offset="67" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Exchange_Info" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;" length="32" offset="82" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Pre_Trade_Quantity" required="true" stringValue="%VARIABLES.Quantity%" length="8" offset="114" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Display_Quantity" required="true" stringValue="0" length="8" offset="122" padding="LEFT"/>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Executed" messageSenderProducer="//@test/@testCommand.0">
+      <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Executed" dictionaryName="OUCH" msgType="E">
+        <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="E" length="1" padding="LEFT"/>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+          </content>
+        </content>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%MESSAGES.Enter_Order.Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="%VARIABLES.OBK_ID%" length="4" offset="23" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Traded_Quantity" required="true" stringValue="%VARIABLES.Executed_Quantity%" length="8" offset="27" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Trade_Price" required="true" stringValue="%VARIABLES.Price%" length="4" offset="35" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Match_ID" required="true" stringValue="eval(&quot;%CONFIGURATIONS.UNIQUE_ID% * 2&quot;)" length="12" offset="39" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Reserved_17" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;" length="17" offset="51" padding="LEFT"/>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+      <instructionMultiLanguage key="en" value="Did you receive an Order Accepted [A] message for your submitted order, and an Order Executed [E] message for a partial execution of 500 shares?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+        <testCommand xsi:type="TestUnit:FailCommand" text="You should have received an Order Accepted [A] message for your submitted order, and an Order Executed [E] message for a partial execution of 500 shares."/>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please submit a Replace Order [U] message to amend the Price of your order to %VARIABLES.Amended_Price%. Make sure that you don't modify the quantity of the order."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="Replace_Order" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.Header[].Message_Type" value="U" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="Existing_Order_Token" value="%MESSAGES.Enter_Order.Order_Token%"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="Quantity" value="0" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="Price" value="%VARIABLES.Amended_Price%" fieldType="Integer"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Replaced" messageSenderProducer="//@test/@testCommand.0">
+      <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Replaced" dictionaryName="OUCH" msgType="U_S">
+        <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="U" length="1" padding="LEFT"/>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+          </content>
+        </content>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Replacement_Order_Token" required="true" stringValue="%MESSAGES.Replace_Order.Replacement_Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+        <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Previous_Order_Token" required="true" stringValue="%MESSAGES.Replace_Order.Existing_Order_Token%" length="14" offset="23" padding="RIGHT" paddingChar="32"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="%VARIABLES.OBK_ID%" length="4" offset="37" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Side" required="true" stringValue="B" length="1" offset="41" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_ID" required="true" stringValue="%CONFIGURATIONS.UTC_TIMESTAMP%" length="8" offset="42" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Quantity" required="true" stringValue="eval(&quot;%VARIABLES.Quantity%-%VARIABLES.Executed_Quantity%&quot;)" length="8" offset="50" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Price" required="true" stringValue="%VARIABLES.Amended_Price%" length="4" offset="58" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Time_In_Force" required="true" stringValue="%MESSAGES.Enter_Order.Time_In_Force%" length="1" offset="62" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Open_Close" required="true" stringValue="%MESSAGES.Enter_Order.Open_Close%" length="1" offset="63" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Client/Account" required="true" stringValue="%MESSAGES.Enter_Order.Client/Account%" length="16" offset="64" padding="RIGHT" paddingChar="32"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_State" required="true" stringValue="1" length="1" offset="80" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Customer_Info" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;" length="15" offset="81" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Exchange_Info" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;" length="32" offset="96" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Pre_Trade_Quantity" required="true" stringValue="%VARIABLES.Quantity%" length="8" offset="128" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Display_Quantity" required="true" stringValue="0" length="8" offset="136" padding="LEFT"/>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+      <instructionMultiLanguage key="en" value="Did you receive an Order Replaced [U] message with the amended price?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+        <testCommand xsi:type="TestUnit:FailCommand" text="You should have received an Order Replaced [U] message with the amended price."/>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;%VARIABLES.X_Support%&quot;)">
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please cancel your amended order using a Cancel Order [X] message."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageId="Cancel_Order" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.Header[].Message_Type" value="X" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="Order_Token" value="%MESSAGES.Order_Replaced.Replacement_Order_Token%"/>
+        </testCommand>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock">
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please cancel your order using a Cancel Order by ID [Y] message."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageId="Cancel_Order" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.Header[].Message_Type" value="Y" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="Order_Book_ID" value="%VARIABLES.OBK_ID%" fieldType="BigDecimal"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="Side" value="B" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="Order_ID" value="%MESSAGES.Order_Accepted.Order_ID%" fieldType="BigDecimal"/>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Cancelled" messageSenderProducer="//@test/@testCommand.0">
+      <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Cancelled" dictionaryName="OUCH" msgType="C">
+        <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="C" length="1" padding="LEFT"/>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+          </content>
+        </content>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%MESSAGES.Order_Replaced.Replacement_Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="%VARIABLES.OBK_ID%" length="4" offset="23" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Side" required="true" stringValue="B" length="1" offset="27" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_ID" required="true" stringValue="%MESSAGES.Order_Replaced.Order_ID%" length="8" offset="28" padding="LEFT"/>
+        <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Reason" required="true" stringValue="1" length="1" offset="36" padding="LEFT"/>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+      <instructionMultiLanguage key="en" value="Did you receive an Order Cancelled [C] message about the cancellation of your order?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+        <testCommand xsi:type="TestUnit:FailCommand" text="You should have received an Order Cancelled [C] message about the cancellation of your order."/>
+      </testCommand>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

@@ -1,0 +1,512 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ExchangeDictionary="com.esprow.nozomi.dictionary.exchange" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test loggingLevel="DEBUG" defaultMessageHandler="//@test/@testCommand.2">
+    <testCommand xsi:type="TestUnit:SendQuery" targetSystemId="Cert" targetDbId="SGX Orders" sqlQuery="DROP TABLE IF EXISTS ORDER_BOOK"/>
+    <testCommand xsi:type="TestUnit:SendQuery" targetSystemId="Cert" targetDbId="SGX Orders" sqlQuery="CREATE TABLE ORDER_BOOK (&#xD;&#xA;  ORDER_BOOK_ID BIGINT,&#xD;&#xA;  ORDER_TOKEN VARCHAR(14) PRIMARY KEY,&#xD;&#xA;  ORDER_TOKEN_ORIGINAL VARCHAR(14),&#xD;&#xA;  SIDE VARCHAR(1),&#xD;&#xA;  ORDER_ID NUMERIC(20),&#xD;&#xA;  QUANTITY NUMERIC(20),&#xD;&#xA;  QUANTITY_EXECUTED NUMERIC(20),&#xD;&#xA;  PRICE BIGINT,&#xD;&#xA;  TIME_IN_FORCE SMALLINT,&#xD;&#xA;  OPEN_CLOSE SMALLINT,&#xD;&#xA;  ACCOUNT VARCHAR(16),&#xD;&#xA;  ORDER_STATE SMALLINT,&#xD;&#xA;  PRE_TRADE_QUANTITY NUMERIC(20),&#xD;&#xA;  DISPLAY_QUANTITY NUMERIC(20),&#xD;&#xA;  TIMESTAMP_ENTERED NUMERIC(20) );"/>
+    <testCommand xsi:type="TestUnit:CreateMessageReceiverCommand" messageHandlerId="SGX_OUCH_Gateway_Receiver" runMode="NONBLOCKING" targetSystemId="Cert" targetHandlerId="SGX OUCH Gateway 2" autoStart="true" ignoreAdminMessages="false" collectStatistics="false" sendSync="true" override="true" validateMessages="true" disableDictionaryMismatchCheck="false"/>
+    <testCommand xsi:type="TestUnit:WhileLoopCommand" logicStatement="true" maxIterationSafety="">
+      <testCommand xsi:type="TestUnit:WaitCommand" messageId="incomingMsg" messageSenderProducer="//@test" messageCount="1" timeout="-1" searchFromLastMatch="true">
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.Header[].Message_Type" checkType="EXISTS" fieldType="Char"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:NewVar" variableId="Message_Type" value="%MESSAGES.incomingMsg.StandardHeader.Header[].Message_Type%"/>
+      <testCommand xsi:type="TestUnit:SwitchStatement" switchVariable="%VARIABLES.Message_Type%">
+        <testCommand xsi:type="TestUnit:SwitchStatementCase" caseValue="O">
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Order_Book_ID" value="%MESSAGES.incomingMsg.Order_Book_ID%"/>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;endsWith(&quot;%VARIABLES.Order_Book_ID%&quot;,&quot;0&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:LogEntry" text="Invalid Order Book ID (we reject all that end with 0)"/>
+              <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Rejected" messageSenderProducer="//@test">
+                <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Rejected" dictionaryName="SGX_OUCH" msgType="J">
+                  <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="J" length="1" padding="LEFT"/>
+                    </content>
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                    </content>
+                  </content>
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%VARIABLES.Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Reject_Code" required="true" stringValue="-800006" length="4" offset="23" padding="LEFT"/>
+                </message>
+              </testCommand>
+              <testCommand xsi:type="TestUnit:ContinueCommand"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Order_Token" value="%MESSAGES.incomingMsg.Order_Token%"/>
+          <testCommand xsi:type="TestUnit:SendQuery" dataSetId="Order_Token_Exists" targetSystemId="Cert" targetDbId="SGX Orders" sqlQuery="SELECT ORDER_TOKEN FROM ORDER_BOOK WHERE ORDER_TOKEN = '%VARIABLES.Order_Token%'"/>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;isExpanded(&quot;%DATA_SETS.Order_Token_Exists.ORDER_TOKEN%&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:LogEntry" text="Order Token already exists"/>
+              <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Rejected" messageSenderProducer="//@test">
+                <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Rejected" dictionaryName="SGX_OUCH" msgType="J">
+                  <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="J" length="1" padding="LEFT"/>
+                    </content>
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                    </content>
+                  </content>
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%VARIABLES.Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Reject_Code" required="true" stringValue="-800002" length="4" offset="23" padding="LEFT"/>
+                </message>
+              </testCommand>
+              <testCommand xsi:type="TestUnit:ContinueCommand"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Side" value="%MESSAGES.incomingMsg.Side%"/>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;&quot;%VARIABLES.Side%&quot; != &quot;B&quot; &amp;&amp; &quot;%VARIABLES.Side%&quot; != &quot;S&quot;&quot;)">
+              <testCommand xsi:type="TestUnit:LogEntry" text="Invalid Side (should be B or S)"/>
+              <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Rejected" messageSenderProducer="//@test">
+                <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Rejected" dictionaryName="SGX_OUCH" msgType="J">
+                  <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="J" length="1" padding="LEFT"/>
+                    </content>
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                    </content>
+                  </content>
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%VARIABLES.Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Reject_Code" required="true" stringValue="-800008" length="4" offset="23" padding="LEFT"/>
+                </message>
+              </testCommand>
+              <testCommand xsi:type="TestUnit:ContinueCommand"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Time_In_Force" value="%MESSAGES.incomingMsg.Time_In_Force%"/>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;&quot;%VARIABLES.Time_In_Force%&quot; != &quot;0&quot; &amp;&amp; &quot;%VARIABLES.Time_In_Force%&quot; != &quot;3&quot; &amp;&amp; &quot;%VARIABLES.Time_In_Force%&quot; != &quot;4&quot;&quot;)">
+              <testCommand xsi:type="TestUnit:LogEntry" text="Invalid Time In Force (should be 0, 3 or 4)"/>
+              <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Rejected" messageSenderProducer="//@test">
+                <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Rejected" dictionaryName="SGX_OUCH" msgType="J">
+                  <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="J" length="1" padding="LEFT"/>
+                    </content>
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                    </content>
+                  </content>
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%VARIABLES.Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Reject_Code" required="true" stringValue="-800010" length="4" offset="23" padding="LEFT"/>
+                </message>
+              </testCommand>
+              <testCommand xsi:type="TestUnit:ContinueCommand"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Quantity" value="%MESSAGES.incomingMsg.Quantity%"/>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Quantity_Executed" value="0"/>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Order_State" value="1"/>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;endsWith(&quot;%VARIABLES.Order_Book_ID%&quot;,&quot;1&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:LogEntry" text="Partial Fill 50%"/>
+              <testCommand xsi:type="TestUnit:NewVar" variableId="Quantity_Executed" value="eval(&quot;round(%VARIABLES.Quantity%*0.5,0)&quot;)"/>
+              <testCommand xsi:type="TestUnit:NewVar" variableId="Quantity" value="eval(&quot;%MESSAGES.incomingMsg.Quantity%-%VARIABLES.Quantity_Executed%&quot;)"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;endsWith(&quot;%VARIABLES.Order_Book_ID%&quot;,&quot;2&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:LogEntry" text="Fill 100%"/>
+              <testCommand xsi:type="TestUnit:NewVar" variableId="Quantity_Executed" value="%VARIABLES.Quantity%"/>
+              <testCommand xsi:type="TestUnit:NewVar" variableId="Quantity" value="0"/>
+              <testCommand xsi:type="TestUnit:NewVar" variableId="Order_State" value="2"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Order_ID" value="%CONFIGURATIONS.UTC_TIMESTAMP%"/>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Timestamp" value="%CONFIGURATIONS.UNIQUE_ID%"/>
+          <testCommand xsi:type="TestUnit:SendQuery" targetSystemId="Cert" targetDbId="SGX Orders" sqlQuery="INSERT INTO ORDER_BOOK VALUES (&#xD;&#xA; %VARIABLES.Order_Book_ID%,&#xD;&#xA; '%VARIABLES.Order_Token%',&#xD;&#xA; '%VARIABLES.Order_Token%',&#xD;&#xA; '%VARIABLES.Side%',&#xD;&#xA; %VARIABLES.Order_ID%,&#xD;&#xA; %VARIABLES.Quantity%,&#xD;&#xA; %VARIABLES.Quantity_Executed%,&#xD;&#xA; %MESSAGES.incomingMsg.Price%,&#xD;&#xA; %VARIABLES.Time_In_Force%,&#xD;&#xA; %MESSAGES.incomingMsg.Open_Close%,&#xD;&#xA; '%MESSAGES.incomingMsg.Client/Account%',&#xD;&#xA; %VARIABLES.Order_State%,&#xD;&#xA; %MESSAGES.incomingMsg.Quantity%,&#xD;&#xA; 0,&#xD;&#xA; %VARIABLES.Timestamp% )"/>
+          <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Accepted" messageSenderProducer="//@test">
+            <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Accepted" dictionaryName="SGX_OUCH" msgType="A">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                  <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="A" length="1" padding="LEFT"/>
+                </content>
+                <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                </content>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%VARIABLES.Timestamp%" length="8" offset="1" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%VARIABLES.Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="%VARIABLES.Order_Book_ID%" length="4" offset="23" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Side" required="true" stringValue="%VARIABLES.Side%" length="1" offset="27" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_ID" required="true" stringValue="%VARIABLES.Order_ID%" length="8" offset="28" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Quantity" required="true" stringValue="%VARIABLES.Quantity%" length="8" offset="36" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Price" required="true" stringValue="%MESSAGES.incomingMsg.Price%" length="4" offset="44" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Time_In_Force" required="true" stringValue="%VARIABLES.Time_In_Force%" length="1" offset="48" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Open_Close" required="true" stringValue="%MESSAGES.incomingMsg.Open_Close%" length="1" offset="49" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Client/Account" required="true" stringValue="%MESSAGES.incomingMsg.Client/Account%" length="16" offset="50" padding="RIGHT" paddingChar="32"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_State" required="true" stringValue="%VARIABLES.Order_State%" length="1" offset="66" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Customer_Info" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;" length="15" offset="67" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Exchange_Info" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;" length="32" offset="82" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Pre_Trade_Quantity" required="true" stringValue="%MESSAGES.incomingMsg.Quantity%" length="8" offset="114" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Display_Quantity" required="true" stringValue="0" length="8" offset="122" padding="LEFT"/>
+            </message>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;%VARIABLES.Quantity_Executed% > 0&quot;)">
+              <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Executed" messageSenderProducer="//@test/@testCommand.2">
+                <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Executed" dictionaryName="SGX_OUCH" msgType="E">
+                  <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="E" length="1" padding="LEFT"/>
+                    </content>
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                    </content>
+                  </content>
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%VARIABLES.Timestamp%" length="8" offset="1" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%VARIABLES.Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="%VARIABLES.Order_Book_ID%" length="4" offset="23" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Traded_Quantity" required="true" stringValue="%VARIABLES.Quantity_Executed%" length="8" offset="27" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Trade_Price" required="true" stringValue="%MESSAGES.incomingMsg.Price%" length="4" offset="35" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Match_ID" required="true" stringValue="eval(&quot;%CONFIGURATIONS.UNIQUE_ID% * 2&quot;)" length="12" offset="39" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Reserved_17" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;" length="17" offset="51" padding="LEFT"/>
+                </message>
+              </testCommand>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:BreakCommand"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:SwitchStatementCase" caseValue="U">
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Order_Token_Original" value="%MESSAGES.incomingMsg.Existing_Order_Token%"/>
+          <testCommand xsi:type="TestUnit:SendQuery" dataSetId="Order_Token_Original_Exists" targetSystemId="Cert" targetDbId="SGX Orders" sqlQuery="SELECT ORDER_TOKEN, ORDER_BOOK_ID, SIDE, QUANTITY FROM ORDER_BOOK WHERE ORDER_TOKEN = '%VARIABLES.Order_Token_Original%' AND ORDER_TOKEN_ORIGINAL = '%VARIABLES.Order_Token_Original%'"/>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;!isExpanded(&quot;%DATA_SETS.Order_Token_Original_Exists.ORDER_TOKEN%&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:LogEntry" text="Order Token does not exist, or it's not the original token"/>
+              <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Rejected" messageSenderProducer="//@test">
+                <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Rejected" dictionaryName="SGX_OUCH" msgType="J">
+                  <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="J" length="1" padding="LEFT"/>
+                    </content>
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                    </content>
+                  </content>
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%VARIABLES.Order_Token_Original%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Reject_Code" required="true" stringValue="-800004" length="4" offset="23" padding="LEFT"/>
+                </message>
+              </testCommand>
+              <testCommand xsi:type="TestUnit:ContinueCommand"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Replacement_Order_Token" value="%MESSAGES.incomingMsg.Replacement_Order_Token%"/>
+          <testCommand xsi:type="TestUnit:SendQuery" dataSetId="Replacement_Order_Token_Exists" targetSystemId="Cert" targetDbId="SGX Orders" sqlQuery="SELECT ORDER_TOKEN FROM ORDER_BOOK WHERE ORDER_TOKEN = '%VARIABLES.Replacement_Order_Token%'"/>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;isExpanded(&quot;%DATA_SETS.Replacement_Order_Token_Exists.ORDER_TOKEN%&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:LogEntry" text="Replacement Order Token already exists"/>
+              <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Rejected" messageSenderProducer="//@test">
+                <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Rejected" dictionaryName="SGX_OUCH" msgType="J">
+                  <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="J" length="1" padding="LEFT"/>
+                    </content>
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                    </content>
+                  </content>
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%VARIABLES.Replacement_Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Reject_Code" required="true" stringValue="-800002" length="4" offset="23" padding="LEFT"/>
+                </message>
+              </testCommand>
+              <testCommand xsi:type="TestUnit:ContinueCommand"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:SendQuery" dataSetId="Order_Latest" targetSystemId="Cert" targetDbId="SGX Orders" sqlQuery="SELECT ORDER_TOKEN, ORDER_BOOK_ID, SIDE, QUANTITY, QUANTITY_EXECUTED, DISPLAY_QUANTITY, PRICE, TIME_IN_FORCE, OPEN_CLOSE, ORDER_STATE FROM ORDER_BOOK WHERE ORDER_TOKEN_ORIGINAL = '%VARIABLES.Order_Token_Original%' ORDER BY TIMESTAMP_ENTERED ASC"/>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Order_State" value="%DATA_SETS.Order_Latest.ORDER_STATE%"/>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;&quot;%VARIABLES.Order_State%&quot; == &quot;2&quot;&quot;)">
+              <testCommand xsi:type="TestUnit:LogEntry" text="Order is not on book"/>
+              <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="TODO what's the correct rejection code in this case?"/>
+              <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Rejected" messageSenderProducer="//@test">
+                <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Rejected" dictionaryName="SGX_OUCH" msgType="J">
+                  <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="J" length="1" padding="LEFT"/>
+                    </content>
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                    </content>
+                  </content>
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%VARIABLES.Order_Token_Original%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Reject_Code" required="true" stringValue="-800004" length="4" offset="23" padding="LEFT"/>
+                </message>
+              </testCommand>
+              <testCommand xsi:type="TestUnit:ContinueCommand"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Quantity" value="%DATA_SETS.Order_Latest.QUANTITY%"/>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Quantity_Executed" value="%DATA_SETS.Order_Latest.QUANTITY_EXECUTED%"/>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;&quot;%MESSAGES.incomingMsg.Quantity%&quot; != &quot;0&quot;&quot;)">
+              <testCommand xsi:type="TestUnit:NewVar" variableId="Total_Quantity" value="eval(&quot;%VARIABLES.Quantity%+%VARIABLES.Quantity_Executed%&quot;)"/>
+              <testCommand xsi:type="TestUnit:NewVar" variableId="Total_Quantity_Desired" value="%MESSAGES.incomingMsg.Quantity%"/>
+              <testCommand xsi:type="TestUnit:NewVar" variableId="Quantity_Difference" value="eval(&quot;%VARIABLES.Total_Quantity_Desired%-%VARIABLES.Total_Quantity%&quot;)"/>
+              <testCommand xsi:type="TestUnit:NewVar" variableId="Quantity" value="eval(&quot;%VARIABLES.Quantity%+%VARIABLES.Quantity_Difference%&quot;)"/>
+              <testCommand xsi:type="TestUnit:IfStatementCommand">
+                <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;%VARIABLES.Quantity%&lt;=0&quot;)">
+                  <testCommand xsi:type="TestUnit:NewVar" variableId="Quantity" value="0"/>
+                  <testCommand xsi:type="TestUnit:NewVar" variableId="Order_State" value="2"/>
+                </testCommand>
+              </testCommand>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Display_Quantity" value="%DATA_SETS.Order_Latest.DISPLAY_QUANTITY%"/>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;&quot;%MESSAGES.incomingMsg.Display_Quantity%&quot; != &quot;0&quot;&quot;)">
+              <testCommand xsi:type="TestUnit:NewVar" variableId="Display_Quantity" value="%MESSAGES.incomingMsg.Display_Quantity%"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Price" value="%DATA_SETS.Order_Latest.PRICE%"/>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;&quot;%MESSAGES.incomingMsg.Price%&quot; != &quot;0&quot;&quot;)">
+              <testCommand xsi:type="TestUnit:NewVar" variableId="Price" value="%MESSAGES.incomingMsg.Price%"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Open_Close" value="%DATA_SETS.Order_Latest.OPEN_CLOSE%"/>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;&quot;%MESSAGES.incomingMsg.Open_Close%&quot; != &quot;0&quot;&quot;)">
+              <testCommand xsi:type="TestUnit:NewVar" variableId="Open_Close" value="%MESSAGES.incomingMsg.Open_Close%"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Order_ID" value="%CONFIGURATIONS.UTC_TIMESTAMP%"/>
+          <testCommand xsi:type="TestUnit:SendQuery" targetSystemId="Cert" targetDbId="SGX Orders" sqlQuery="UPDATE ORDER_BOOK SET ORDER_STATE = 2  WHERE ORDER_TOKEN = '%DATA_SETS.Order_Latest.ORDER_TOKEN%'"/>
+          <testCommand xsi:type="TestUnit:SendQuery" targetSystemId="Cert" targetDbId="SGX Orders" sqlQuery="INSERT INTO ORDER_BOOK VALUES (&#xD;&#xA; %DATA_SETS.Order_Latest.ORDER_BOOK_ID%,&#xD;&#xA; '%VARIABLES.Replacement_Order_Token%',&#xD;&#xA; '%VARIABLES.Order_Token_Original%',&#xD;&#xA; '%DATA_SETS.Order_Latest.SIDE%',&#xD;&#xA; %VARIABLES.Order_ID%,&#xD;&#xA; %VARIABLES.Quantity%,&#xD;&#xA; 0,&#xD;&#xA; %VARIABLES.Price%,&#xD;&#xA; %VARIABLES.Time_In_Force%,&#xD;&#xA; %VARIABLES.Open_Close%,&#xD;&#xA; '%MESSAGES.incomingMsg.Client/Account%',&#xD;&#xA; %VARIABLES.Order_State%,&#xD;&#xA; %VARIABLES.Quantity%,&#xD;&#xA; %VARIABLES.Display_Quantity%,&#xD;&#xA; %CONFIGURATIONS.UNIQUE_ID% )"/>
+          <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Replaced" messageSenderProducer="//@test">
+            <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Replaced" dictionaryName="SGX_OUCH" msgType="U_S">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                  <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="U" length="1" padding="LEFT"/>
+                </content>
+                <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                </content>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Replacement_Order_Token" required="true" stringValue="%VARIABLES.Replacement_Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+              <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Previous_Order_Token" required="true" stringValue="%DATA_SETS.Order_Latest.ORDER_TOKEN%" length="14" offset="23" padding="RIGHT" paddingChar="32"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="%DATA_SETS.Order_Latest.ORDER_BOOK_ID%" length="4" offset="37" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Side" required="true" stringValue="%DATA_SETS.Order_Latest.SIDE%" length="1" offset="41" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_ID" required="true" stringValue="%VARIABLES.Order_ID%" length="8" offset="42" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Quantity" required="true" stringValue="%VARIABLES.Quantity%" length="8" offset="50" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Price" required="true" stringValue="%VARIABLES.Price%" length="4" offset="58" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Time_In_Force" required="true" stringValue="%DATA_SETS.Order_Latest.TIME_IN_FORCE%" length="1" offset="62" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Open_Close" required="true" stringValue="%VARIABLES.Open_Close%" length="1" offset="63" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Client/Account" required="true" stringValue="%MESSAGES.incomingMsg.Client/Account%" length="16" offset="64" padding="RIGHT" paddingChar="32"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_State" required="true" stringValue="%VARIABLES.Order_State%" length="1" offset="80" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Customer_Info" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;" length="15" offset="81" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="Exchange_Info" required="true" stringValue="&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;0&quot;" length="32" offset="96" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Pre_Trade_Quantity" required="true" stringValue="%VARIABLES.Quantity%" length="8" offset="128" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Display_Quantity" required="true" stringValue="%VARIABLES.Display_Quantity%" length="8" offset="136" padding="LEFT"/>
+            </message>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:BreakCommand"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:SwitchStatementCase" caseValue="X">
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Order_Token" value="%MESSAGES.incomingMsg.Order_Token%"/>
+          <testCommand xsi:type="TestUnit:SendQuery" dataSetId="Order_Existing" targetSystemId="Cert" targetDbId="SGX Orders" sqlQuery="SELECT ORDER_TOKEN, ORDER_BOOK_ID, SIDE, ORDER_ID, QUANTITY, ORDER_STATE FROM ORDER_BOOK WHERE ORDER_TOKEN = '%VARIABLES.Order_Token%'"/>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;!isExpanded(&quot;%DATA_SETS.Order_Existing.ORDER_TOKEN%&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:LogEntry" text="Order Token does not exist"/>
+              <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Rejected" messageSenderProducer="//@test">
+                <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Rejected" dictionaryName="SGX_OUCH" msgType="J">
+                  <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="J" length="1" padding="LEFT"/>
+                    </content>
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                    </content>
+                  </content>
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%VARIABLES.Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Reject_Code" required="true" stringValue="-800004" length="4" offset="23" padding="LEFT"/>
+                </message>
+              </testCommand>
+              <testCommand xsi:type="TestUnit:ContinueCommand"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;&quot;%DATA_SETS.Order_Existing.QUANTITY%&quot; == &quot;0&quot; || &quot;%DATA_SETS.Order_Existing.ORDER_STATE%&quot; == &quot;2&quot;&quot;)">
+              <testCommand xsi:type="TestUnit:LogEntry" text="Order is not on book (it has been e.g. fully executed, amended or cancelled)"/>
+              <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Rejected" messageSenderProducer="//@test">
+                <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Rejected" dictionaryName="SGX_OUCH" msgType="J">
+                  <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="J" length="1" padding="LEFT"/>
+                    </content>
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                    </content>
+                  </content>
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%VARIABLES.Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Reject_Code" required="true" stringValue="-800014" length="4" offset="23" padding="LEFT"/>
+                </message>
+              </testCommand>
+              <testCommand xsi:type="TestUnit:ContinueCommand"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:SendQuery" targetSystemId="Cert" targetDbId="SGX Orders" sqlQuery="UPDATE ORDER_BOOK SET ORDER_STATE = 2 WHERE ORDER_TOKEN = '%VARIABLES.Order_Token%'"/>
+          <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Cancelled" messageSenderProducer="//@test">
+            <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Cancelled" dictionaryName="SGX_OUCH" msgType="C">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                  <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="C" length="1" padding="LEFT"/>
+                </content>
+                <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                </content>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%VARIABLES.Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="%DATA_SETS.Order_Existing.ORDER_BOOK_ID%" length="4" offset="23" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Side" required="true" stringValue="%DATA_SETS.Order_Existing.SIDE%" length="1" offset="27" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_ID" required="true" stringValue="%DATA_SETS.Order_Existing.ORDER_ID%" length="8" offset="28" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Reason" required="true" stringValue="1" length="1" offset="36" padding="LEFT"/>
+            </message>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:BreakCommand"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:SwitchStatementCase" caseValue="Y">
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Order_Book_ID" value="%MESSAGES.incomingMsg.Order_Book_ID%"/>
+          <testCommand xsi:type="TestUnit:SendQuery" dataSetId="Order_Book_ID_Exists" targetSystemId="Cert" targetDbId="SGX Orders" sqlQuery="SELECT ORDER_BOOK_ID FROM ORDER_BOOK WHERE ORDER_BOOK_ID = %VARIABLES.Order_Book_ID%"/>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;!isExpanded(&quot;%DATA_SETS.Order_Book_ID_Exists.ORDER_BOOK_ID%&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:LogEntry" text="Invalid Order Book ID"/>
+              <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Rejected" messageSenderProducer="//@test">
+                <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Rejected" dictionaryName="SGX_OUCH" msgType="J">
+                  <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="J" length="1" padding="LEFT"/>
+                    </content>
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                    </content>
+                  </content>
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Reject_Code" required="true" stringValue="-800006" length="4" offset="23" padding="LEFT"/>
+                </message>
+              </testCommand>
+              <testCommand xsi:type="TestUnit:ContinueCommand"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Side" value="%MESSAGES.incomingMsg.Side%"/>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;&quot;%VARIABLES.Side%&quot; != &quot;B&quot; &amp;&amp; &quot;%VARIABLES.Side%&quot; != &quot;S&quot;&quot;)">
+              <testCommand xsi:type="TestUnit:LogEntry" text="Invalid Side (should be B or S)"/>
+              <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Rejected" messageSenderProducer="//@test">
+                <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Rejected" dictionaryName="SGX_OUCH" msgType="J">
+                  <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="J" length="1" padding="LEFT"/>
+                    </content>
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                    </content>
+                  </content>
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Reject_Code" required="true" stringValue="-800008" length="4" offset="23" padding="LEFT"/>
+                </message>
+              </testCommand>
+              <testCommand xsi:type="TestUnit:ContinueCommand"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:NewVar" variableId="Order_ID" value="%MESSAGES.incomingMsg.Order_ID%"/>
+          <testCommand xsi:type="TestUnit:SendQuery" dataSetId="Order_Existing" targetSystemId="Cert" targetDbId="SGX Orders" sqlQuery="SELECT ORDER_TOKEN, QUANTITY, ORDER_STATE FROM ORDER_BOOK WHERE ORDER_BOOK_ID = %VARIABLES.Order_Book_ID% AND SIDE = '%VARIABLES.Side%' AND ORDER_ID = %VARIABLES.Order_ID%"/>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;!isExpanded(&quot;%DATA_SETS.Order_Existing.ORDER_TOKEN%&quot;)&quot;)">
+              <testCommand xsi:type="TestUnit:LogEntry" text="Order does not exist"/>
+              <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Rejected" messageSenderProducer="//@test">
+                <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Rejected" dictionaryName="SGX_OUCH" msgType="J">
+                  <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="J" length="1" padding="LEFT"/>
+                    </content>
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                    </content>
+                  </content>
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Reject_Code" required="true" stringValue="-800012" length="4" offset="23" padding="LEFT"/>
+                </message>
+              </testCommand>
+              <testCommand xsi:type="TestUnit:ContinueCommand"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfStatementCommand">
+            <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;&quot;%DATA_SETS.Order_Existing.QUANTITY%&quot; == &quot;0&quot; || &quot;%DATA_SETS.Order_Existing.ORDER_STATE%&quot; == &quot;2&quot;&quot;)">
+              <testCommand xsi:type="TestUnit:LogEntry" text="Order is not on book (it has been e.g. fully executed, amended or cancelled)"/>
+              <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Rejected" messageSenderProducer="//@test">
+                <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Rejected" dictionaryName="SGX_OUCH" msgType="J">
+                  <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="J" length="1" padding="LEFT"/>
+                    </content>
+                    <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                      <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                      <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                    </content>
+                  </content>
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%DATA_SETS.Order_Existing.ORDER_TOKEN%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Reject_Code" required="true" stringValue="-800014" length="4" offset="23" padding="LEFT"/>
+                </message>
+              </testCommand>
+              <testCommand xsi:type="TestUnit:ContinueCommand"/>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:SendQuery" targetSystemId="Cert" targetDbId="SGX Orders" sqlQuery="UPDATE ORDER_BOOK SET ORDER_STATE = 2 WHERE ORDER_TOKEN = '%DATA_SETS.Order_Existing.ORDER_TOKEN%'"/>
+          <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Order_Cancelled" messageSenderProducer="//@test">
+            <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Cancelled" dictionaryName="SGX_OUCH" msgType="C">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+                <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                  <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="C" length="1" padding="LEFT"/>
+                </content>
+                <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                  <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                  <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" length="1" offset="2" padding="LEFT"/>
+                </content>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="1" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%DATA_SETS.Order_Existing.ORDER_TOKEN%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_Book_ID" required="true" stringValue="%VARIABLES.Order_Book_ID%" length="4" offset="23" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Side" required="true" stringValue="%VARIABLES.Side%" length="1" offset="27" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_ID" required="true" stringValue="%VARIABLES.Order_ID%" length="8" offset="28" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Reason" required="true" stringValue="1" length="1" offset="36" padding="LEFT"/>
+            </message>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:BreakCommand"/>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

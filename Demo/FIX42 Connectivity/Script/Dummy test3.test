@@ -1,0 +1,15 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CertificationCommands="com.esprow.nozomi.testunit.commands.certification" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test comment="As part of this test, the counterparty has to submit a NewOrderSingle (message type D) limit order for a given number of shares of a specific instrument at a given price.&#xD;&#xA;Subsequently, ExecutionReports (message type 8) are returned with the order acknowledgement, 2 partial fills, and finally a fill." loggingLevel="TRACE" certificationUnit="true" dictionary="Quick Fix 4.2">
+    <testCommand xsi:type="CertificationCommands:CreateCertificationReceiverCommand" targetSystemId="%CONFIGURATIONS.CERTIFICATION.SYSTEM%" targetHandlerId="%CONFIGURATIONS.CERTIFICATION.DESTINATION%" ignoreAdminMessages="true" validateMessages="true" disableDictionaryMismatchCheck="false"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Var1" requireUserInput="true">
+      <instructionMultiLanguage key="en" value="what is Var1?"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateGlobalVariable" variableId="Var2" value="%VARIABLES.Var1%"/>
+    <testCommand xsi:type="TestUnit:ExportGlobalVariables" filePath="GlobalVariables.gbl">
+      <variableId>Var2</variableId>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:ImportGlobalVariables" filePath="GlobalVariables.gbl" override="true"/>
+    <testCommand xsi:type="TestUnit:LogEntry" text="%GLOBALS.Var2%"/>
+  </test>
+</TestUnit:TestContainerType>

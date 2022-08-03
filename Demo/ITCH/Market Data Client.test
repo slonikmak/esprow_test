@@ -1,0 +1,8 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test loggingLevel="DEBUG">
+    <testCommand xsi:type="TestUnit:NewMessageSender" messageHandlerId="ITCH_Client" targetSystemId="Cert" targetHandlerId="SGX ITCH Receiver" autoConnect="true" ignoreAdminMessages="false" collectStatistics="false" sendSync="true" override="true" validateMessages="true" cleanQueue="true" disableDictionaryMismatchCheck="false"/>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" messageCount="3" timeout="-1" searchFromLastMatch="true"/>
+    <testCommand xsi:type="TestUnit:PauseCommand" length="130"/>
+  </test>
+</TestUnit:TestContainerType>

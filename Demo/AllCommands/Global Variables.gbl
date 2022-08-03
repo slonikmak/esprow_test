@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="ASCII"?>
+<globalvariables:GlobalVariables xmlns:globalvariables="com.esprow.nozomi.globalvariables">
+  <globalVariables name="GlobalVar1" value="15550"/>
+  <globalVariables name="GlobalVar2" value="1555"/>
+</globalvariables:GlobalVariables>

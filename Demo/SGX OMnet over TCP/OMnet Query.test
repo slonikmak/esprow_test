@@ -1,0 +1,144 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ExchangeDictionary="com.esprow.nozomi.dictionary.exchange" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test>
+    <testCommand xsi:type="TestUnit:NewMessageSender" messageHandlerId="sender" targetSystemId="Cert" targetHandlerId="SGX OMnet Relay 100 Target" autoConnect="true" collectStatistics="false" sendSync="true" override="true" validateMessages="true" cleanQueue="true" disableDictionaryMismatchCheck="false"/>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="MQ92" messageSenderProducer="//@test/@testCommand.0">
+      <message xsi:type="ExchangeDictionary:ExchangeMessage" name="MQ92" dictionaryName="SGX_OMnet">
+        <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_common_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="length_u" required="true" stringValue="76" length="4" padding="LEFT"/>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_request_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_request_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="facility_type_u" required="true" stringValue="710" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_u" required="true" stringValue="64000" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="function_code_u" required="true" stringValue="66049" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_2_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+            </content>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_response_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_response_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="txstat_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="return_value_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_2_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_3_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_4_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_5_q" required="true" length="8" padding="LEFT"/>
+            </content>
+          </content>
+        </content>
+        <content xsi:type="ExchangeDictionary:ExchangeGroup" name="query_order_private_filter_t" required="true">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="query_order_private_filter_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeGroup" name="transaction_type" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="transaction_type_t" required="true">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="central_module_c" required="true" stringValue="M" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="server_type_c" required="true" stringValue="Q" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="transaction_number_n" required="true" stringValue="92" length="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeGroup" name="series" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="series_t" required="true" tag="50000">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="country_c" required="true" stringValue="0" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="market_c" required="true" stringValue="0" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="instrument_group_c" required="true" stringValue="0" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="modifier_c" required="true" stringValue="0" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="commodity_n" required="true" stringValue="0" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="expiration_date_n" required="true" stringValue="0" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeIntField" name="strike_price_i" required="true" stringValue="0" length="4" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeGroup" name="search_series" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="series_t" required="true" tag="50000">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="country_c" required="true" stringValue="0" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="market_c" required="true" stringValue="0" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="instrument_group_c" required="true" stringValue="0" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="modifier_c" required="true" stringValue="0" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="commodity_n" required="true" stringValue="0" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="expiration_date_n" required="true" stringValue="0" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeIntField" name="strike_price_i" required="true" stringValue="0" length="4" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeGroup" name="whose" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="whose_t" required="true">
+                <content xsi:type="ExchangeDictionary:ExchangeGroup" name="trading_code" required="true">
+                  <content xsi:type="ExchangeDictionary:ExchangeComponent" name="trading_code_t" required="true" tag="50016">
+                    <content xsi:type="ExchangeDictionary:ExchangeStringField" name="country_id_s" required="true" stringValue="SG" length="2" padding="RIGHT" paddingChar="32"/>
+                    <content xsi:type="ExchangeDictionary:ExchangeStringField" name="ex_customer_s" required="true" stringValue="FI009" length="5" padding="RIGHT" paddingChar="32"/>
+                    <content xsi:type="ExchangeDictionary:ExchangeStringField" name="user_id_s" required="true" length="5" padding="RIGHT" paddingChar="32"/>
+                  </content>
+                </content>
+                <content xsi:type="ExchangeDictionary:ExchangeStringField" name="ex_client_s" required="true" length="16" padding="RIGHT" paddingChar="32"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="order_number_u" required="true" stringValue="0" length="8" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeIntField" name="order_filter_i" required="true" stringValue="1" length="4" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="bid_or_ask_c" required="true" stringValue="0" length="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="filler_3_s" required="true" stringValue="0,0,0" length="3" padding="LEFT"/>
+          </content>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_order_hdr_t[].answer_order_hdr_t.transaction_type[].transaction_type_t.central_module_c" value="M" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_order_hdr_t[].answer_order_hdr_t.transaction_type[].transaction_type_t.server_type_c" value="A" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_order_hdr_t[].answer_order_hdr_t.transaction_type[].transaction_type_t.transaction_number_n" value="92" fieldType="BigDecimal"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="CQ10" messageSenderProducer="//@test/@testCommand.0">
+      <message xsi:type="ExchangeDictionary:ExchangeMessage" name="CQ10" dictionaryName="SGX_OMnet">
+        <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_common_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="length_u" required="true" stringValue="36" length="4" padding="LEFT"/>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_request_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_request_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="facility_type_u" required="true" stringValue="713" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_u" required="true" stringValue="64000" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="function_code_u" required="true" stringValue="66049" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_2_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+            </content>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_response_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_response_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="txstat_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="return_value_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_2_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_3_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_4_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_5_q" required="true" length="8" padding="LEFT"/>
+            </content>
+          </content>
+        </content>
+        <content xsi:type="ExchangeDictionary:ExchangeGroup" name="query_missing_trade_t" required="true">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="query_missing_trade_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeGroup" name="transaction_type" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="transaction_type_t" required="true">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="central_module_c" required="true" stringValue="C" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="server_type_c" required="true" stringValue="Q" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="transaction_number_n" required="true" stringValue="10" length="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeGroup" name="series" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="series_t" required="true" tag="50000">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="country_c" required="true" stringValue="83" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="market_c" required="true" stringValue="153" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="instrument_group_c" required="true" stringValue="50" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="modifier_c" required="true" stringValue="0" length="1" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="commodity_n" required="true" stringValue="0" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="expiration_date_n" required="true" stringValue="0" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeIntField" name="strike_price_i" required="true" stringValue="0" length="4" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeIntField" name="sequence_first_i" required="true" stringValue="1" length="4" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeIntField" name="sequence_last_i" required="true" stringValue="0" length="4" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="date_s" required="true" stringValue="20160308" length="8" padding="RIGHT" paddingChar="32"/>
+          </content>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_missing_trade_hdr_t[].answer_missing_trade_hdr_t.transaction_type[].transaction_type_t.central_module_c" value="C" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_missing_trade_hdr_t[].answer_missing_trade_hdr_t.transaction_type[].transaction_type_t.server_type_c" value="A" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_missing_trade_hdr_t[].answer_missing_trade_hdr_t.transaction_type[].transaction_type_t.transaction_number_n" value="10" fieldType="BigDecimal"/>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

@@ -1,0 +1,283 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ExchangeDictionary="com.esprow.nozomi.dictionary.exchange" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test>
+    <testCommand xsi:type="TestUnit:NewMessageSender" messageHandlerId="sender" targetSystemId="Cert" targetHandlerId="SGX OMnet Relay 100 Target" autoConnect="true" collectStatistics="false" sendSync="true" override="true" validateMessages="true" cleanQueue="true" disableDictionaryMismatchCheck="false"/>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Login_Invalid_Name" messageSenderProducer="//@test/@testCommand.0">
+      <message xsi:type="ExchangeDictionary:ExchangeMessage" name="LOGIN_DEPRECATED" dictionaryName="SGX_OMnet">
+        <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_common_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="length_u" required="true" stringValue="408" length="4" padding="LEFT"/>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_request_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_request_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="facility_type_u" required="true" stringValue="1" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="function_code_u" required="true" stringValue="257" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_2_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+            </content>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_response_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_response_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="txstat_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="return_value_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_2_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_3_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_4_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_5_q" required="true" length="8" padding="LEFT"/>
+            </content>
+          </content>
+        </content>
+        <content xsi:type="ExchangeDictionary:ExchangeGroup" name="omni_login_message_t" required="true">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="omni_login_message_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="type_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="user_s" required="true" stringValue="1,228,141,248,147,205,185,149,213,251,186,188,132,174,163,112,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" length="32" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="pass_s" required="true" stringValue="20,0,83,59,183,168,70,243,91,13,35,194,68,29,172,29,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" length="32" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="filler_32_s" required="true" stringValue="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" length="32" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="node_s" required="true" stringValue="10.68.3.75" length="129" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="sock_s" required="true" stringValue="21025" length="21" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="idnt_s" required="true" stringValue="OMexus" length="18" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="filler_4_s" required="true" length="4" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="unknown_1_u" required="true" length="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="appl_id_s" required="true" length="59" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="appl_ver_s" required="true" length="12" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="machine_name_s" required="true" length="52" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="unknown_8_u" required="true" length="8" padding="LEFT"/>
+          </content>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="-2024" fieldType="Integer"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:PauseCommand" length="1"/>
+    <testCommand xsi:type="TestUnit:ForLoopCommand" dataSetId="i" dataSetProviderType="RANGE">
+      <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Login_Invalid_Pass" messageSenderProducer="//@test/@testCommand.0">
+        <message xsi:type="ExchangeDictionary:ExchangeMessage" name="LOGIN_DEPRECATED" dictionaryName="SGX_OMnet">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_common_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="length_u" required="true" stringValue="408" length="4" padding="LEFT"/>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_request_t">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_request_t" required="true">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="facility_type_u" required="true" stringValue="1" length="4" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="function_code_u" required="true" stringValue="257" length="4" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_2_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_response_t">
+              <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_response_t" required="true">
+                <content xsi:type="ExchangeDictionary:ExchangeIntField" name="txstat_i" required="true" length="4" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeIntField" name="return_value_i" required="true" length="4" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_2_q" required="true" length="8" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_3_q" required="true" length="8" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_4_q" required="true" length="8" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_5_q" required="true" length="8" padding="LEFT"/>
+              </content>
+            </content>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="omni_login_message_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="omni_login_message_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="type_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="user_s" required="true" stringValue="94,228,141,248,147,205,185,149,213,251,186,188,132,174,163,112,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" length="32" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="pass_s" required="true" stringValue="1,0,83,59,183,168,70,243,91,13,35,194,68,29,172,29,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" length="32" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="filler_32_s" required="true" stringValue="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" length="32" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeStringField" name="node_s" required="true" stringValue="10.68.3.75" length="129" padding="RIGHT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeStringField" name="sock_s" required="true" stringValue="21025" length="21" padding="RIGHT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeStringField" name="idnt_s" required="true" stringValue="OMexus" length="18" padding="RIGHT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="filler_4_s" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="unknown_1_u" required="true" length="1" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeStringField" name="appl_id_s" required="true" length="59" padding="RIGHT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeStringField" name="appl_ver_s" required="true" length="12" padding="RIGHT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeStringField" name="machine_name_s" required="true" length="52" padding="RIGHT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="unknown_8_u" required="true" length="8" padding="LEFT"/>
+            </content>
+          </content>
+        </message>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+        <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="-2024" fieldType="Integer"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:PauseCommand" length="1"/>
+      <dataSetProvider xsi:type="TestUnit:RangeDataSetProvider" skipColumnName="SKIP_TEST" executingTagColumnName="EXEC_TAG" loopCounterStart="1" loopCounterEnd="5" loopStep="1"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Login_Valid" messageSenderProducer="//@test/@testCommand.0">
+      <message xsi:type="ExchangeDictionary:ExchangeMessage" name="LOGIN_DEPRECATED" dictionaryName="SGX_OMnet">
+        <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_common_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="length_u" required="true" stringValue="408" length="4" padding="LEFT"/>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_request_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_request_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="facility_type_u" required="true" stringValue="1" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="function_code_u" required="true" stringValue="257" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_2_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+            </content>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_response_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_response_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="txstat_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="return_value_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_2_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_3_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_4_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_5_q" required="true" length="8" padding="LEFT"/>
+            </content>
+          </content>
+        </content>
+        <content xsi:type="ExchangeDictionary:ExchangeGroup" name="omni_login_message_t" required="true">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="omni_login_message_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="type_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="user_s" required="true" stringValue="94,228,141,248,147,205,185,149,213,251,186,188,132,174,163,112,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" length="32" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="pass_s" required="true" stringValue="20,0,83,59,183,168,70,243,91,13,35,194,68,29,172,29,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" length="32" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="filler_32_s" required="true" stringValue="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" length="32" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="node_s" required="true" stringValue="10.68.3.75" length="129" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="sock_s" required="true" stringValue="21025" length="21" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="idnt_s" required="true" stringValue="OMexus" length="18" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="filler_4_s" required="true" length="4" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="unknown_1_u" required="true" length="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="appl_id_s" required="true" length="59" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="appl_ver_s" required="true" length="12" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="machine_name_s" required="true" length="52" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="unknown_8_u" required="true" length="8" padding="LEFT"/>
+          </content>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="-2033" fieldType="Integer"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:PauseCommand" length="1"/>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Login_Valid" messageSenderProducer="//@test/@testCommand.0">
+      <message xsi:type="ExchangeDictionary:ExchangeMessage" name="LOGIN_DEPRECATED" dictionaryName="SGX_OMnet">
+        <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_common_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="length_u" required="true" stringValue="408" length="4" padding="LEFT"/>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_request_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_request_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="facility_type_u" required="true" stringValue="1" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="function_code_u" required="true" stringValue="257" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_2_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+            </content>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_response_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_response_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="txstat_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="return_value_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_2_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_3_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_4_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_5_q" required="true" length="8" padding="LEFT"/>
+            </content>
+          </content>
+        </content>
+        <content xsi:type="ExchangeDictionary:ExchangeGroup" name="omni_login_message_t" required="true">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="omni_login_message_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="type_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="user_s" required="true" stringValue="94,228,141,248,147,205,185,149,213,251,186,188,132,174,163,112,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" length="32" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="pass_s" required="true" stringValue="20,0,83,59,183,168,70,243,91,13,35,194,68,29,172,29,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" length="32" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="filler_32_s" required="true" stringValue="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" length="32" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="node_s" required="true" stringValue="10.68.3.75" length="129" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="sock_s" required="true" stringValue="21025" length="21" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="idnt_s" required="true" stringValue="OMexus" length="18" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="filler_4_s" required="true" length="4" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="unknown_1_u" required="true" length="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="appl_id_s" required="true" length="59" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="appl_ver_s" required="true" length="12" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="machine_name_s" required="true" length="52" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="unknown_8_u" required="true" length="8" padding="LEFT"/>
+          </content>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="0" fieldType="Integer"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Logout" messageSenderProducer="//@test/@testCommand.0">
+      <message xsi:type="ExchangeDictionary:ExchangeMessage" name="LOGOUT" dictionaryName="SGX_OMnet">
+        <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_common_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="length_u" required="true" stringValue="8" length="4" padding="LEFT"/>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_request_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_request_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="facility_type_u" required="true" stringValue="2" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="function_code_u" required="true" stringValue="257" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_2_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+            </content>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_response_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_response_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="txstat_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="return_value_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_2_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_3_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_4_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_5_q" required="true" length="8" padding="LEFT"/>
+            </content>
+          </content>
+        </content>
+        <content xsi:type="ExchangeDictionary:ExchangeGroup" name="omni_logout_t" required="true">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="omni_logout_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="filler_4_s" required="true" stringValue="0,0,0,0" length="4" padding="LEFT"/>
+          </content>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="0" fieldType="Integer"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:PauseCommand" length="1"/>
+    <testCommand xsi:type="TestUnit:CreateAndSendMessage" messageId="Login_Valid" messageSenderProducer="//@test/@testCommand.0">
+      <message xsi:type="ExchangeDictionary:ExchangeMessage" name="LOGIN_DEPRECATED" dictionaryName="SGX_OMnet">
+        <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_common_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="length_u" required="true" stringValue="408" length="4" padding="LEFT"/>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_request_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_request_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="facility_type_u" required="true" stringValue="1" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="function_code_u" required="true" stringValue="257" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="parameter_2_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+            </content>
+          </content>
+          <content xsi:type="ExchangeDictionary:ExchangeGroup" name="header_response_t">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="header_response_t" required="true">
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="txstat_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeIntField" name="return_value_i" required="true" length="4" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_2_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_3_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_4_q" required="true" length="8" padding="LEFT"/>
+              <content xsi:type="ExchangeDictionary:ExchangeUintField" name="return_value_5_q" required="true" length="8" padding="LEFT"/>
+            </content>
+          </content>
+        </content>
+        <content xsi:type="ExchangeDictionary:ExchangeGroup" name="omni_login_message_t" required="true">
+          <content xsi:type="ExchangeDictionary:ExchangeComponent" name="omni_login_message_t" required="true">
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="type_u" required="true" stringValue="0" length="4" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="user_s" required="true" stringValue="94,228,141,248,147,205,185,149,213,251,186,188,132,174,163,112,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" length="32" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="pass_s" required="true" stringValue="20,0,83,59,183,168,70,243,91,13,35,194,68,29,172,29,215,82,137,59,101,97,86,232,215,82,137,59,101,97,86,232" length="32" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="filler_32_s" required="true" stringValue="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" length="32" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="node_s" required="true" stringValue="10.68.3.75" length="129" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="sock_s" required="true" stringValue="21025" length="21" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="idnt_s" required="true" stringValue="OMexus" length="18" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="filler_4_s" required="true" length="4" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="unknown_1_u" required="true" length="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="appl_id_s" required="true" length="59" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="appl_ver_s" required="true" length="12" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="machine_name_s" required="true" length="52" padding="RIGHT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUbyteArrayField" name="unknown_8_u" required="true" length="8" padding="LEFT"/>
+          </content>
+        </content>
+      </message>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="-2034" fieldType="Integer"/>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

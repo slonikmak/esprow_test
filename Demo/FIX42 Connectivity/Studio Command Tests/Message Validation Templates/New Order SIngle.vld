@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ValidationTemplate:ValidationTemplate xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ValidationTemplate="com.esprow.nozomi.validation.template">
+  <checkFields path="HandlInst" value="3" fieldType="Char"/>
+  <checkFields path="Symbol" value="5.HK"/>
+  <checkFields path="Side" value="1" fieldType="Char" disabled="true"/>
+  <checkFields path="OrderQty" value="10000" fieldType="Double"/>
+  <checkFields path="OrdType" value="2" fieldType="Char"/>
+  <checkFields path="Price" value="100" fieldType="Double"/>
+  <checkFields path="StandardHeader.MsgType" value="D"/>
+</ValidationTemplate:ValidationTemplate>

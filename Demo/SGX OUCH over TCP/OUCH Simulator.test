@@ -1,0 +1,118 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ExchangeDictionary="com.esprow.nozomi.dictionary.exchange" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test>
+    <testCommand xsi:type="TestUnit:CreateMessageReceiverCommand" runMode="NONBLOCKING" targetSystemId="Cert" targetHandlerId="SGX OUCH" autoStart="true" collectStatistics="false" sendSync="true" override="true" validateMessages="true" disableDictionaryMismatchCheck="false">
+      <testCommand xsi:type="TestUnit:CreateEventScenarioCommand" name="Enter Order">
+        <testCommand xsi:type="TestUnit:CreatePatternMatcherCommand" messageId="OrderEntered">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.Header[].Message_Type" value="O" fieldType="Char"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" messageId="Accepted">
+          <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Accepted" dictionaryName="SGX_OUCH" msgType="A">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="A" length="1" padding="LEFT"/>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" stringValue="S" length="1" offset="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UTC_TIMESTAMP%000000000" length="8" offset="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%MESSAGES.OrderEntered.Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_book_ID" required="true" stringValue="%MESSAGES.OrderEntered.Order_book_ID%" length="4" offset="23" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Side" required="true" stringValue="%MESSAGES.OrderEntered.Side%" length="1" offset="27" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_ID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="28" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Quantity" required="true" stringValue="%MESSAGES.OrderEntered.Quantity%" length="8" offset="36" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Price" required="true" stringValue="%MESSAGES.OrderEntered.Price%" length="4" offset="44" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeByteField" name="Time_In_Force" required="true" stringValue="%MESSAGES.OrderEntered.Time_In_Force%" length="1" offset="48" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeByteField" name="Open_Close" required="true" stringValue="%MESSAGES.OrderEntered.Open_Close%" length="1" offset="49" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Client/Account" required="true" stringValue="%MESSAGES.OrderEntered.Client/Account%" length="16" offset="50" padding="RIGHT" paddingChar="32"/>
+            <content xsi:type="ExchangeDictionary:ExchangeByteField" name="Order_State" required="true" stringValue="1" length="1" offset="66" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeByteArrayField" name="Customer_Info" required="true" length="15" offset="67" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeByteArrayField" name="Exchange_Info" required="true" length="32" offset="82" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Pre_Trade_Quantity" required="true" stringValue="%MESSAGES.OrderEntered.Quantity%" length="8" offset="114" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Display_Quantity" required="true" stringValue="%MESSAGES.OrderEntered.Display_Quantity%" length="8" offset="122" padding="LEFT"/>
+          </message>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" messageId="Executed">
+          <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Executed" dictionaryName="SGX_OUCH" msgType="E">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="E" length="1" padding="LEFT"/>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" stringValue="S" length="1" offset="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UTC_TIMESTAMP%000000000" length="8" offset="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%MESSAGES.OrderEntered.Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_book_ID" required="true" stringValue="%MESSAGES.OrderEntered.Order_book_ID%" length="4" offset="23" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Traded_Quantity" required="true" stringValue="%MESSAGES.OrderEntered.Quantity%/2" length="8" offset="27" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Trade_Price" required="true" stringValue="%MESSAGES.OrderEntered.Price%" length="4" offset="35" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Match_ID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="12" offset="39" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeByteArrayField" name="Reserved_17" required="true" length="17" offset="51" padding="LEFT"/>
+          </message>
+        </testCommand>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:CreateEventScenarioCommand" name="Replace Order">
+        <testCommand xsi:type="TestUnit:CreatePatternMatcherCommand" messageId="OrderReplace">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.Header[].Message_Type" value="U" fieldType="Char"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" messageId="Replaced">
+          <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Replaced" dictionaryName="SGX_OUCH" msgType="U_S">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="U" length="1" padding="LEFT"/>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" stringValue="S" length="1" offset="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UTC_TIMESTAMP%000000000" length="8" offset="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Replacement_Order_Token" required="true" stringValue="%MESSAGES.OrderReplace.Replacement_Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Previous_Order_Token" required="true" stringValue="%MESSAGES.OrderReplace.Existing_Order_Token%" length="14" offset="23" padding="RIGHT" paddingChar="32"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_book_ID" required="true" stringValue="458982" length="4" offset="37" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Side" required="true" stringValue="B" length="1" offset="41" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_ID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="42" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Quantity" required="true" stringValue="%MESSAGES.OrderReplace.Quantity%" length="8" offset="50" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeIntField" name="Price" required="true" stringValue="%MESSAGES.OrderReplace.Price%" length="4" offset="58" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeByteField" name="Time_In_Force" required="true" stringValue="0" length="1" offset="62" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeByteField" name="Open_Close" required="true" stringValue="%MESSAGES.OrderReplace.Open_Close%" length="1" offset="63" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Client/Account" required="true" stringValue="%MESSAGES.OrderReplace.Client/Account%" length="16" offset="64" padding="RIGHT" paddingChar="32"/>
+            <content xsi:type="ExchangeDictionary:ExchangeByteField" name="Order_State" required="true" stringValue="1" length="1" offset="80" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeByteArrayField" name="Customer_Info" required="true" length="15" offset="81" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeByteArrayField" name="Exchange_Info" required="true" length="32" offset="96" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Pre_Trade_Quantity" required="true" stringValue="%MESSAGES.OrderReplace.Quantity%" length="8" offset="128" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Display_Quantity" required="true" stringValue="%MESSAGES.OrderReplace.Display_Quantity%" length="8" offset="136" padding="LEFT"/>
+          </message>
+        </testCommand>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:CreateEventScenarioCommand" name="Cancel Order">
+        <testCommand xsi:type="TestUnit:CreatePatternMatcherCommand" messageId="OrderCancel">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.Header[].Message_Type" value="X" fieldType="Char"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:CreateResponseMessageCommand" messageId="Cancelled">
+          <message xsi:type="ExchangeDictionary:ExchangeMessage" name="Order_Cancelled" dictionaryName="SGX_OUCH" msgType="C">
+            <content xsi:type="ExchangeDictionary:ExchangeComponent" name="StandardHeader">
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="Header">
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Message_Type" required="true" stringValue="C" length="1" padding="LEFT"/>
+              </content>
+              <content xsi:type="ExchangeDictionary:ExchangeGroup" name="SoupBinTCP_Header">
+                <content xsi:type="ExchangeDictionary:ExchangeUintField" name="SoupBinTCP_Packet_Length" required="true" length="2" padding="LEFT"/>
+                <content xsi:type="ExchangeDictionary:ExchangeCharField" name="SoupBinTCP_Packet_Type" required="true" stringValue="S" length="1" offset="2" padding="LEFT"/>
+              </content>
+            </content>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Timestamp" required="true" stringValue="%CONFIGURATIONS.UTC_TIMESTAMP%000000000" length="8" offset="1" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeStringField" name="Order_Token" required="true" stringValue="%MESSAGES.OrderCancel.Order_Token%" length="14" offset="9" padding="RIGHT" paddingChar="32"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_book_ID" required="true" stringValue="458982" length="4" offset="23" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeCharField" name="Side" required="true" stringValue="B" length="1" offset="27" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeUintField" name="Order_ID" required="true" stringValue="%CONFIGURATIONS.UNIQUE_ID%" length="8" offset="28" padding="LEFT"/>
+            <content xsi:type="ExchangeDictionary:ExchangeByteField" name="Reason" required="true" length="1" offset="36" padding="LEFT"/>
+          </message>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

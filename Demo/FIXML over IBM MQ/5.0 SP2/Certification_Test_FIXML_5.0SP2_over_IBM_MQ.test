@@ -1,0 +1,58 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CertificationCommands="com.esprow.nozomi.testunit.commands.certification" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test certificationUnit="true" dictionary="FIXML 5.0SP2" implementsBridgeMode="true">
+    <testCommand xsi:type="CertificationCommands:CreateMessageRelayCommand" targetSystemId="%CONFIGURATIONS.CERTIFICATION.SYSTEM%" targetHandlerId="%CONFIGURATIONS.CERTIFICATION.DESTINATION%" forwardSystemId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.SYSTEM%" forwardHandlerId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.DESTINATION%" messageTypeFilters="" filterShowOnly="true" validateMessages="true"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please send a FIXML NewOrderSingle for symbol %CONFIGURATIONS.Sym%, quantity %CONFIGURATIONS.Qty%, price %CONFIGURATIONS.Price%"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="Order" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="NewOrderSingle[].Px" value="%CONFIGURATIONS.Price%"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="NewOrderSingle[].Instrmt[].Sym" value="%CONFIGURATIONS.Sym%"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="NewOrderSingle[].OrdQty[].Qty" value="%CONFIGURATIONS.Qty%"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="ExecutionReport[].ID" value="%MESSAGES.Order.NewOrderSingle[].ID%"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="ExecutionReport[].ExecTyp" value="0"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="ExecutionReport[].Stat" value="0"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="ExecutionReport[].Px" value="%MESSAGES.Order.NewOrderSingle[].Px%"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="ExecutionReport[].Instrmt[].Sym" value="%MESSAGES.Order.NewOrderSingle[].Instrmt[].Sym%"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="ExecutionReport[].OrdQty[].Qty" value="%MESSAGES.Order.NewOrderSingle[].OrdQty[].Qty%"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please amend the quantity of the previously submitted order to %CONFIGURATIONS.Qty2%"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="Amend" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="OrderCancelReplaceRequest[].OrdQty[].Qty" value="%CONFIGURATIONS.Qty2%"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="OrderCancelReplaceRequest[].OrigID" value="%MESSAGES.Order.NewOrderSingle[].ID%"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="ExecutionReport[].ExecTyp" value="5"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="ExecutionReport[].Stat" value="5"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="ExecutionReport[].OrdQty[].Qty" value="%MESSAGES.Amend.OrderCancelReplaceRequest[].OrdQty[].Qty%"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please cancel the previously amended order"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="OrderCancelRequest[].OrigID" value="%MESSAGES.Amend.OrderCancelReplaceRequest[].ID%"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="ExecutionReport[].ExecTyp" value="4"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="ExecutionReport[].Stat" value="4"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="ExecutionReport[].LeavesQty" value="0"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please send a FIXML TradeCaptureReportRequest for the originally submitted order (referencing it by its ClOrdID) to get all unmatched trades (TradeRequestType [569] = 2)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="TCRReq" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="TradeCaptureReportRequest[].ReqTyp" value="2"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="TradeCaptureReportRequest[].ClOrdID" value="%MESSAGES.Order.NewOrderSingle[].ID%"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="TradeCaptureReportRequest[].Instrmt[].Sym" value="%MESSAGES.Order.NewOrderSingle[].Instrmt[].Sym%"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" timeout="-1" searchFromLastMatch="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" disabled="true" path="TradeCaptureReportRequestAck[].ReqID" value="%MESSAGES.TCRReq.TradeCaptureReportRequest[].ReqID%"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="TradeCaptureReportRequestAck[].ReqTyp" value="%MESSAGES.TCRReq.TradeCaptureReportRequest[].ReqTyp%"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="TradeCaptureReportRequestAck[].Instrmt[].Sym" value="%MESSAGES.TCRReq.TradeCaptureReportRequest[].Instrmt[].Sym%"/>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Platform:Platform xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:FixAdapter="com.esprow.nozomi.comms.adapters.fix" xmlns:GenericAdapter="com.esprow.nozomi.comms.adapters.generic" xmlns:Platform="com.esprow.nozomi.platform.base" xmlns:SocketTransport="com.esprow.nozomi.comms.transports.socket" xmlns:SoupBinTCPSession="com.esprow.nozomi.comms.session.soupbintcp" xmlns:UniversalAdapter="com.esprow.nozomi.comms.adapters.universal" xmlns:WebSphereMqTransport="com.esprow.nozomi.comms.transports.webspheremq" formatVersion="1.3">
+  <System alias="Cert" defaultDataBase="">
+    <destinationConfigurationsGroup>
+      <DestinationConfigurations xsi:type="FixAdapter:FixDestinationConfiguration" name="Cert Server" protocol="FIX" dictionary="Quick Fix 4.2" encoding="com.esprow.nozomi.comms.adapters.fix.FixCoDec" host="localhost" port="25689" resetOnLogon="true" sessionDictionary="" keyManagerFactoryAlgorithm="SunX509" keyStoreType="JKS">
+        <fixSessionsConfigurations senderCompId="CLIENT1" targetCompId="EXEC" senderSubId="" targetSubId="" senderLocationId="" targetLocationId="" heartbeatInterval="30" reconnectInterval="30" startTime="00:00:00" stopTime="00:00:00" trustManagerFactoryAlgorithm="PKIX" trustStoreType="JKS" startDay="NOT_SET" endDay="NOT_SET" nonStopSession="false" checkLatency="true" maxLatency="120"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="FixAdapter:FixDestinationConfiguration" name="Local" protocol="FIX" dictionary="Quick Fix 4.2" encoding="com.esprow.nozomi.comms.adapters.fix.FixCoDec" host="localhost" port="20023" resetOnLogon="true" sessionDictionary="" keyManagerFactoryAlgorithm="SunX509" keyStoreType="JKS">
+        <fixSessionsConfigurations senderCompId="CLIENT1" targetCompId="EXEC" senderSubId="" targetSubId="" senderLocationId="" targetLocationId="" heartbeatInterval="30" reconnectInterval="30" startTime="00:00:00" stopTime="00:00:00" trustManagerFactoryAlgorithm="PKIX" trustStoreType="JKS" startDay="NOT_SET" endDay="NOT_SET" nonStopSession="false" checkLatency="true" maxLatency="120"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="FixAdapter:FixDestinationConfiguration" name="ocbcCert" protocol="FIX" dictionary="SGXAccess API (FIX)" encoding="com.esprow.nozomi.comms.adapters.fix.FixCoDec" host="192.168.1.100" port="20015" resetOnLogon="true" keyManagerFactoryAlgorithm="SunX509" keyStoreType="JKS">
+        <fixSessionsConfigurations senderCompId="OCBC" targetCompId="EXEC" senderSubId="" targetSubId="" senderLocationId="" targetLocationId="" heartbeatInterval="30" reconnectInterval="30" startTime="00:00:00" stopTime="00:00:00" trustManagerFactoryAlgorithm="PKIX" trustStoreType="JKS" startDay="NOT_SET" endDay="NOT_SET" nonStopSession="false" checkLatency="true" maxLatency="120"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OUCH" protocol="UNI" dictionary="SGX_OUCH" encoding="com.esprow.nozomi.comms.presentation.ouch.OuchCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.soupbintcp.SoupBinTCPChannelHandlerProvider" hostname="localhost" port="29000"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OUCH Relay" protocol="UNI" dictionary="SGX_OUCH" encoding="com.esprow.nozomi.comms.presentation.ouch.OuchCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.soupbintcp.SoupBinTCPChannelHandlerProvider" hostname="localhost" port="29001"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OUCH Relay 100" protocol="UNI" dictionary="SGX_OUCH" encoding="com.esprow.nozomi.comms.presentation.ouch.OuchCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.soupbintcp.SoupBinTCPChannelHandlerProvider" hostname="192.168.1.100" port="29001"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX ITCH" protocol="UNI" dictionary="SGX_ITCH" encoding="com.esprow.nozomi.comms.presentation.itch.ItchCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.soupbintcp.SoupBinTCPChannelHandlerProvider" hostname="localhost" port="28000"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX ITCH Relay" protocol="UNI" dictionary="SGX_Glimpse+ITCH" encoding="com.esprow.nozomi.comms.presentation.glimpse.GlimpseCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.soupbintcp.SoupBinTCPChannelHandlerProvider" hostname="localhost" port="28001"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX ITCH Relay 100" protocol="UNI" dictionary="SGX_Glimpse+ITCH" encoding="com.esprow.nozomi.comms.presentation.glimpse.GlimpseCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.soupbintcp.SoupBinTCPChannelHandlerProvider" hostname="192.168.1.100" port="28001"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OMnet Relay Target" protocol="UNI" dictionary="SGX_OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetDownstreamResponseChannelHandlerProvider" hostname="localhost" port="27001"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OMnet Relay Listener" protocol="UNI" dictionary="SGX_OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetUpstreamRequestChannelHandlerProvider" hostname="localhost" port="27001"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OMnet Relay 100 Target" protocol="UNI" dictionary="SGX_OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetDownstreamResponseChannelHandlerProvider" hostname="10.1.1.4" port="27001"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OMnet Simulator" protocol="UNI" dictionary="SGX_OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetUpstreamRequestChannelHandlerProvider" hostname="localhost" port="27000"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OMnet Simulator Target" protocol="UNI" dictionary="SGX_OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetDownstreamResponseChannelHandlerProvider" hostname="localhost" port="27000"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX Glimpse" protocol="UNI" dictionary="SGX_Glimpse" encoding="com.esprow.nozomi.comms.presentation.glimpse.GlimpseCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.soupbintcp.SoupBinTCPChannelHandlerProvider" hostname="localhost" port="30000"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX Glimpse Relay" protocol="UNI" dictionary="SGX_Glimpse" encoding="com.esprow.nozomi.comms.presentation.glimpse.GlimpseCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.soupbintcp.SoupBinTCPChannelHandlerProvider" hostname="localhost" port="30001"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OMnet Simulator Target 2" protocol="UNI" dictionary="SGX_OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetDownstreamResponseChannelHandlerProvider" hostname="localhost" port="26999"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OMnet Relay Listener 2" protocol="UNI" dictionary="SGX_OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetUpstreamRequestChannelHandlerProvider" hostname="localhost" port="27002"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OMnet Simulator 2" protocol="UNI" dictionary="SGX_OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetUpstreamRequestChannelHandlerProvider" hostname="localhost" port="26999"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OMnet Relay 100 Target 2" protocol="UNI" dictionary="SGX_OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetDownstreamResponseChannelHandlerProvider" hostname="192.168.1.100" port="24014"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OMnet Relay Listener 3" protocol="UNI" dictionary="SGX_OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetUpstreamRequestChannelHandlerProvider" hostname="localhost" port="28888"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OMnet Relay 100 Target 3" protocol="UNI" dictionary="SGX_OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetDownstreamResponseChannelHandlerProvider" hostname="192.168.1.100" port="24015"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OMnet Simulator Target 3" protocol="UNI" dictionary="SGX_OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetDownstreamResponseChannelHandlerProvider" hostname="localhost" port="27000"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OMnet Simulator 3" protocol="UNI" dictionary="SGX_OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetUpstreamRequestChannelHandlerProvider" hostname="localhost" port="27000"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OMnet Gateway" protocol="UNI" dictionary="SGX_OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetDownstreamResponseChannelHandlerProvider" hostname="192.168.1.100" port="21024"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OMnet Relay 100 Target 4" protocol="UNI" dictionary="SGX_OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetDownstreamResponseChannelHandlerProvider" hostname="192.168.1.100" port="24016"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OMnet Relay 100 Target 5" protocol="UNI" dictionary="SGX_OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetDownstreamResponseChannelHandlerProvider" hostname="192.168.1.100" port="24017"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="SGX OMnet Relay 100 Target 6" protocol="UNI" dictionary="SGX_OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetDownstreamResponseChannelHandlerProvider" hostname="192.168.1.100" port="24018"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="FixAdapter:FixDestinationConfiguration" name="Cert Server 2" protocol="FIX" dictionary="Quick Fix 4.2" encoding="com.esprow.nozomi.comms.adapters.fix.FixCoDec" host="localhost" port="25689" resetOnLogon="true" sessionDictionary="" keyManagerFactoryAlgorithm="SunX509" keyStoreType="JKS">
+        <fixSessionsConfigurations senderCompId="CLIENT1" targetCompId="EXEC" senderSubId="" targetSubId="" senderLocationId="" targetLocationId="" heartbeatInterval="30" reconnectInterval="30" startTime="00:00:00" stopTime="00:00:00" trustManagerFactoryAlgorithm="PKIX" trustStoreType="JKS" startDay="NOT_SET" endDay="NOT_SET" nonStopSession="false" checkLatency="true" maxLatency="120"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="OMnet C-Box Relay" protocol="UNI" dictionary="OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetUpstreamRequestChannelHandlerProvider" hostname="localhost" port="29888"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="OMnet Gateway Simulator Target" protocol="UNI" dictionary="OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetDownstreamResponseChannelHandlerProvider" hostname="localhost" port="29001"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="OMnet Gateway Simulator" protocol="UNI" dictionary="OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetUpstreamRequestChannelHandlerProvider" hostname="localhost" port="29001"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="OMnet C-Box Relay Target" protocol="UNI" dictionary="OMnet" encoding="com.esprow.nozomi.comms.presentation.omnet.OMnetCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.omnet.OMnetDownstreamResponseChannelHandlerProvider" hostname="192.168.1.100" port="29888"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="OUCH Gateway Simulator" protocol="UNI" dictionary="OUCH" encoding="com.esprow.nozomi.comms.presentation.ouch.OuchCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.soupbintcp.SoupBinTCPChannelHandlerProvider" hostname="localhost" port="30001"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="OUCH C-Box Relay" protocol="UNI" dictionary="OUCH" encoding="com.esprow.nozomi.comms.presentation.ouch.OuchCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.soupbintcp.SoupBinTCPChannelHandlerProvider" hostname="192.168.1.100" port="30888"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="GenericAdapter:GenericDestinationConfiguration" name="SGX OUCH Gateway" protocol="GEN" dictionary="SGX_OUCH" encoding="com.esprow.nozomi.comms.presentation.ouch.OuchCodec" transportAdapter="SOCKET" useTransport="true" sessionAdapter="SOUPBINTCP_SESSION">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.soupbintcp.SoupBinTCPChannelHandlerProvider" hostname="localhost" port="39939"/>
+        <sessionProviderConfiguration xsi:type="SoupBinTCPSession:SoupBinTCPSessionProviderConfiguration" providerName="SOUPBINTCP_SESSION">
+          <sessions xsi:type="SoupBinTCPSession:SoupBinTCPSessionConfiguration" sessionId="ouchtest" username="admin" password="admin" requestedSeqNum="1" heartbeatInterval="5000" heartbeatTimeout="15000" loginTimeout="30000" messageLimit="100000" resetSessionState="false"/>
+        </sessionProviderConfiguration>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="GenericAdapter:GenericDestinationConfiguration" name="SGX OUCH Client" protocol="GEN" dictionary="SGX_OUCH" encoding="com.esprow.nozomi.comms.presentation.ouch.OuchCodec" transportAdapter="SOCKET" useTransport="true" sessionAdapter="SOUPBINTCP_SESSION">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.soupbintcp.SoupBinTCPChannelHandlerProvider" hostname="localhost" port="39939"/>
+        <sessionProviderConfiguration xsi:type="SoupBinTCPSession:SoupBinTCPSessionProviderConfiguration" providerName="SOUPBINTCP_SESSION">
+          <sessions xsi:type="SoupBinTCPSession:SoupBinTCPSessionConfiguration" sessionId="ouchtest" username="admin" password="admin" requestedSeqNum="0" heartbeatInterval="5000" heartbeatTimeout="15000" loginTimeout="30000" messageLimit="100000" resetSessionState="false"/>
+        </sessionProviderConfiguration>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="FIX C-Box Relay" protocol="UNI" dictionary="Quick Fix 4.2" encoding="com.esprow.nozomi.comms.adapters.fix.FixCoDec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.fix.FIXChannelHandlerProvider" hostname="espussrv001" port="29001"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="FIX C-Box Relay Target" protocol="UNI" dictionary="Quick Fix 4.2" encoding="com.esprow.nozomi.comms.adapters.fix.FixCoDec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.fix.FIXChannelHandlerProvider" hostname="localhost" port="29888"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="FIX C-Box Relay GEMS" protocol="UNI" dictionary="Quick Fix 4.2" encoding="com.esprow.nozomi.comms.adapters.fix.FixCoDec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.fix.FIXChannelHandlerProvider" hostname="178.128.216.60" port="29001"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="FixAdapter:FixDestinationConfiguration" name="FIX Client GEMS" protocol="FIX" dictionary="Quick Fix 4.2" encoding="com.esprow.nozomi.comms.adapters.fix.FixCoDec" host="167.71.210.17" port="27174" resetOnLogon="true" sessionDictionary="" keyManagerFactoryAlgorithm="SunX509" keyStoreType="JKS">
+        <fixSessionsConfigurations senderCompId="Sender11" targetCompId="Receiver11" senderSubId="" targetSubId="" senderLocationId="" targetLocationId="" heartbeatInterval="30" reconnectInterval="30" startTime="00:00:00" stopTime="00:00:00" trustManagerFactoryAlgorithm="PKIX" trustStoreType="JKS" startDay="NOT_SET" endDay="NOT_SET" nonStopSession="false" checkLatency="true" maxLatency="120"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="FIX C-Box GEMS Client" protocol="UNI" dictionary="Quick Fix 4.2" encoding="com.esprow.nozomi.comms.adapters.fix.FixCoDec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.fix.FIXChannelHandlerProvider" hostname="localhost" port="27174"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="FIXML 4.4 Simulator" protocol="UNI" dictionary="FIXML 4.4" encoding="com.esprow.nozomi.comms.presentation.xml.XmlCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.xml.XmlChannelHandlerProvider" hostname="localhost" port="37773"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="FIXML 4.4 Relay" protocol="UNI" dictionary="FIXML 4.4" encoding="com.esprow.nozomi.comms.presentation.xml.XmlCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.xml.XmlChannelHandlerProvider" hostname="localhost" port="37772"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="FIXML 5.0SP2 Relay" protocol="UNI" dictionary="FIXML 5.0SP2" encoding="com.esprow.nozomi.comms.presentation.xml.XmlCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.xml.XmlChannelHandlerProvider" hostname="localhost" port="37774"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="FIXML 5.0SP2 Simulator" protocol="UNI" dictionary="FIXML 5.0SP2" encoding="com.esprow.nozomi.comms.presentation.xml.XmlCodec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.xml.XmlChannelHandlerProvider" hostname="localhost" port="37775"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="FIXML 4.4 over IBM MQ Relay" protocol="UNI" dictionary="FIXML 4.4" encoding="com.esprow.nozomi.comms.presentation.xml.XmlCodec" transportAdapter="WMQ" useTransport="true">
+        <transportProviderConfiguration xsi:type="WebSphereMqTransport:WebSphereMqTransportProviderConfiguration" transportName="WMQ" transportCodecClass="com.esprow.nozomi.comms.transports.webspheremq.WebSphereMqTextMessageCodec" hostname="165.227.161.12" port="1414" username="app" password="123" queueManager="QM1" channel="TEST">
+          <sources name="FIXML.4.4.REQ.CBOX" type="QUEUE"/>
+          <destinations name="FIXML.4.4.RES.CBOX" type="QUEUE"/>
+        </transportProviderConfiguration>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="FIXML 4.4 over IBM MQ Simulator" protocol="UNI" dictionary="FIXML 4.4" encoding="com.esprow.nozomi.comms.presentation.xml.XmlCodec" transportAdapter="WMQ" useTransport="true">
+        <transportProviderConfiguration xsi:type="WebSphereMqTransport:WebSphereMqTransportProviderConfiguration" transportName="WMQ" transportCodecClass="com.esprow.nozomi.comms.transports.webspheremq.WebSphereMqTextMessageCodec" hostname="165.227.161.12" port="1414" username="app" password="123" queueManager="QM1" channel="TEST">
+          <sources name="FIXML.4.4.RES" type="QUEUE"/>
+          <destinations name="FIXML.4.4.REQ" type="QUEUE"/>
+        </transportProviderConfiguration>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="FIXML 5.0SP2 over IBM MQ Relay" protocol="UNI" dictionary="FIXML 5.0SP2" encoding="com.esprow.nozomi.comms.presentation.xml.XmlCodec" transportAdapter="WMQ" useTransport="true">
+        <transportProviderConfiguration xsi:type="WebSphereMqTransport:WebSphereMqTransportProviderConfiguration" transportName="WMQ" transportCodecClass="com.esprow.nozomi.comms.transports.webspheremq.WebSphereMqTextMessageCodec" hostname="165.227.161.12" port="1414" username="app" password="123" queueManager="QM1" channel="TEST">
+          <sources name="FIXML.5.0SP2.REQ.CBOX" type="QUEUE"/>
+          <destinations name="FIXML.5.0SP2.RES.CBOX" type="QUEUE"/>
+        </transportProviderConfiguration>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="FIXML 5.0SP2 over IBM MQ Simulator" protocol="UNI" dictionary="FIXML 5.0SP2" encoding="com.esprow.nozomi.comms.presentation.xml.XmlCodec" transportAdapter="WMQ" useTransport="true">
+        <transportProviderConfiguration xsi:type="WebSphereMqTransport:WebSphereMqTransportProviderConfiguration" transportName="WMQ" transportCodecClass="com.esprow.nozomi.comms.transports.webspheremq.WebSphereMqTextMessageCodec" hostname="165.227.161.12" port="1414" username="app" password="123" queueManager="QM1" channel="TEST">
+          <sources name="FIXML.5.0SP2.RES" type="QUEUE"/>
+          <destinations name="FIXML.5.0SP2.REQ" type="QUEUE"/>
+        </transportProviderConfiguration>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="FixAdapter:FixDestinationConfiguration" name="Cross Markets Simulator" protocol="FIX" dictionary="BARX FX FIX 4.6.6" encoding="com.esprow.nozomi.comms.adapters.fix.FixCoDec" host="localhost" port="32123" resetOnLogon="true" sessionDictionary="" keyManagerFactoryAlgorithm="SunX509" keyStoreType="JKS">
+        <fixSessionsConfigurations senderCompId="CLIENT-PRICES-TEST" targetCompId="BARX-PRICES-TEST" heartbeatInterval="10" reconnectInterval="30" startTime="00:00:00" stopTime="00:00:00" trustManagerFactoryAlgorithm="PKIX" trustStoreType="JKS" startDay="NOT_SET" endDay="NOT_SET" nonStopSession="false" checkLatency="true" maxLatency="120"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="Cross Markets Relay" protocol="UNI" dictionary="BARX FX FIX 4.6.6" encoding="com.esprow.nozomi.comms.adapters.fix.FixCoDec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.fix.FIXChannelHandlerProvider" hostname="localhost" port="32122"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="UniversalAdapter:UniversalDestinationConfiguration" name="Cross Markets Simulator Target" protocol="UNI" dictionary="BARX FX FIX 4.6.6" encoding="com.esprow.nozomi.comms.adapters.fix.FixCoDec" transportAdapter="SOCKET" useTransport="true">
+        <transportProviderConfiguration xsi:type="SocketTransport:SocketTransportProviderConfiguration" transportName="SOCKET" transportCodecClass="com.esprow.nozomi.comms.transports.socket.fix.FIXChannelHandlerProvider" hostname="localhost" port="32123"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="FixAdapter:FixDestinationConfiguration" name="Cross Markets Client" protocol="FIX" dictionary="BARX FX FIX 4.6.6" encoding="com.esprow.nozomi.comms.adapters.fix.FixCoDec" host="localhost" port="32122" resetOnLogon="true" sessionDictionary="" keyManagerFactoryAlgorithm="SunX509" keyStoreType="JKS">
+        <fixSessionsConfigurations senderCompId="CLIENT-PRICES-TEST" targetCompId="BARX-PRICES-TEST" heartbeatInterval="10" reconnectInterval="30" startTime="00:00:00" stopTime="00:00:00" trustManagerFactoryAlgorithm="PKIX" trustStoreType="JKS" startDay="NOT_SET" endDay="NOT_SET" nonStopSession="false" checkLatency="true" maxLatency="120"/>
+      </DestinationConfigurations>
+      <DestinationConfigurations xsi:type="FixAdapter:FixDestinationConfiguration" name="Cross Markets Client2" protocol="FIX" dictionary="FIX 5.0SP2" encoding="com.esprow.nozomi.comms.adapters.fix.FixCoDec" host="espussrv001" port="32123" resetOnLogon="true" sessionDictionary="[Included in Application Dictionary]" keyManagerFactoryAlgorithm="SunX509" keyStoreType="JKS">
+        <fixSessionsConfigurations senderCompId="BANZAI1" targetCompId="EXEC1" heartbeatInterval="10" reconnectInterval="30" startTime="00:00:00" stopTime="00:00:00" trustManagerFactoryAlgorithm="PKIX" trustStoreType="JKS" startDay="NOT_SET" endDay="NOT_SET" nonStopSession="false" checkLatency="true" maxLatency="120"/>
+      </DestinationConfigurations>
+    </destinationConfigurationsGroup>
+    <dataSourcesGroup>
+      <DataBases alias="SGX Orders" driver="org.hsqldb.jdbc.JDBCDriver" url="jdbc:hsqldb:mem:mymemdb" userName="SA"/>
+      <DataBases alias="AllCommands" driver="org.hsqldb.jdbc.JDBCDriver" url="jdbc:hsqldb:mem:allcommands" userName="SA"/>
+    </dataSourcesGroup>
+  </System>
+</Platform:Platform>

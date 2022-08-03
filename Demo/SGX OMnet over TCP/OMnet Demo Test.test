@@ -1,0 +1,171 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:CertificationCommands="com.esprow.nozomi.testunit.commands.certification" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test comment="This demo certification test focuses on logging in and out of the SGX Titan Environment, querying instrument series (DQ124/DQ2), and submitting (MO1), amending (MO3) and deleting (MO4) orders." loggingLevel="DEBUG" certificationUnit="true" dictionary="SGX_OMnet" implementsBridgeMode="true">
+    <testCommand xsi:type="CertificationCommands:CreateMessageRelayCommand" targetSystemId="%CONFIGURATIONS.CERTIFICATION.SYSTEM%" targetHandlerId="%CONFIGURATIONS.CERTIFICATION.DESTINATION%" forwardSystemId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.SYSTEM%" forwardHandlerId="%CONFIGURATIONS.CERTIFICATION.BRIDGE.DESTINATION%" filterShowOnly="true" validateMessages="true">
+      <messageTypeFilters>LOGIN</messageTypeFilters>
+      <messageTypeFilters>LOGIN_ANSWER</messageTypeFilters>
+      <messageTypeFilters>LOGIN_ENCRYPTED_ANSWER</messageTypeFilters>
+      <messageTypeFilters>LOGIN_DEPRECATED</messageTypeFilters>
+      <messageTypeFilters>LOGIN_ENCRYPTED</messageTypeFilters>
+      <messageTypeFilters>LOGOUT</messageTypeFilters>
+      <messageTypeFilters>LOGOUT_ANSWER</messageTypeFilters>
+      <messageTypeFilters>MO1</messageTypeFilters>
+      <messageTypeFilters>TRANSACTION_ANSWER</messageTypeFilters>
+      <messageTypeFilters>BO5</messageTypeFilters>
+      <messageTypeFilters>MO3</messageTypeFilters>
+      <messageTypeFilters>DQ2</messageTypeFilters>
+      <messageTypeFilters>DQ124</messageTypeFilters>
+      <messageTypeFilters>DA2</messageTypeFilters>
+      <messageTypeFilters>DA124</messageTypeFilters>
+      <messageTypeFilters>MO4</messageTypeFilters>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:NewVar" variableId="Test_Code" value="DM-T001"/>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 2"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+      <instructionMultiLanguage key="en" value="Does your system support DQ124 queries to retrieve instrument series for all markets?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+          <instructionMultiLanguage key="en" value="Please submit a DQ124 query to retrieve the instrument series for all markets."/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_delta_t[].query_delta_t.transaction_type[].transaction_type_t.central_module_c" value="D" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_delta_t[].query_delta_t.transaction_type[].transaction_type_t.server_type_c" value="Q" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_delta_t[].query_delta_t.transaction_type[].transaction_type_t.transaction_number_n" value="124" fieldType="BigDecimal"/>
+          <messageType>DQ124</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true">
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_segment_hdr_t[].answer_segment_hdr_t.transaction_type[].transaction_type_t.central_module_c" value="D" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_segment_hdr_t[].answer_segment_hdr_t.transaction_type[].transaction_type_t.server_type_c" value="A" fieldType="Char"/>
+          <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_segment_hdr_t[].answer_segment_hdr_t.transaction_type[].transaction_type_t.transaction_number_n" value="124" fieldType="BigDecimal"/>
+          <messageType>DA124</messageType>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+          <instructionMultiLanguage key="en" value="Did you receive a DA124 answer with instrument series information?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a DA124 answer with instrument series information."/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock">
+        <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true" timeout="-1">
+          <instructionMultiLanguage key="en" value="Does your system support DQ2 queries instead of DQ124?&#xD;&#xA;(Enter y for yes, n for no)"/>
+        </testCommand>
+        <testCommand xsi:type="TestUnit:IfStatementCommand">
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) || equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+            <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+              <instructionMultiLanguage key="en" value="Please submit a DQ2 query to retrieve the instrument series for all markets."/>
+            </testCommand>
+            <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_series_t[].query_series_t.transaction_type[].transaction_type_t.central_module_c" value="D" fieldType="Char"/>
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_series_t[].query_series_t.transaction_type[].transaction_type_t.server_type_c" value="Q" fieldType="Char"/>
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_series_t[].query_series_t.transaction_type[].transaction_type_t.transaction_number_n" value="2" fieldType="BigDecimal"/>
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_series_t[].query_series_t.series[].series_t.country_c" value="0" fieldType="BigDecimal"/>
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_series_t[].query_series_t.series[].series_t.market_c" value="0" fieldType="BigDecimal"/>
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_series_t[].query_series_t.series[].series_t.instrument_group_c" value="0" fieldType="BigDecimal"/>
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_series_t[].query_series_t.series[].series_t.modifier_c" value="0" fieldType="BigDecimal"/>
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_series_t[].query_series_t.series[].series_t.commodity_n" value="0" fieldType="BigDecimal"/>
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_series_t[].query_series_t.series[].series_t.expiration_date_n" value="0" fieldType="BigDecimal"/>
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="query_series_t[].query_series_t.series[].series_t.strike_price_i" value="0" fieldType="Integer"/>
+              <messageType>DQ2</messageType>
+            </testCommand>
+            <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true">
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_series_t[].answer_series_t.transaction_type[].transaction_type_t.central_module_c" value="D" fieldType="Char"/>
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_series_t[].answer_series_t.transaction_type[].transaction_type_t.server_type_c" value="A" fieldType="Char"/>
+              <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="answer_series_t[].answer_series_t.transaction_type[].transaction_type_t.transaction_number_n" value="2" fieldType="BigDecimal"/>
+              <messageType>DA2</messageType>
+            </testCommand>
+            <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+              <instructionMultiLanguage key="en" value="Did you receive a DA2 answer with instrument series information?&#xD;&#xA;(Enter y for yes, n for no)"/>
+            </testCommand>
+            <testCommand xsi:type="TestUnit:IfStatementCommand">
+              <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+                <testCommand xsi:type="TestUnit:FailCommand" text="You should have received a DA2 answer with instrument series information."/>
+              </testCommand>
+            </testCommand>
+          </testCommand>
+          <testCommand xsi:type="TestUnit:IfThenElseStatementBlock">
+            <testCommand xsi:type="TestUnit:FailCommand" text="Your system must support either DQ124 or DQ2 queries to retrieve instrument series for all markets."/>
+          </testCommand>
+        </testCommand>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 3"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please submit a Limit Order with Day validity using MO1."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.transaction_type[].transaction_type_t.central_module_c" value="M" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.transaction_type[].transaction_type_t.server_type_c" value="O" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_insert_t[].single_order_insert_t.transaction_type[].transaction_type_t.transaction_number_n" value="1" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="vim_subitems[].vim_subitem[*].basic_order_t[].basic_order_t.time_validity_n" value="256" fieldType="BigDecimal"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="vim_subitems[].vim_subitem[*].basic_order_t[].basic_order_t.order_type_c" value="1" fieldType="BigDecimal"/>
+      <messageType>MO1</messageType>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="0" checkType="GREATER_OR_EQUAL" fieldType="Integer"/>
+      <messageType>TRANSACTION_ANSWER</messageType>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+      <instructionMultiLanguage key="en" value="Did the MO1 transaction complete successfully?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+        <testCommand xsi:type="TestUnit:FailCommand" text="The MO1 transaction should have completed successfully."/>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 4"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please submit an MO3 transaction to amend the Quantity and/or Price of the Limit order placed in the previous step."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_update_t[].single_order_update_t.transaction_type[].transaction_type_t.central_module_c" value="M" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_update_t[].single_order_update_t.transaction_type[].transaction_type_t.server_type_c" value="O" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="single_order_update_t[].single_order_update_t.transaction_type[].transaction_type_t.transaction_number_n" value="3" fieldType="BigDecimal"/>
+      <messageType>MO3</messageType>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="0" checkType="GREATER_OR_EQUAL" fieldType="Integer"/>
+      <messageType>TRANSACTION_ANSWER</messageType>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+      <instructionMultiLanguage key="en" value="Did the MO3 transaction complete successfully?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+        <testCommand xsi:type="TestUnit:FailCommand" text="The MO3 transaction should have completed successfully."/>
+      </testCommand>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:LogEntry" disabled="true" text="# Step 5"/>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand">
+      <instructionMultiLanguage key="en" value="Please submit an MO4 transaction to delete the Limit order placed in the first step."/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="delete_trans_t[].delete_trans_t.transaction_type[].transaction_type_t.central_module_c" value="M" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="delete_trans_t[].delete_trans_t.transaction_type[].transaction_type_t.server_type_c" value="O" fieldType="Char"/>
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="delete_trans_t[].delete_trans_t.transaction_type[].transaction_type_t.transaction_number_n" value="4" fieldType="BigDecimal"/>
+      <messageType>MO4</messageType>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WaitCommand" messageId="" messageSenderProducer="//@test/@testCommand.0" messageCount="1" timeout="-1" searchFromLastMatch="true" searchFromLastMatchCombined="true" outgoingMessage="true">
+      <testCommand xsi:type="TestUnit:CreateFieldValueCheckCommand" path="StandardHeader.header_response_t[].header_response_t.return_value_i" value="0" checkType="GREATER_OR_EQUAL" fieldType="Integer"/>
+      <messageType>TRANSACTION_ANSWER</messageType>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:GetInteractiveFeedbackCommand" variableId="Response" requireUserInput="true">
+      <instructionMultiLanguage key="en" value="Did the MO4 transaction complete successfully?&#xD;&#xA;(Enter y for yes, n for no)"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="eval(&quot;! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;y&quot;) &amp;&amp; ! equalsIgnoreCase(&quot;%VARIABLES.Response%&quot;, &quot;yes&quot;)&quot;)">
+        <testCommand xsi:type="TestUnit:FailCommand" text="The MO4 transaction should have completed successfully."/>
+      </testCommand>
+    </testCommand>
+    <localDefaults name="Member_Country" value="XX"/>
+    <localDefaults name="Member_Identity" value="YY001"/>
+    <localDefaults name="Series_Country" value="0"/>
+    <localDefaults name="Series_Market" value="0"/>
+    <localDefaults name="Series_Instrument_Group" value="0"/>
+    <localDefaults name="Series_Commodity" value="0"/>
+  </test>
+</TestUnit:TestContainerType>

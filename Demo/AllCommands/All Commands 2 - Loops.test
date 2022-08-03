@@ -1,0 +1,48 @@
+<?xml version="1.1" encoding="ASCII"?>
+<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
+  <test certificationUnit="true" dictionary="Quick Fix 4.2">
+    <testCommand xsi:type="TestUnit:ForLoopCommand" dataSetId="i" dataSetProviderType="RANGE">
+      <testCommand xsi:type="TestUnit:NewVar" variableId="Foo" value="Bar3"/>
+      <testCommand xsi:type="TestUnit:LogEntry" text="%VARIABLES.Foo%"/>
+      <testCommand xsi:type="TestUnit:ContinueCommand"/>
+      <dataSetProvider xsi:type="TestUnit:RangeDataSetProvider" skipColumnName="SKIP_TEST" executingTagColumnName="EXEC_TAG" loopCounterStart="1" loopCounterEnd="3" loopStep="1"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:ForLoopCommand" dataSetId="excel" dataSetProviderType="EXCEL">
+      <testCommand xsi:type="TestUnit:LogEntry" text="Excel Symbol: %DATA_SETS.excel.Symbol%"/>
+      <dataSetProvider xsi:type="TestUnit:ExcelDataSetProvider" skipColumnName="SKIP_TEST" executingTagColumnName="EXEC_TAG" filePath="Excel_Data_File.xlsx"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:ForLoopCommand" dataSetId="db" dataSetProviderType="DATABASE">
+      <testCommand xsi:type="TestUnit:LogEntry" text="DB Symbol: %DATA_SETS.db.Symbol%"/>
+      <dataSetProvider xsi:type="TestUnit:DatabaseDataSetProvider" skipColumnName="SKIP_TEST" executingTagColumnName="EXEC_TAG" targetSystemId="Cert" targetDbId="AllCommands" sqlQuery="SELECT OrderID, Symbol, Price FROM Orders"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:WhileLoopCommand" logicStatement="true" maxIterationSafety="">
+      <testCommand xsi:type="TestUnit:NewVar" variableId="Foo" value="Bar4"/>
+      <testCommand xsi:type="TestUnit:LogEntry" text="%VARIABLES.Foo%"/>
+      <testCommand xsi:type="TestUnit:BreakCommand"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:IfStatementCommand">
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="true">
+        <testCommand xsi:type="TestUnit:NewVar" variableId="Foo" value="Bar5"/>
+        <testCommand xsi:type="TestUnit:LogEntry" text="%VARIABLES.Foo%"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:IfThenElseStatementBlock" logicStatement="false"/>
+    </testCommand>
+    <testCommand xsi:type="TestUnit:SwitchStatement" switchVariable="%VARIABLES.One%">
+      <testCommand xsi:type="TestUnit:SwitchStatementCase" caseValue="1">
+        <testCommand xsi:type="TestUnit:NewVar" variableId="Foo" value="Bar6"/>
+        <testCommand xsi:type="TestUnit:LogEntry" text="%VARIABLES.Foo%"/>
+        <testCommand xsi:type="TestUnit:BreakCommand"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:SwitchStatementCase" caseValue="2">
+        <testCommand xsi:type="TestUnit:NewVar" variableId="Foo" value="This shouldn't happen 1 != 2"/>
+        <testCommand xsi:type="TestUnit:LogEntry" text="%VARIABLES.Foo%"/>
+        <testCommand xsi:type="TestUnit:BreakCommand"/>
+      </testCommand>
+      <testCommand xsi:type="TestUnit:SwitchStatementCase" caseValue="DEFAULT_CASE">
+        <testCommand xsi:type="TestUnit:NewVar" variableId="Foo" value="This shouldn't happen 1 != ?"/>
+        <testCommand xsi:type="TestUnit:LogEntry" text="%VARIABLES.Foo%"/>
+        <testCommand xsi:type="TestUnit:BreakCommand"/>
+      </testCommand>
+    </testCommand>
+  </test>
+</TestUnit:TestContainerType>
