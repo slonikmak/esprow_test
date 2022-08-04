@@ -1,9 +1,0 @@
-<?xml version="1.1" encoding="ASCII"?>
-<TestUnit:TestContainerType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TestUnit="com.esprow.nozomi.testunit" formatVersion="2.1">
-  <test certificationUnit="true" dictionary="Quick Fix 4.2">
-    <testCommand xsi:type="TestUnit:ForLoopCommand" dataSetId="i" dataSetProviderType="RANGE">
-      <testCommand xsi:type="TestUnit:PauseCommand" length="100m"/>
-      <dataSetProvider xsi:type="TestUnit:RangeDataSetProvider" skipColumnName="SKIP_TEST" executingTagColumnName="EXEC_TAG" loopCounterStart="1" loopCounterEnd="10" loopStep="1"/>
-    </testCommand>
-  </test>
-</TestUnit:TestContainerType>
